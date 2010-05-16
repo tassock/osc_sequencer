@@ -70,6 +70,7 @@ class sequencerApp : public ofBaseApp{
 		int step;
 		int selectedBeat;
 		int selectedStep;
+		int selectedClip;
 		int selectedPattern;
 		int selectedParam;
 	

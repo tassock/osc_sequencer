@@ -59,7 +59,6 @@ void sequencerApp::setup(){
 	// load clip buffer
 	clipBuffer[0] = new clip(1, sqlite);
 	clipBuffer[1] = new clip(2, sqlite);
-	sClip = clipBuffer[0];
 	
 	// load patternBuffer and savedPatterns
 	string pattern_name = "test_pattern";
@@ -68,7 +67,8 @@ void sequencerApp::setup(){
 //		savedPatterns[i] = new pattern(pattern_name, sqlite);
 	}
 	
-	// set select pattern and param
+	// set selected clip, pattern and param
+	selectedClip = 0;
 	selectedPattern = 0; //patternBuffer[0];
 	selectedParam = 2;
 	setSelectedParamsAndPatterns();
@@ -227,7 +227,6 @@ void sequencerApp::update() {
 	ofxOscMessage m;
 	m.setAddress( "/test" );
 	for ( int p=0; p<NUM_PARAMS; p++ ) {
-		cout << "sPattern: " << sPattern->getName() << endl;
 		m.addStringArg( ofToString( sPattern->getParam(p)->getStepValue(beat, step) ) );
 	}
 	sender.sendMessage( m );
@@ -427,6 +426,16 @@ void sequencerApp::setSelected() {
 		sPattern->getParam(selectedParam)->setStepValue(selectedBeat, selectedStep, val);
 	}
 	
+	// Handle clip nav click
+	else if ( mouseInside(clipNavX, clipNavY, clipNavW, clipNavH) ) {
+		int i = ( ( mouseY - clipNavY ) / navItemH );
+		if (i < NUM_CLIPS) {
+			resetSelectValues();
+			selectedClip = i;
+			setSelectedParamsAndPatterns();
+		}
+	}
+	
 	// Handle pattern nav click
 	else if ( mouseInside(patternNavX, patternNavY, patternNavW, patternNavH) ) {
 		int i = ( ( mouseY - patternNavY ) / navItemH );
@@ -466,6 +475,7 @@ void sequencerApp::setSelected() {
 //--------------------------------------------------------------
 // Sets selected param and pattern object pointers to selected indexes. 
 void sequencerApp::setSelectedParamsAndPatterns() {
+	sClip = clipBuffer[selectedClip];
 	sPattern = sClip->getPattern(selectedPattern);
 	//sSavedPattern = savedPatterns[selectedPattern];
 	sParam = sPattern->getParam(selectedParam);

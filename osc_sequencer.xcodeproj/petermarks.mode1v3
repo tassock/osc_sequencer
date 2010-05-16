@@ -275,7 +275,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>14</integer>
+									<integer>9</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
@@ -318,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>clip.cpp</string>
+								<string>sequencerApp.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>clip.cpp</string>
+										<string>sequencerApp.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>0802195711A0A07D00233007</string>
+										<string>0802196B11A0A7D200233007</string>
 										<key>history</key>
 										<array>
 											<string>080C98EB11267260004333B3</string>
@@ -341,12 +341,12 @@
 											<string>08021868119FCE9D00233007</string>
 											<string>080218E011A08EFF00233007</string>
 											<string>080218F611A0917500233007</string>
-											<string>0802194C11A0A04700233007</string>
-											<string>0802195211A0A07D00233007</string>
 											<string>0802195311A0A07D00233007</string>
 											<string>0802195411A0A07D00233007</string>
 											<string>0802195511A0A07D00233007</string>
-											<string>0802195611A0A07D00233007</string>
+											<string>0802196511A0A77300233007</string>
+											<string>0802196611A0A77300233007</string>
+											<string>0802196711A0A77300233007</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -544,7 +544,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>0802195811A0A07D00233007</string>
+		<string>0802196C11A0A7D200233007</string>
 		<string>08021859119F639600233007</string>
 		<string>0802185A119F639600233007</string>
 		<string>1CD10A99069EF8BA00B06720</string>

@@ -24,8 +24,6 @@ void clip::loadPatterns() {
 	.where("clip_id", id)
 	.execute().begin();
 	
-	cout << "!!inside loadPatterns " << endl;
-	
 	// set results as instance variables
 	int count = 0;
 	while(sel.hasNext()) {
