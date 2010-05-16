@@ -53,6 +53,13 @@ void sequencerApp::setup(){
 	// listen on the given port
 	receiver.setup( RECIEVE_PORT );
 	
+	
+	//new param(param_id, param_name, paramBuffer, sqlite);
+	
+	// load clip buffer
+	clipBuffer[0] = new clip(1, sqlite);
+	clipBuffer[1] = new clip(2, sqlite);
+	
 	// load patternBuffer and savedPatterns
 	string pattern_name = "test_pattern";
 	for ( int i=0; i<NUM_PATTERNS; i++) {
@@ -64,10 +71,6 @@ void sequencerApp::setup(){
 	selectedPattern = 0; //patternBuffer[0];
 	selectedParam = 3;
 	setSelectedParamsAndPatterns();
-	
-	// load clip buffer
-	clipBuffer[0] = new clip("clip_1");
-	clipBuffer[1] = new clip("clip_2");
 	
 	// load xml (not working yet?)
 	patternBuffer[0]->loadXml();

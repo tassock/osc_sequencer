@@ -97,7 +97,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 457";
 		rLen = 0;
-		rLoc = 10726;
+		rLoc = 10789;
 		rType = 0;
 		vrLen = 1950;
 		vrLoc = 9905;
@@ -167,7 +167,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 457";
 		rLen = 0;
-		rLoc = 10726;
+		rLoc = 10789;
 		rType = 0;
 		vrLen = 1407;
 		vrLoc = 488;
@@ -177,7 +177,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 67";
 		rLen = 0;
-		rLoc = 1151;
+		rLoc = 1311;
 		rType = 0;
 		vrLen = 1425;
 		vrLoc = 488;
@@ -197,7 +197,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 71";
 		rLen = 0;
-		rLoc = 1605;
+		rLoc = 1668;
 		rType = 0;
 		vrLen = 1371;
 		vrLoc = 288;
@@ -207,7 +207,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 144";
 		rLen = 0;
-		rLoc = 3567;
+		rLoc = 3630;
 		rType = 0;
 		vrLen = 1282;
 		vrLoc = 3222;
@@ -237,7 +237,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 238";
 		rLen = 0;
-		rLoc = 5430;
+		rLoc = 5493;
 		rType = 0;
 		vrLen = 1653;
 		vrLoc = 7365;
@@ -247,7 +247,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 60";
 		rLen = 0;
-		rLoc = 1288;
+		rLoc = 1448;
 		rType = 0;
 		vrLen = 1361;
 		vrLoc = 250;
@@ -267,7 +267,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 61";
 		rLen = 0;
-		rLoc = 1344;
+		rLoc = 1504;
 		rType = 0;
 		vrLen = 1361;
 		vrLoc = 250;
@@ -277,7 +277,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 60";
 		rLen = 0;
-		rLoc = 1288;
+		rLoc = 1448;
 		rType = 0;
 		vrLen = 1355;
 		vrLoc = 269;
@@ -287,7 +287,7 @@
 		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
 		name = "sequencerApp.cpp: 61";
 		rLen = 0;
-		rLoc = 1344;
+		rLoc = 1504;
 		rType = 0;
 		vrLen = 1454;
 		vrLoc = 184;
@@ -311,6 +311,36 @@
 		rType = 0;
 		vrLen = 1335;
 		vrLoc = 21;
+	};
+	08021888119FD3AB00233007 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08ABB23711254A1E00496C5E /* pattern.cpp */;
+		name = "pattern.cpp: 53";
+		rLen = 53;
+		rLoc = 1019;
+		rType = 0;
+		vrLen = 1335;
+		vrLoc = 21;
+	};
+	08021889119FD3AB00233007 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
+		name = "sequencerApp.cpp: 61";
+		rLen = 0;
+		rLoc = 1504;
+		rType = 0;
+		vrLen = 1452;
+		vrLoc = 184;
+	};
+	0802188A119FD3AB00233007 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */;
+		name = "sequencerApp.cpp: 61";
+		rLen = 0;
+		rLoc = 1268;
+		rType = 0;
+		vrLen = 1478;
+		vrLoc = 429;
 	};
 	080C8CB8119F5C8400546B38 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -429,7 +459,7 @@
 			sepNavVisRange = "{0, 704}";
 		};
 	};
-	087872CE11252DC500855A1D /* sequencerApp.cpp:131 */ = {
+	087872CE11252DC500855A1D /* sequencerApp.cpp:134 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -441,7 +471,7 @@
 		functionName = "testApp::setup()";
 		hitCount = 0;
 		ignoreCount = 0;
-		lineNumber = 131;
+		lineNumber = 134;
 		modificationTime = 287649221.0027751;
 		originalNumberOfMultipleMatches = 0;
 		state = 1;
@@ -494,7 +524,7 @@
 	08ABB23711254A1E00496C5E /* pattern.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1027, 1729}}";
-			sepNavSelRange = "{578, 0}";
+			sepNavSelRange = "{1019, 53}";
 			sepNavVisRange = "{21, 1335}";
 			sepNavWindowFrame = "{{534, 144}, {1384, 1047}}";
 		};
@@ -612,7 +642,7 @@
 	};
 	08FCAD9E112BDDD200A947B9 /* clip.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {986, 627}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1027, 1228}}";
 			sepNavSelRange = "{104, 0}";
 			sepNavVisRange = "{0, 104}";
 		};
@@ -655,7 +685,7 @@
 			E4B69B5A0A3A1756003C02F2 /* oscSenderExample */,
 		);
 		breakpoints = (
-			087872CE11252DC500855A1D /* sequencerApp.cpp:131 */,
+			087872CE11252DC500855A1D /* sequencerApp.cpp:134 */,
 		);
 		codeSenseManager = 08B8583511195E5500CD312C /* Code sense */;
 		executables = (
@@ -771,6 +801,9 @@
 			08021882119FD32100233007 /* PBXTextBookmark */ = 08021882119FD32100233007 /* PBXTextBookmark */;
 			08021883119FD32100233007 /* PBXTextBookmark */ = 08021883119FD32100233007 /* PBXTextBookmark */;
 			08021884119FD32100233007 /* PBXTextBookmark */ = 08021884119FD32100233007 /* PBXTextBookmark */;
+			08021888119FD3AB00233007 /* PBXTextBookmark */ = 08021888119FD3AB00233007 /* PBXTextBookmark */;
+			08021889119FD3AB00233007 /* PBXTextBookmark */ = 08021889119FD3AB00233007 /* PBXTextBookmark */;
+			0802188A119FD3AB00233007 /* PBXTextBookmark */ = 0802188A119FD3AB00233007 /* PBXTextBookmark */;
 			080C8CB8119F5C8400546B38 = 080C8CB8119F5C8400546B38 /* PBXTextBookmark */;
 			080C8CB9119F5C8400546B38 = 080C8CB9119F5C8400546B38 /* PBXTextBookmark */;
 			080C98EB11267260004333B3 = 080C98EB11267260004333B3 /* PBXTextBookmark */;
@@ -805,9 +838,9 @@
 	};
 	E4B69E1E0A3A1BDC003C02F2 /* sequencerApp.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1027, 10108}}";
-			sepNavSelRange = "{1344, 0}";
-			sepNavVisRange = "{184, 1454}";
+			sepNavIntBoundsRect = "{{0, 0}, {1027, 10032}}";
+			sepNavSelRange = "{1268, 0}";
+			sepNavVisRange = "{488, 1661}";
 			sepNavWindowFrame = "{{1030, 284}, {899, 895}}";
 		};
 	};
