@@ -13,6 +13,7 @@ class clip {
 public:
 	clip(int _id, ofxSQLite* _sqlite);
 	string getName();
+	pattern * getPattern(int index);
 	void loadPatterns();
 	
 	int id;

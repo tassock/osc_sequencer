@@ -275,7 +275,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>9</integer>
+									<integer>14</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
@@ -318,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>sequencerApp.cpp</string>
+								<string>clip.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,26 +326,27 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>sequencerApp.cpp</string>
+										<string>clip.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>0802188A119FD3AB00233007</string>
+										<string>0802195711A0A07D00233007</string>
 										<key>history</key>
 										<array>
 											<string>080C98EB11267260004333B3</string>
 											<string>080C98EC11267260004333B3</string>
-											<string>08FCADAF112BDF8B00A947B9</string>
 											<string>08FCADB0112BDF8B00A947B9</string>
 											<string>08FCADB9112BE1D500A947B9</string>
-											<string>08D1C0EF119E5EEE00B99B79</string>
 											<string>0802184B119F639600233007</string>
-											<string>0802185E119FCB7300233007</string>
-											<string>0802185F119FCB7300233007</string>
 											<string>08021868119FCE9D00233007</string>
-											<string>08021875119FD1ED00233007</string>
-											<string>08021888119FD3AB00233007</string>
-											<string>08021889119FD3AB00233007</string>
+											<string>080218E011A08EFF00233007</string>
+											<string>080218F611A0917500233007</string>
+											<string>0802194C11A0A04700233007</string>
+											<string>0802195211A0A07D00233007</string>
+											<string>0802195311A0A07D00233007</string>
+											<string>0802195411A0A07D00233007</string>
+											<string>0802195511A0A07D00233007</string>
+											<string>0802195611A0A07D00233007</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -543,12 +544,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>0802188B119FD3AB00233007</string>
+		<string>0802195811A0A07D00233007</string>
 		<string>08021859119F639600233007</string>
 		<string>0802185A119F639600233007</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>08B8583211195E5400CD312C</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/petermarks/Documents/Open Frameworks/of_preRelease_v0061_osxSL_FAT/apps/addonsExamples/osc_sequencer/osc_sequencer.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -573,7 +574,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>sequencerApp.cpp</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -590,6 +591,8 @@
 							<string>523pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -884,6 +887,8 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -929,7 +934,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

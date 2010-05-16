@@ -4,10 +4,16 @@ clip::clip(int _id, ofxSQLite* _sqlite) {
 	id = _id;
 	sqlite = _sqlite;
 	name = "clip_" + ofToString( id );
+	loadPatterns();
 }
 
 string clip::getName() {
 	return name;
+}
+
+pattern * clip::getPattern(int index) {
+	pattern * x = patterns[index];
+	return x;
 }
 
 void clip::loadPatterns() {
@@ -17,6 +23,8 @@ void clip::loadPatterns() {
 	.from("patterns")
 	.where("clip_id", id)
 	.execute().begin();
+	
+	cout << "!!inside loadPatterns " << endl;
 	
 	// set results as instance variables
 	int count = 0;

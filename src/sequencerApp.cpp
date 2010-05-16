@@ -59,21 +59,22 @@ void sequencerApp::setup(){
 	// load clip buffer
 	clipBuffer[0] = new clip(1, sqlite);
 	clipBuffer[1] = new clip(2, sqlite);
+	sClip = clipBuffer[0];
 	
 	// load patternBuffer and savedPatterns
 	string pattern_name = "test_pattern";
 	for ( int i=0; i<NUM_PATTERNS; i++) {
-		patternBuffer[i] = new pattern(pattern_name, sqlite);
-		savedPatterns[i] = new pattern(pattern_name, sqlite);
+//		patternBuffer[i] = new pattern(pattern_name, sqlite);
+//		savedPatterns[i] = new pattern(pattern_name, sqlite);
 	}
 	
 	// set select pattern and param
 	selectedPattern = 0; //patternBuffer[0];
-	selectedParam = 3;
+	selectedParam = 2;
 	setSelectedParamsAndPatterns();
 	
 	// load xml (not working yet?)
-	patternBuffer[0]->loadXml();
+	//patternBuffer[0]->loadXml();
 	
 	
 	
@@ -226,6 +227,7 @@ void sequencerApp::update() {
 	ofxOscMessage m;
 	m.setAddress( "/test" );
 	for ( int p=0; p<NUM_PARAMS; p++ ) {
+		cout << "sPattern: " << sPattern->getName() << endl;
 		m.addStringArg( ofToString( sPattern->getParam(p)->getStepValue(beat, step) ) );
 	}
 	sender.sendMessage( m );
@@ -342,8 +344,8 @@ void sequencerApp::drawPatternNav() {
 		drawNavigationItem(
 			patternNavX,				  // x
 			patternNavY + (p * navItemH), // y
-			patternBuffer[p]->getName(),  // name
-			sPattern == patternBuffer[p]  // selected
+			sClip->getPattern(p)->getName(),  // name
+			sPattern == sClip->getPattern(p)  // selected
 		);
 	}
 }
@@ -464,10 +466,10 @@ void sequencerApp::setSelected() {
 //--------------------------------------------------------------
 // Sets selected param and pattern object pointers to selected indexes. 
 void sequencerApp::setSelectedParamsAndPatterns() {
-	sPattern = patternBuffer[selectedPattern];
-	sSavedPattern = savedPatterns[selectedPattern];
+	sPattern = sClip->getPattern(selectedPattern);
+	//sSavedPattern = savedPatterns[selectedPattern];
 	sParam = sPattern->getParam(selectedParam);
-	sSavedParam = sSavedPattern->getParam(selectedParam);
+	//sSavedParam = sSavedPattern->getParam(selectedParam);
 }
 
 

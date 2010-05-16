@@ -75,12 +75,12 @@ class sequencerApp : public ofBaseApp{
 	
 		clip *sClip;
 		pattern *sPattern;
-		pattern *sSavedPattern; // not sure I need this
+		//pattern *sSavedPattern; // not sure I need this
 		param * sParam;
-		param * sSavedParam; // not sure I need this
+		//param * sSavedParam; // not sure I need this
 	
-		pattern *patternBuffer[NUM_PATTERNS];
-		pattern *savedPatterns[NUM_PATTERNS];
+//		pattern *patternBuffer[NUM_PATTERNS];
+//		pattern *savedPatterns[NUM_PATTERNS];
 	
 		clip *clipBuffer[NUM_CLIPS];
 	
