@@ -34,6 +34,7 @@ void param::setStepValue(int beat, int step, float val) {
 
 
 //--------------------------------------------------------------
+// Save buffered values to database record. 
 void param::save() {
 	
 	// Parse step data into string

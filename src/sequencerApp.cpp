@@ -53,17 +53,6 @@ void sequencerApp::setup(){
 	// listen on the given port
 	receiver.setup( RECIEVE_PORT );
 	
-	// define default vals
-	float red    = 0.5;
-	float green  = 0.5;
-	float blue   = 0.5;
-	float alpha  = 1.0;
-	float height = 0.5;
-	float width  = 0.5;
-	float x      = 0.0;
-	float y      = 0.0;
-	float y_fill = 0.5;
-	
 	// load patternBuffer and savedPatterns
 	string pattern_name = "test_pattern";
 	for ( int i=0; i<NUM_PATTERNS; i++) {
@@ -71,6 +60,7 @@ void sequencerApp::setup(){
 		savedPatterns[i] = new pattern(pattern_name, sqlite);
 	}
 	
+	// set select pattern and param
 	selectedPattern = 0; //patternBuffer[0];
 	selectedParam = 3;
 	setSelectedParamsAndPatterns();
@@ -79,12 +69,7 @@ void sequencerApp::setup(){
 	clipBuffer[0] = new clip("clip_1");
 	clipBuffer[1] = new clip("clip_2");
 	
-	
-//	// test param save
-//	for ( int i=0; i<NUM_PARAMS; i++) {
-//		sPattern->getParam(i)->save();
-//	}
-	
+	// load xml (not working yet?)
 	patternBuffer[0]->loadXml();
 	
 	
@@ -179,28 +164,28 @@ void sequencerApp::initDatabase() {
 	);
 	
 	
-	// select
-	ofxSQLiteSelect sel = sqlite->select("live_id")
-		.from("clips")
-		.where("id", 2)
-	.execute().begin();
-	
-	while(sel.hasNext()) {
-		string live_id = sel.getString();
-		cout << "live_id: " << live_id << endl;
-		sel.next();
-	}
-	
-	
-	// TODO: Understand what str[] and * pch do
-	char str[] = "0.11 0.22 0.33";
-	char * pch;
-	pch = strtok (str," ");
-	while (pch != NULL)
-	{
-		cout << "pch: " << pch << endl;
-		pch = strtok (NULL, " ");
-	}
+//	// select
+//	ofxSQLiteSelect sel = sqlite->select("live_id")
+//		.from("clips")
+//		.where("id", 2)
+//	.execute().begin();
+//	
+//	while(sel.hasNext()) {
+//		string live_id = sel.getString();
+//		cout << "live_id: " << live_id << endl;
+//		sel.next();
+//	}
+//	
+//	
+//	// TODO: Understand what str[] and * pch do
+//	char str[] = "0.11 0.22 0.33";
+//	char * pch;
+//	pch = strtok (str," ");
+//	while (pch != NULL)
+//	{
+//		cout << "pch: " << pch << endl;
+//		pch = strtok (NULL, " ");
+//	}
 	
 }
 

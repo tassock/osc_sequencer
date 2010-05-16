@@ -26,8 +26,8 @@ void pattern::loadParams() {
 	// set results as instance variables
 	int count = 0;
 	while(sel.hasNext()) {
-		int pattern_id = sel.getInt();
-		string pattern_name = sel.getString();
+		int param_id = sel.getInt();
+		string param_name = sel.getString();
 		string step_data = sel.getString();
 		
 		
@@ -50,7 +50,7 @@ void pattern::loadParams() {
 		}
 		
 		
-		params[count] = new param(pattern_id, pattern_name, paramBuffer, sqlite);
+		params[count] = new param(param_id, param_name, paramBuffer, sqlite);
 		// cout << "pattern_name: " << pattern_name << ", pattern_id: " << pattern_id << ", step_data: " << step_data << endl;
 		count ++;
 		sel.next();
