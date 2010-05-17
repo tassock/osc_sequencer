@@ -203,9 +203,6 @@ void sequencerApp::update() {
 		step = 0;
 	}
 	
-	// Set Dummy 
-	// message = ofToString( paramBuffer[step] );
-	
 	// Recieve Data
 	while( receiver.hasWaitingMessages() ) {
 		ofxOscMessage m;
