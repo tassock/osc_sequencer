@@ -275,7 +275,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>14</integer>
+									<integer>9</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
@@ -318,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>clip.cpp</string>
+								<string>sequencerApp.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>clip.cpp</string>
+										<string>sequencerApp.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>089C316A11A0DB1C00E76D62</string>
+										<string>089C31C711A0FE7600E76D62</string>
 										<key>history</key>
 										<array>
 											<string>080C98EB11267260004333B3</string>
@@ -343,10 +343,10 @@
 											<string>0802195311A0A07D00233007</string>
 											<string>0802195411A0A07D00233007</string>
 											<string>0802195511A0A07D00233007</string>
-											<string>0802196611A0A77300233007</string>
-											<string>089C316811A0DB1C00E76D62</string>
 											<string>089C316911A0DB1C00E76D62</string>
-											<string>089C315E11A0DAD800E76D62</string>
+											<string>089C31B211A0FCD300E76D62</string>
+											<string>089C31B311A0FCD300E76D62</string>
+											<string>089C31B411A0FCD300E76D62</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -544,7 +544,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>089C316B11A0DB1C00E76D62</string>
+		<string>089C31C811A0FE7600E76D62</string>
 		<string>089C312B11A0D39E00E76D62</string>
 		<string>089C312C11A0D39E00E76D62</string>
 		<string>1CD10A99069EF8BA00B06720</string>
@@ -897,18 +897,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {587, 594}}</string>
+								<string>{{0, 0}, {2252, 663}}</string>
 								<key>RubberWindowFrame</key>
-								<string>111 303 587 635 0 0 2560 1578 </string>
+								<string>111 234 2252 704 0 0 2560 1578 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXDebugCLIModule</string>
 							<key>Proportion</key>
-							<string>594pt</string>
+							<string>663pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>594pt</string>
+					<string>663pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -928,7 +928,7 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.consoleV3</string>
 			<key>WindowString</key>
-			<string>111 303 587 635 0 0 2560 1578 </string>
+			<string>111 234 2252 704 0 0 2560 1578 </string>
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>

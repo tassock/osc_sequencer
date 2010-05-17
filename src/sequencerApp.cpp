@@ -222,14 +222,18 @@ void sequencerApp::update() {
 		}
 	}
 	
-	
 	// Send Data
 	ofxOscMessage m;
 	m.setAddress( "/test" );
-	for ( int p=0; p<NUM_PARAMS; p++ ) {
-		m.addStringArg( ofToString( sPattern->getParam(p)->getStepValue(beat, step) ) );
+	for ( int pat=0; pat<( sClip->getNumPatterns() ); pat++ ) {
+		for ( int p=0; p<NUM_PARAMS; p++ ) {
+			m.addStringArg( ofToString( 
+				sClip->getPattern(pat)->getParam(p)->getStepValue(beat, step)
+			) );
+		}
 	}
 	sender.sendMessage( m );
+
 }
 
 
