@@ -3,3 +3,5 @@ build
 build/*
 bin
 bin/*
+osc_sequencer.xcodeproj
+osc_sequencer.xcodeproj/*
