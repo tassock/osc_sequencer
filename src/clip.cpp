@@ -36,7 +36,7 @@ void clip::loadPatterns() {
 		string pattern_name = sel.getString();
 		
 		// store pattern in buffer
-		patterns[count] = new pattern(pattern_name, sqlite);
+		patterns[count] = new pattern(pattern_id, pattern_name, sqlite);
 		
 		// next record
 		count ++;

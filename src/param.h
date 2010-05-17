@@ -12,7 +12,7 @@
 class param {
 	
 	public:
-		param(int _id, string _name, float _values[NUM_BEATS][NUM_STEPS], ofxSQLite* _sqlite);
+		param(int _id, int _pattern_id, string _name, ofxSQLite* _sqlite);
 		
 		int fetch(int paramId);
 		void save();
@@ -22,6 +22,7 @@ class param {
 		
 		string name;
 		int id;
+		int pattern_id;
 		float values[NUM_BEATS][NUM_STEPS];
 	
 		ofxSQLite* sqlite; // maybe I can point to one instead of create new ones? 

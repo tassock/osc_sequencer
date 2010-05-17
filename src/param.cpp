@@ -1,18 +1,56 @@
 #include "param.h"
 
 //--------------------------------------------------------------
-param::param(int _id, string _name, float _values[NUM_BEATS][NUM_STEPS], ofxSQLite* _sqlite) {
+param::param(int _id, int _pattern_id, string _name, ofxSQLite* _sqlite) {
 	
 	id = _id;
+	pattern_id = _pattern_id;
 	name = _name;
 	sqlite = _sqlite;
 	
-	// sqlite = new ofxSQLite("sequencer.db"); // maybe I can point to one instead of create new ones? 
-	for ( int b=0; b<NUM_BEATS; b++ ) {
-		for ( int s=0; s<NUM_STEPS; s++ ) {
-			values[b][s] = _values[b][s];
+	if (id == 0) {
+		
+		// create default values
+		for ( int b=0; b<NUM_BEATS; b++ ) {
+			for ( int s=0; s<NUM_STEPS; s++ ) {
+				values[b][s] = 0.0;
+			}
 		}
+		
+		save();
+		
+	} else {
+		
+		// load existing values
+		ofxSQLiteSelect sel = sqlite->select("step_data")
+			.from("params")
+			.where("id", id)
+		.execute().begin();
+		while(sel.hasNext()) {
+			string step_data = sel.getString();
+			
+			//  parse step_data into values
+			char * str = new char[step_data.size() + 1];
+			std::strcpy ( str, step_data.c_str() );
+			char * pch;
+			pch = strtok (str," ");
+			int b = 0;
+			int s = 0;
+			while (pch != NULL)
+			{
+				values[b][s] = ofToFloat( pch );
+				s ++;
+				if (s >= NUM_STEPS) {
+					s = 0;
+					b++;
+				}
+				pch = strtok (NULL, " ");
+			}
+			sel.next();
+		}
+		
 	}
+	
 }
 
 //--------------------------------------------------------------
@@ -51,9 +89,11 @@ void param::save() {
 		cout << " create record " << endl;
 		sqlite->insert("params")
 			.use("name", name)
-			.use("pattern_id",1)
+			.use("pattern_id",pattern_id)
 			.use("step_data",stepData)
 		.execute();
+		
+		id = sqlite->lastInsertID();
 	} 
 	
 	// update record
@@ -62,7 +102,7 @@ void param::save() {
 		
 		sqlite->update("params")
 			.use("name", name)
-			.use("pattern_id",1)
+			.use("pattern_id",pattern_id)
 			.use("step_data",stepData)
 			.where("id", id)
 		.execute();

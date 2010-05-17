@@ -14,14 +14,16 @@
 class pattern {
 	
 	public:
-	pattern(string _name, ofxSQLite* _sqlite);
+	pattern(int _id, string _name, ofxSQLite* _sqlite);
 	string getName();
 	param * getParam(int index);
 	void loadParams();
 	void loadXml();
 	
 	param *params[NUM_PARAMS];
+	string param_names[NUM_PARAMS];
 	string name;
+	int id;
 	ofxSQLite* sqlite;
 	float paramBuffer[NUM_BEATS][NUM_STEPS];
 	
