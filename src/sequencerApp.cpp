@@ -451,10 +451,10 @@ void sequencerApp::setSelected() {
 	else if ( mouseInside(paramNavX, paramNavY, paramNavW, paramNavH) ) {
 		int i = ( ( mouseY - paramNavY ) / navItemH );
 		if (i < NUM_PARAMS) {
+			sParam->save();
 			resetSelectValues();
 			selectedParam = i;
 			setSelectedParamsAndPatterns();
-			// sParam->save();
 		}
 	}
 	
