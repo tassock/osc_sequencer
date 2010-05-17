@@ -339,7 +339,7 @@ void sequencerApp::drawClipNav() {
 void sequencerApp::drawPatternNav() {
 	ofSetColor(100, 100, 100);
 	ofRect(patternNavX, patternNavY, patternNavW, patternNavH);
-	for ( int p=0; p<NUM_PATTERNS; p++ ) {
+	for ( int p=0; p<(sClip->getNumPatterns()); p++ ) {
 		drawNavigationItem(
 			patternNavX,				  // x
 			patternNavY + (p * navItemH), // y

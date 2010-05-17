@@ -5,10 +5,15 @@ clip::clip(int _id, ofxSQLite* _sqlite) {
 	sqlite = _sqlite;
 	name = "clip_" + ofToString( id );
 	loadPatterns();
+	cout << "!! NUM PATTERNS:" << num_patterns << endl;
 }
 
 string clip::getName() {
 	return name;
+}
+
+int clip::getNumPatterns() {
+	return num_patterns;
 }
 
 pattern * clip::getPattern(int index) {
@@ -37,4 +42,7 @@ void clip::loadPatterns() {
 		count ++;
 		sel.next();
 	}
+	
+	// set pattern count
+	num_patterns = count;
 }

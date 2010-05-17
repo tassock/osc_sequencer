@@ -275,7 +275,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>9</integer>
+									<integer>14</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
@@ -318,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>sequencerApp.cpp</string>
+								<string>clip.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>sequencerApp.cpp</string>
+										<string>clip.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>0802196B11A0A7D200233007</string>
+										<string>089C316A11A0DB1C00E76D62</string>
 										<key>history</key>
 										<array>
 											<string>080C98EB11267260004333B3</string>
@@ -340,13 +340,13 @@
 											<string>0802184B119F639600233007</string>
 											<string>08021868119FCE9D00233007</string>
 											<string>080218E011A08EFF00233007</string>
-											<string>080218F611A0917500233007</string>
 											<string>0802195311A0A07D00233007</string>
 											<string>0802195411A0A07D00233007</string>
 											<string>0802195511A0A07D00233007</string>
-											<string>0802196511A0A77300233007</string>
 											<string>0802196611A0A77300233007</string>
-											<string>0802196711A0A77300233007</string>
+											<string>089C316811A0DB1C00E76D62</string>
+											<string>089C316911A0DB1C00E76D62</string>
+											<string>089C315E11A0DAD800E76D62</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -404,9 +404,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>0802184F119F639600233007</string>
+				<string>089C312011A0D39E00E76D62</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>08021850119F639600233007</string>
+				<string>089C312111A0D39E00E76D62</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -544,9 +544,9 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>0802196C11A0A7D200233007</string>
-		<string>08021859119F639600233007</string>
-		<string>0802185A119F639600233007</string>
+		<string>089C316B11A0DB1C00E76D62</string>
+		<string>089C312B11A0D39E00E76D62</string>
+		<string>089C312C11A0D39E00E76D62</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>08B8583211195E5400CD312C</string>
 		<string>1C78EAAD065D492600B07095</string>
@@ -574,7 +574,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>sequencerApp.cpp</string>
+								<string></string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -591,8 +591,6 @@
 							<string>523pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -632,7 +630,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>08B8583211195E5400CD312C</string>
-				<string>08021851119F639600233007</string>
+				<string>089C312211A0D39E00E76D62</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -754,13 +752,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>08021852119F639600233007</string>
+				<string>089C312311A0D39E00E76D62</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>08021853119F639600233007</string>
-				<string>08021854119F639600233007</string>
-				<string>08021855119F639600233007</string>
-				<string>08021856119F639600233007</string>
-				<string>08021857119F639600233007</string>
+				<string>089C312411A0D39E00E76D62</string>
+				<string>089C312511A0D39E00E76D62</string>
+				<string>089C312611A0D39E00E76D62</string>
+				<string>089C312711A0D39E00E76D62</string>
+				<string>089C312811A0D39E00E76D62</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
@@ -924,7 +922,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>08021858119F639600233007</string>
+				<string>089C312911A0D39E00E76D62</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>
