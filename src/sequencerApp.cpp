@@ -527,8 +527,8 @@ void sequencerApp::setSelectedParamsAndPatterns() {
 void sequencerApp::setGainSliderValue() {
 	float old_gval = gainSliderValue;
 	float new_gval = gainSlider->getValue();
+	cout << " new_gval:" << new_gval << ", old_gval" << old_gval << endl;
 	gainSliderValue = new_gval;
-	cout << " new_gval:" << new_gval << endl;
 	for ( int b=0; b<NUM_BEATS; b++ ) {
 		for ( int s=0; s<NUM_STEPS; s++ ) {
 			float saved_val = sParam->getStepValue(b, s); // needs to be saved
@@ -564,7 +564,9 @@ void sequencerApp::resetSelectValues() {
 	selectedBeat = 0;
 	selectedStep = 0;
 	gainSlider->setValue(0);
+	gainSliderValue = 0;
 	scaleSlider->setValue(0);
+	scaleSliderValue = 0;
 }
 
 
