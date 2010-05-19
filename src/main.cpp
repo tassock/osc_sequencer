@@ -6,10 +6,11 @@
 int main( ){
 
     ofAppGlutWindow window;
-	ofSetupOpenGL(&window, 1060,480, OF_WINDOW);			// <-------- setup the GL context
+	ofSetupOpenGL(&window, 1060,820, OF_WINDOW);			// <-------- setup the GL context
 	
-	//ofSetVerticalSync(true);
-	ofSetFrameRate(64);
+	ofSetVerticalSync(true);
+	ofEnableAlphaBlending();
+	//ofSetFrameRate(64);
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN

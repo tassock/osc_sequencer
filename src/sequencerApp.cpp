@@ -14,6 +14,9 @@ void sequencerApp::setup(){
 	gainSliderValue = 0.0;
 	scaleSliderValue = 0.0;
 	
+	windowW = 1060;
+	windowH = 820;
+	
 	graphX = 0;
 	graphY = 0;
 	graphW = 640;
@@ -45,6 +48,11 @@ void sequencerApp::setup(){
 	paramNavY = 0;
 	paramNavW = navItemW;
 	paramNavH = graphH;
+	
+	rWindowX = 0;
+	rWindowY = 340;
+	rWindowH = 480;
+	rWindowW = 640;
 
 	
 	// open an outgoing connection to HOST:PORT
@@ -220,16 +228,16 @@ void sequencerApp::update() {
 	}
 	
 	// Send Data
-	ofxOscMessage m;
-	m.setAddress( "/test" );
-	for ( int pat=0; pat<( sClip->getNumPatterns() ); pat++ ) {
-		for ( int p=0; p<NUM_PARAMS; p++ ) {
-			m.addStringArg( ofToString( 
-				sClip->getPattern(pat)->getParam(p)->getStepValue(beat, step)
-			) );
-		}
-	}
-	sender.sendMessage( m );
+//	ofxOscMessage m;
+//	m.setAddress( "/test" );
+//	for ( int pat=0; pat<( sClip->getNumPatterns() ); pat++ ) {
+//		for ( int p=0; p<NUM_PARAMS; p++ ) {
+//			m.addStringArg( ofToString( 
+//				sClip->getPattern(pat)->getParam(p)->getStepValue(beat, step)
+//			) );
+//		}
+//	}
+//	sender.sendMessage( m );
 
 }
 
@@ -237,6 +245,7 @@ void sequencerApp::update() {
 //--------------------------------------------------------------
 void sequencerApp::draw(){
 	
+	drawRenderWindow();
 	drawGraph();
 	drawSliders();
 	drawClipNav();
@@ -247,10 +256,40 @@ void sequencerApp::draw(){
 	string buf;
 	buf = "step: " + ofToString( step );
 	ofSetColor(255, 255, 255);
-	ofDrawBitmapString( buf, 400, 400 );
+	ofDrawBitmapString( buf, 800, 400 );
 	buf = "rate: " + ofToString( ofGetFrameRate() );
-	ofDrawBitmapString( buf, 400, 420 );
+	ofDrawBitmapString( buf, 800, 420 );
+	
+	
 }
+
+
+
+//--------------------------------------------------------------
+void sequencerApp::drawRenderWindow(){
+	
+	// Render params
+	for ( int i=0; i<( sClip->getNumPatterns() ); i++ ) {
+		pattern * r_pattern = sClip->getPattern(i);
+		float red    = r_pattern->getParam(0)->getStepValue(beat, step);
+		float green  = r_pattern->getParam(1)->getStepValue(beat, step);
+		float blue   = r_pattern->getParam(2)->getStepValue(beat, step);
+		float alpha  = r_pattern->getParam(3)->getStepValue(beat, step);
+		float height = r_pattern->getParam(4)->getStepValue(beat, step);
+		float width  = r_pattern->getParam(5)->getStepValue(beat, step);
+		float x      = r_pattern->getParam(6)->getStepValue(beat, step);
+		float y      = r_pattern->getParam(7)->getStepValue(beat, step);
+		float y_fill = r_pattern->getParam(8)->getStepValue(beat, step);
+		ofSetColor(red * 256, green * 256, blue * 256, alpha * 256 );
+		ofRect(x * rWindowW, ((y + (height * (1.0 - y_fill))) * rWindowH) + rWindowY, width * rWindowW, (y_fill * height) * rWindowH);
+	}
+	
+	// Clear outside window
+	ofSetColor(0, 0, 0, 256 );
+	ofRect(0, 0, windowW, windowH - rWindowH); // Clear Top
+	ofRect(rWindowW, rWindowY, windowW - rWindowW, rWindowH); // Clear Right
+}
+	
 
 
 //--------------------------------------------------------------

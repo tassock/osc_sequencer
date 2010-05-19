@@ -11,6 +11,7 @@
 #include "ofxXmlSettings.h"
 #include "ofxSQLiteHeaders.h"
 
+//#define HOST "169.254.189.237"
 #define HOST "localhost"
 #define SEND_PORT 12345
 #define RECIEVE_PORT 7403
@@ -32,6 +33,7 @@ class sequencerApp : public ofBaseApp{
 		void update();
 		void draw();
 	
+		void drawRenderWindow();
 		void drawGraph();
 		void drawSliders();
 		void drawClipNav();
@@ -90,6 +92,9 @@ class sequencerApp : public ofBaseApp{
 		slider *scaleSlider;
 		float gainSliderValue;
 		float scaleSliderValue;
+	
+		int windowW;
+		int windowH;
 		
 		int graphX;
 		int graphY;
@@ -118,6 +123,11 @@ class sequencerApp : public ofBaseApp{
 		int paramNavY;
 		int paramNavW;
 		int paramNavH;
+	
+		int rWindowX;
+		int rWindowY;
+		int rWindowH;
+		int rWindowW;
 
 };
 
