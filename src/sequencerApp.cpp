@@ -306,20 +306,20 @@ void sequencerApp::drawRenderWindow(){
 		float _w = width * rWindowW;
 		float _h = (y_fill * height) * rWindowH;
 		
-		// Render Rectangle
-		ofSetColor(red * 256, green * 256, blue * 256, alpha * 256 );
-		ofRect( _x, _y, _w, _h);
+//		// Render Rectangle
+//		ofSetColor(red * 256, green * 256, blue * 256, alpha * 256 );
+//		ofRect( _x, _y, _w, _h);
 		
-//		// Render gradient rectangle
-//		glBegin(GL_QUADS);
-//		glColor4f(red, green, blue, alpha );
-//		glVertex2f(_x, _y); // top left
-//		glColor4f(red, green, blue, 0 );
-//		glVertex2f(_x, _y + _h); // bottom left
-//		glVertex2f(_x + _w, _y + _h); // bottom right
-//		glColor4f(red, green, blue, alpha );
-//		glVertex2f(_x + _w, _y); // top right
-//		glEnd();
+		// Render gradient rectangle
+		glBegin(GL_QUADS);
+		glColor4f(red, green, blue, alpha );
+		glVertex2f(_x, _y); // top left
+		glColor4f(red, green, blue, 0 );
+		glVertex2f(_x, _y + _h); // bottom left
+		glVertex2f(_x + _w, _y + _h); // bottom right
+		glColor4f(red, green, blue, alpha );
+		glVertex2f(_x + _w, _y); // top right
+		glEnd();
 		
 	}
 	
