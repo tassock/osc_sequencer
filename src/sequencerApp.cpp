@@ -259,7 +259,24 @@ void sequencerApp::draw(){
 	ofDrawBitmapString( buf, 800, 400 );
 	buf = "rate: " + ofToString( ofGetFrameRate() );
 	ofDrawBitmapString( buf, 800, 420 );
+
 	
+//	// set the shape color
+//	glColor4f(0.0, 0.0, 0.0, 0.0);
+//	
+//	// start drawng the shape
+//	glBegin(GL_QUADS);
+//	glVertex2f(0.0, 0); // top left
+//	
+//	glColor4f(0.5, 0.0, 0.5, 1.0);
+//	
+//	glVertex2f(0.0, 200.0); // bottom left
+//	glVertex2f(200.0, 200.0); // bottom right
+//	
+//	glColor4f(0.0, 0.0, 0.0, 0.0);
+//	
+//	glVertex2f(200.0, 0); // top right
+//	glEnd();
 	
 }
 
@@ -270,6 +287,8 @@ void sequencerApp::drawRenderWindow(){
 	
 	// Render params
 	for ( int i=0; i<( sClip->getNumPatterns() ); i++ ) {
+		
+		// Define vars
 		pattern * r_pattern = sClip->getPattern(i);
 		float red    = r_pattern->getParam(0)->getStepValue(beat, step);
 		float green  = r_pattern->getParam(1)->getStepValue(beat, step);
@@ -280,8 +299,28 @@ void sequencerApp::drawRenderWindow(){
 		float x      = r_pattern->getParam(6)->getStepValue(beat, step);
 		float y      = r_pattern->getParam(7)->getStepValue(beat, step);
 		float y_fill = r_pattern->getParam(8)->getStepValue(beat, step);
+		
+		// Define dimensions
+		float _x = x * rWindowW;
+		float _y = ((y + (height * (1.0 - y_fill))) * rWindowH) + rWindowY;
+		float _w = width * rWindowW;
+		float _h = (y_fill * height) * rWindowH;
+		
+		// Render Rectangle
 		ofSetColor(red * 256, green * 256, blue * 256, alpha * 256 );
-		ofRect(x * rWindowW, ((y + (height * (1.0 - y_fill))) * rWindowH) + rWindowY, width * rWindowW, (y_fill * height) * rWindowH);
+		ofRect( _x, _y, _w, _h);
+		
+//		// Render gradient rectangle
+//		glBegin(GL_QUADS);
+//		glColor4f(red, green, blue, alpha );
+//		glVertex2f(_x, _y); // top left
+//		glColor4f(red, green, blue, 0 );
+//		glVertex2f(_x, _y + _h); // bottom left
+//		glVertex2f(_x + _w, _y + _h); // bottom right
+//		glColor4f(red, green, blue, alpha );
+//		glVertex2f(_x + _w, _y); // top right
+//		glEnd();
+		
 	}
 	
 	// Clear outside window
