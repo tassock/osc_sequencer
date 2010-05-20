@@ -54,6 +54,7 @@ void sequencerApp::setup(){
 	rWindowH = 480;
 	rWindowW = 640;
 	
+	renderMode = "gradient"; // "gradient", "filled"
 	cursorMode = "select"; // "select", "draw"
 	highlightStart = 5;
 	highlightEnd = 15;
@@ -283,21 +284,22 @@ void sequencerApp::drawRenderWindow(){
 		float _w = width * rWindowW;
 		float _h = (y_fill * height) * rWindowH;
 		
-//		// Render Rectangle
-//		ofSetColor(red * 256, green * 256, blue * 256, alpha * 256 );
-//		ofRect( _x, _y, _w, _h);
-		
-		// Render gradient rectangle
-		glBegin(GL_QUADS);
-		glColor4f(red, green, blue, alpha );
-		glVertex2f(_x, _y); // top left
-		glColor4f(red, green, blue, 0 );
-		glVertex2f(_x, _y + _h); // bottom left
-		glVertex2f(_x + _w, _y + _h); // bottom right
-		glColor4f(red, green, blue, alpha );
-		glVertex2f(_x + _w, _y); // top right
-		glEnd();
-		
+		if (renderMode == "filled") {
+			// Render Rectangle
+			ofSetColor(red * 256, green * 256, blue * 256, alpha * 256 );
+			ofRect( _x, _y, _w, _h);
+		} else if (renderMode == "gradient") {
+			// Render gradient rectangle
+			glBegin(GL_QUADS);
+			glColor4f(red, green, blue, alpha );
+			glVertex2f(_x, _y); // top left
+			glColor4f(red, green, blue, 0 );
+			glVertex2f(_x, _y + _h); // bottom left
+			glVertex2f(_x + _w, _y + _h); // bottom right
+			glColor4f(red, green, blue, alpha );
+			glVertex2f(_x + _w, _y); // top right
+			glEnd();
+		}
 	}
 	
 	// Clear outside window
@@ -462,8 +464,17 @@ void sequencerApp::keyPressed  (int key) {
 	}
 	
 	// Paste clipboard 
-	else if ( key =='v' || key == 'v' ) {
+	else if ( key =='v' || key == 'R' ) {
 		pasteStepClipBoard();
+	}
+	
+	// Toggle renderMode
+	else if ( key =='r' || key == 'R' ) {
+		if (renderMode == "filled") {
+			renderMode = "gradient";
+		} else {
+			renderMode = "filled";
+		}
 	}
 }
 

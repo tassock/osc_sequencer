@@ -87,6 +87,7 @@ class sequencerApp : public ofBaseApp{
 		pattern *sPattern;
 		param * sParam;
 	
+		string renderMode;
 		string cursorMode;
 		int highlightStart;
 		int highlightEnd;
