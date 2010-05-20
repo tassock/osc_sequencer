@@ -587,13 +587,13 @@ void sequencerApp::setStepClipBoard() {
 	clearStepClipBoard();
 	int s = highlightStart;
 	while (s < highlightEnd) {
-		stepClipBoard[s] = sParam->getStepValue2(s);
+		stepClipBoard[s - highlightStart] = sParam->getStepValue2(s);
 		s ++;
 	}
 //	// Log what's in the clipboard
 //	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
 //		if ( stepClipBoard[i] != 100.0 ) {
-//			cout << "stepClipBoard: " << ofToString( stepClipBoard[i] ) << endl;
+//			cout << "stepClipBoard: #" << i << ", " << ofToString( stepClipBoard[i] ) << endl;
 //		}
 //	}
 }
