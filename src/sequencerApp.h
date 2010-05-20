@@ -45,14 +45,18 @@ class sequencerApp : public ofBaseApp{
 		void mouseDragged(int x, int y, int button);
 		void mousePressed(int x, int y, int button);
 		void mouseReleased();
+		int  mouseStep();
 		bool mouseInside(int x, int y, int width, int height);
 		void setSelected();
+		void setHighlightStart();
+		void setHighlightEnd();
 		void setSelectedParamsAndPatterns();
 		void setGainSliderValue();
 		void setScaleSliderValue();
 		void resetSelectValues();
 
 		void keyPressed  (int key);
+		void keyReleased  (int key);
 
   
 		ofxSQLite* sqlite;
@@ -78,12 +82,11 @@ class sequencerApp : public ofBaseApp{
 	
 		clip *sClip;
 		pattern *sPattern;
-		//pattern *sSavedPattern; // not sure I need this
 		param * sParam;
-		//param * sSavedParam; // not sure I need this
 	
-//		pattern *patternBuffer[NUM_PATTERNS];
-//		pattern *savedPatterns[NUM_PATTERNS];
+		string cursorMode;
+		int highlightStart;
+		int highlightEnd;
 	
 		clip *clipBuffer[NUM_CLIPS];
 	

@@ -53,27 +53,21 @@ void sequencerApp::setup(){
 	rWindowY = 340;
 	rWindowH = 480;
 	rWindowW = 640;
+	
+	cursorMode = "select"; // "select", "draw"
+	highlightStart = 5;
+	highlightEnd = 15;
 
 	
-	// open an outgoing connection to HOST:PORT
-	sender.setup( HOST, SEND_PORT );
+//	// open an outgoing connection to HOST:PORT
+//	sender.setup( HOST, SEND_PORT );
 	
 	// listen on the given port
 	receiver.setup( RECIEVE_PORT );
 	
-	
-	//new param(param_id, param_name, paramBuffer, sqlite);
-	
 	// load clip buffer
 	clipBuffer[0] = new clip(1, sqlite);
 	clipBuffer[1] = new clip(2, sqlite);
-	
-	// load patternBuffer and savedPatterns
-	string pattern_name = "test_pattern";
-	for ( int i=0; i<NUM_PATTERNS; i++) {
-//		patternBuffer[i] = new pattern(pattern_name, sqlite);
-//		savedPatterns[i] = new pattern(pattern_name, sqlite);
-	}
 	
 	// set selected clip, pattern and param
 	selectedClip = 0;
@@ -259,24 +253,6 @@ void sequencerApp::draw(){
 	ofDrawBitmapString( buf, 800, 400 );
 	buf = "rate: " + ofToString( ofGetFrameRate() );
 	ofDrawBitmapString( buf, 800, 420 );
-
-	
-//	// set the shape color
-//	glColor4f(0.0, 0.0, 0.0, 0.0);
-//	
-//	// start drawng the shape
-//	glBegin(GL_QUADS);
-//	glVertex2f(0.0, 0); // top left
-//	
-//	glColor4f(0.5, 0.0, 0.5, 1.0);
-//	
-//	glVertex2f(0.0, 200.0); // bottom left
-//	glVertex2f(200.0, 200.0); // bottom right
-//	
-//	glColor4f(0.0, 0.0, 0.0, 0.0);
-//	
-//	glVertex2f(200.0, 0); // top right
-//	glEnd();
 	
 }
 
@@ -339,6 +315,8 @@ void sequencerApp::drawGraph(){
 	for ( int b=0; b<NUM_BEATS; b++ ) {
 		for ( int s=0; s<NUM_STEPS; s++ ) {
 			
+			int num = (b * NUM_STEPS) + s;
+			
 			// Draw Graph
 			int xDrawPoint = ((b * NUM_STEPS) + s) * (graphColPad + graphColW);
 			float val = sParam->getStepValue(b, s) * graphH;
@@ -348,6 +326,9 @@ void sequencerApp::drawGraph(){
 			} else if (b == beat and s == step) {
 				// step playing
 				ofSetColor(255, 255, 255);
+			} else if (num >= highlightStart and num < highlightEnd) {
+				// step selected
+				ofSetColor(0, 204, 0);
 			} else {
 				ofSetColor(0, 102, 204);
 			} 
@@ -458,16 +439,29 @@ void sequencerApp::drawNavigationItem(int x, int y, string name, bool selected) 
 
 
 //--------------------------------------------------------------
-void sequencerApp::keyPressed  (int key){
-	if ( key =='s' || key == 'S' ) {
-		//
-	}
+void sequencerApp::keyPressed  (int key) {
+	if ( key =='d' || key == 'D' ) {
+		if (cursorMode != "draw") {
+			// enter draw mode
+			cursorMode = "draw";
+			cout << cursorMode << endl;
+		}
+	} 
+}
+
+void sequencerApp::keyReleased (int key) {
+	if ( key =='d' || key == 'D' ) {
+		// exit draw mode
+		cursorMode = "select";
+		cout << cursorMode << endl;
+	} 
 }
 
 
 //--------------------------------------------------------------
 void sequencerApp::mousePressed(int x, int y, int button) {
 	setSelected();
+	setHighlightStart();
 }
 
 
@@ -482,6 +476,7 @@ void sequencerApp::mouseDragged(int x, int y, int button) {
 	}
 	else {
 		setSelected();
+		setHighlightEnd();
 	}
 }
 
@@ -489,6 +484,13 @@ void sequencerApp::mouseReleased() {
 	cout << "MY RELEASE" << endl;
 	gainSlider->setSelected(0);
 	scaleSlider->setSelected(0);
+	setHighlightEnd();
+}
+
+//--------------------------------------------------------------
+// Returns the step number the mouse is over
+int sequencerApp::mouseStep() {
+	return mouseX / 5;
 }
 
 
@@ -497,12 +499,14 @@ void sequencerApp::setSelected() {
 	
 	// Handle graph click
 	if ( mouseInside(graphX, graphY, graphW, graphH) ) {
-		// ToDo: not prepared to handle shifted graph
-		int totalSteps = mouseX / 5;
-		float val = (float) (graphH - mouseY) / graphH;
-		selectedBeat = totalSteps / NUM_STEPS;
-		selectedStep = totalSteps % NUM_STEPS;
-		sPattern->getParam(selectedParam)->setStepValue(selectedBeat, selectedStep, val);
+		
+		// Change graph value
+		if (cursorMode == "draw") {
+			float val = (float) (graphH - mouseY) / graphH;
+			selectedBeat = mouseStep() / NUM_STEPS;
+			selectedStep = mouseStep() % NUM_STEPS;
+			sPattern->getParam(selectedParam)->setStepValue(selectedBeat, selectedStep, val);
+		}
 	}
 	
 	// Handle clip nav click
@@ -550,15 +554,31 @@ void sequencerApp::setSelected() {
 			 
 }
 
+//--------------------------------------------------------------
+// sets highlightStart to the current step
+void sequencerApp::setHighlightStart() {
+	if (cursorMode == "select") {
+		highlightStart = mouseStep();
+		highlightEnd = mouseStep(); // Reset ending
+	}
+}
+
+
+//--------------------------------------------------------------
+// sets highlightEnd to the current step
+void sequencerApp::setHighlightEnd() {
+	if (cursorMode == "select") {
+		highlightEnd = mouseStep();
+	}
+}
+
 
 //--------------------------------------------------------------
 // Sets selected param and pattern object pointers to selected indexes. 
 void sequencerApp::setSelectedParamsAndPatterns() {
 	sClip = clipBuffer[selectedClip];
 	sPattern = sClip->getPattern(selectedPattern);
-	//sSavedPattern = savedPatterns[selectedPattern];
 	sParam = sPattern->getParam(selectedParam);
-	//sSavedParam = sSavedPattern->getParam(selectedParam);
 }
 
 
