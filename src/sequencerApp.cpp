@@ -351,6 +351,13 @@ void sequencerApp::drawGraph(){
 				drawAxis(marker, 5, xDrawPoint, graphH);
 			}
 			
+			
+			// Draw highlightStart and highlightEnd
+			if (num == highlightStart || num == highlightEnd) {
+				ofSetColor(204, 102, 0);
+				ofRect(xDrawPoint, graphY, 1, graphH + 20);
+			}
+			
 		}
 	}
 	
@@ -447,10 +454,16 @@ void sequencerApp::keyPressed  (int key) {
 		if (cursorMode != "draw") {
 			cursorMode = "draw";
 		}
+	}
 	
-	// Copy selected area
-	} else if ( key =='c' || key == 'C' ) {
+	// Copy selected area to clipboard
+	else if ( key =='c' || key == 'C' ) {
 		setStepClipBoard();
+	}
+	
+	// Paste clipboard 
+	else if ( key =='v' || key == 'v' ) {
+		pasteStepClipBoard();
 	}
 }
 
@@ -562,7 +575,7 @@ void sequencerApp::setSelected() {
 //--------------------------------------------------------------
 // sets stepClipBoard to bunk value that won't be pasted
 void sequencerApp::clearStepClipBoard() {
-	for ( int i=0; i<(NUM_STEPS * NUM_CLIPS); i++ ) {
+	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
 		stepClipBoard[i] = 100.0;
 	}
 }
@@ -577,12 +590,25 @@ void sequencerApp::setStepClipBoard() {
 		stepClipBoard[s] = sParam->getStepValue2(s);
 		s ++;
 	}
-	
-	// Log what's in the buffer
-	for ( int i=0; i<(NUM_STEPS * NUM_CLIPS); i++ ) {
-		if ( stepClipBoard[i] != 100.0 ) {
-			cout << "stepClipBoard: " << ofToString( stepClipBoard[i] ) << endl;
+//	// Log what's in the clipboard
+//	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
+//		if ( stepClipBoard[i] != 100.0 ) {
+//			cout << "stepClipBoard: " << ofToString( stepClipBoard[i] ) << endl;
+//		}
+//	}
+}
+
+
+//--------------------------------------------------------------
+// paste the clipboard into the current param, starting at the highlightStart
+void sequencerApp::pasteStepClipBoard() {
+	int s = highlightStart;
+	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
+		// Value is not bunk, step fits inside the param
+		if (( stepClipBoard[i] != 100.0 ) and (s <= (NUM_STEPS * NUM_BEATS) - 1)) {
+			sParam->setStepValue2(s, stepClipBoard[i]);
 		}
+		s ++;
 	}
 }
 	

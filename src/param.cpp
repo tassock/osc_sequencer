@@ -80,6 +80,14 @@ void param::setStepValue(int beat, int step, float val) {
 
 
 //--------------------------------------------------------------
+void param::setStepValue2(int step, float val) {
+	int b = step / NUM_STEPS;
+	int s = step % NUM_STEPS;
+	values[b][s] = val;
+}
+
+
+//--------------------------------------------------------------
 // Save buffered values to database record. 
 void param::save() {
 	

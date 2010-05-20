@@ -49,6 +49,7 @@ class sequencerApp : public ofBaseApp{
 		bool mouseInside(int x, int y, int width, int height);
 		void setSelected();
 		void clearStepClipBoard();
+		void pasteStepClipBoard();
 		void setStepClipBoard();
 		void setHighlightStart();
 		void setHighlightEnd();
