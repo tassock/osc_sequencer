@@ -572,10 +572,10 @@ void sequencerApp::clearStepClipBoard() {
 // sets stepClipBoard to values between highlightStart and highlightEnd
 void sequencerApp::setStepClipBoard() {
 	clearStepClipBoard();
-	step = highlightStart;
-	while (step < highlightEnd) {
-		stepClipBoard[step] = sParam->getStepValue2(step);
-		step ++;
+	int s = highlightStart;
+	while (s < highlightEnd) {
+		stepClipBoard[s] = sParam->getStepValue2(s);
+		s ++;
 	}
 	
 	// Log what's in the buffer
