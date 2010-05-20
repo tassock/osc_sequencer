@@ -57,6 +57,7 @@ void sequencerApp::setup(){
 	cursorMode = "select"; // "select", "draw"
 	highlightStart = 5;
 	highlightEnd = 15;
+	clearStepClipBoard();
 
 	
 //	// open an outgoing connection to HOST:PORT
@@ -440,20 +441,24 @@ void sequencerApp::drawNavigationItem(int x, int y, string name, bool selected) 
 
 //--------------------------------------------------------------
 void sequencerApp::keyPressed  (int key) {
+	
+	// enter draw mode
 	if ( key =='d' || key == 'D' ) {
 		if (cursorMode != "draw") {
-			// enter draw mode
 			cursorMode = "draw";
-			cout << cursorMode << endl;
 		}
-	} 
+	
+	// Copy selected area
+	} else if ( key =='c' || key == 'C' ) {
+		setStepClipBoard();
+	}
 }
 
 void sequencerApp::keyReleased (int key) {
+	
+	// exit draw mode
 	if ( key =='d' || key == 'D' ) {
-		// exit draw mode
 		cursorMode = "select";
-		cout << cursorMode << endl;
 	} 
 }
 
@@ -481,7 +486,6 @@ void sequencerApp::mouseDragged(int x, int y, int button) {
 }
 
 void sequencerApp::mouseReleased() {
-	cout << "MY RELEASE" << endl;
 	gainSlider->setSelected(0);
 	scaleSlider->setSelected(0);
 	setHighlightEnd();
@@ -554,8 +558,37 @@ void sequencerApp::setSelected() {
 			 
 }
 
+
 //--------------------------------------------------------------
-// sets highlightStart to the current step
+// sets stepClipBoard to bunk value that won't be pasted
+void sequencerApp::clearStepClipBoard() {
+	for ( int i=0; i<(NUM_STEPS * NUM_CLIPS); i++ ) {
+		stepClipBoard[i] = 100.0;
+	}
+}
+
+
+//--------------------------------------------------------------
+// sets stepClipBoard to values between highlightStart and highlightEnd
+void sequencerApp::setStepClipBoard() {
+	clearStepClipBoard();
+	step = highlightStart;
+	while (step < highlightEnd) {
+		stepClipBoard[step] = sParam->getStepValue2(step);
+		step ++;
+	}
+	
+	// Log what's in the buffer
+	for ( int i=0; i<(NUM_STEPS * NUM_CLIPS); i++ ) {
+		if ( stepClipBoard[i] != 100.0 ) {
+			cout << "stepClipBoard: " << ofToString( stepClipBoard[i] ) << endl;
+		}
+	}
+}
+	
+
+//--------------------------------------------------------------
+// sets highlightStart to the current step (GRAPH)
 void sequencerApp::setHighlightStart() {
 	if (cursorMode == "select") {
 		highlightStart = mouseStep();
@@ -565,7 +598,7 @@ void sequencerApp::setHighlightStart() {
 
 
 //--------------------------------------------------------------
-// sets highlightEnd to the current step
+// sets highlightEnd to the current step (GRAPH)
 void sequencerApp::setHighlightEnd() {
 	if (cursorMode == "select") {
 		highlightEnd = mouseStep();

@@ -18,6 +18,7 @@ class param {
 		void save();
 		string getName();
 		float getStepValue(int beat, int step);
+		float getStepValue2(int step);
 		void setStepValue(int beat, int step, float val);
 		
 		string name;

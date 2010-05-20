@@ -48,6 +48,8 @@ class sequencerApp : public ofBaseApp{
 		int  mouseStep();
 		bool mouseInside(int x, int y, int width, int height);
 		void setSelected();
+		void clearStepClipBoard();
+		void setStepClipBoard();
 		void setHighlightStart();
 		void setHighlightEnd();
 		void setSelectedParamsAndPatterns();
@@ -87,6 +89,7 @@ class sequencerApp : public ofBaseApp{
 		string cursorMode;
 		int highlightStart;
 		int highlightEnd;
+		float stepClipBoard[NUM_BEATS * NUM_STEPS];
 	
 		clip *clipBuffer[NUM_CLIPS];
 	

@@ -66,6 +66,14 @@ float param::getStepValue(int beat, int step) {
 
 
 //--------------------------------------------------------------
+float param::getStepValue2(int step) {
+	int b = step / NUM_STEPS;
+	int s = step % NUM_STEPS;
+	return values[b][s];
+}
+
+
+//--------------------------------------------------------------
 void param::setStepValue(int beat, int step, float val) {
 	values[beat][step] = val;
 }
