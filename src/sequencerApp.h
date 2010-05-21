@@ -5,6 +5,7 @@
 #include "pattern.h"
 #include "param.h"
 #include "slider.h"
+#include "graph.h"
 
 #include "ofMain.h"
 #include "ofxOsc.h"
@@ -22,10 +23,14 @@
 #define NUM_PARAMS 9
 #define NUM_CLIPS 2
 
+class graph;
+
 //--------------------------------------------------------
 class sequencerApp : public ofBaseApp{
 
 	public:
+	
+		sequencerApp();
 	
 		void initDatabase();
 
@@ -34,13 +39,13 @@ class sequencerApp : public ofBaseApp{
 		void draw();
 	
 		void drawRenderWindow();
-		void drawGraph();
+//		void drawGraph();
 		void drawSliders();
 		void drawClipNav();
 		void drawPatternNav();
 		void drawParamNav();
 		void drawNavigationItem(int x, int y, string name, bool selected);
-		void drawAxis(string marker, int height, int x, int y);
+//		void drawAxis(string marker, int height, int x, int y);
 		
 		void mouseDragged(int x, int y, int button);
 		void mousePressed(int x, int y, int button);
@@ -51,8 +56,8 @@ class sequencerApp : public ofBaseApp{
 		void clearStepClipBoard();
 		void pasteStepClipBoard();
 		void setStepClipBoard();
-		void setHighlightStart();
-		void setHighlightEnd();
+//		void setHighlightStart();
+//		void setHighlightEnd();
 		void setSelectedParamsAndPatterns();
 		void setGainSliderValue();
 		void setScaleSliderValue();
@@ -60,6 +65,13 @@ class sequencerApp : public ofBaseApp{
 
 		void keyPressed  (int key);
 		void keyReleased  (int key);
+		
+		// Accessors
+		param * getSParam();
+		int getBeat();
+		int getStep();
+		int getMouseX();
+		int getMouseY();
 
   
 		ofxSQLite* sqlite;
@@ -74,11 +86,12 @@ class sequencerApp : public ofBaseApp{
 		ofxOscReceiver	receiver;
 	
 		param *connection;
+		graph *main_graph;
 	
 		int beat;
 		int step;
-		int selectedBeat;
-		int selectedStep;
+//		int selectedBeat;
+//		int selectedStep;
 		int selectedClip;
 		int selectedPattern;
 		int selectedParam;
