@@ -39,12 +39,10 @@ class sequencerApp : public ofBaseApp{
 		void draw();
 	
 		void drawRenderWindow();
-//		void drawGraph();
 		void drawClipNav();
 		void drawPatternNav();
 		void drawParamNav();
 		void drawNavigationItem(int x, int y, string name, bool selected);
-//		void drawAxis(string marker, int height, int x, int y);
 		
 		void mouseDragged(int x, int y, int button);
 		void mousePressed(int x, int y, int button);
@@ -52,11 +50,6 @@ class sequencerApp : public ofBaseApp{
 		int  mouseStep();
 		bool mouseInside(int x, int y, int width, int height);
 		void setSelected();
-//		void clearStepClipBoard();
-//		void pasteStepClipBoard();
-//		void setStepClipBoard();
-//		void setHighlightStart();
-//		void setHighlightEnd();
 		void setSelectedParamsAndPatterns();
 		void setGainSliderValue();
 		void setScaleSliderValue();
@@ -89,8 +82,6 @@ class sequencerApp : public ofBaseApp{
 	
 		int beat;
 		int step;
-//		int selectedBeat;
-//		int selectedStep;
 		int selectedClip;
 		int selectedPattern;
 		int selectedParam;
