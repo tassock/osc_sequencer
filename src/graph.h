@@ -24,6 +24,10 @@ class graph {
 		void setHighlightStart();
 		void setHighlightEnd();
 	
+		void clearStepClipBoard();
+		void pasteStepClipBoard();
+		void setStepClipBoard();
+	
 		void keyPressed  (int key);
 		void keyReleased  (int key);
 		

@@ -12,8 +12,6 @@ void sequencerApp::setup(){
 	// Set Defaults
 	beat = 0; // might need to adjust this with real data
 	step = 0;
-//	selectedBeat = 0;
-//	selectedStep = 0;
 	gainSliderValue = 0.0;
 	scaleSliderValue = 0.0;
 	
@@ -24,9 +22,6 @@ void sequencerApp::setup(){
 	graphY = 0;
 	graphW = 640;
 	graphH = 300;
-//	graphColW = 4;
-//	graphColPad = 1;
-//	graphBeats = 4;
 	main_graph = new graph(graphX, graphY, graphW, graphH, this);
 	
 	navItemW = 100; // 130
@@ -59,10 +54,7 @@ void sequencerApp::setup(){
 	rWindowW = 640;
 	
 	renderMode = "gradient"; // "gradient", "filled"
-//	cursorMode = "select"; // "select", "draw"
-//	highlightStart = 5;
-//	highlightEnd = 15;
-	clearStepClipBoard();
+//	clearStepClipBoard();
 
 	
 //	// open an outgoing connection to HOST:PORT
@@ -175,30 +167,6 @@ void sequencerApp::initDatabase() {
 		");"
 	);
 	
-	
-//	// select
-//	ofxSQLiteSelect sel = sqlite->select("live_id")
-//		.from("clips")
-//		.where("id", 2)
-//	.execute().begin();
-//	
-//	while(sel.hasNext()) {
-//		string live_id = sel.getString();
-//		cout << "live_id: " << live_id << endl;
-//		sel.next();
-//	}
-//	
-//	
-//	// TODO: Understand what str[] and * pch do
-//	char str[] = "0.11 0.22 0.33";
-//	char * pch;
-//	pch = strtok (str," ");
-//	while (pch != NULL)
-//	{
-//		cout << "pch: " << pch << endl;
-//		pch = strtok (NULL, " ");
-//	}
-	
 }
 
 
@@ -246,9 +214,9 @@ void sequencerApp::update() {
 void sequencerApp::draw(){
 	
 	drawRenderWindow();
-//	drawGraph();
 	main_graph->draw();
-	drawSliders();
+	gainSlider->draw();
+	scaleSlider->draw();
 	drawClipNav();
 	drawPatternNav();
 	drawParamNav();
@@ -311,87 +279,6 @@ void sequencerApp::drawRenderWindow(){
 	ofSetColor(0, 0, 0, 256 );
 	ofRect(0, 0, windowW, windowH - rWindowH); // Clear Top
 	ofRect(rWindowW, rWindowY, windowW - rWindowW, rWindowH); // Clear Right
-}
-	
-
-
-//--------------------------------------------------------------
-//void sequencerApp::drawGraph(){
-//	ofSetColor(255, 255, 255);
-//	ofRect(graphX, graphY, graphW, graphH);
-//	
-//	for ( int b=0; b<NUM_BEATS; b++ ) {
-//		for ( int s=0; s<NUM_STEPS; s++ ) {
-//			
-//			int num = (b * NUM_STEPS) + s;
-//			
-//			// Draw Graph
-//			int xDrawPoint = ((b * NUM_STEPS) + s) * (graphColPad + graphColW);
-//			float val = sParam->getStepValue(b, s) * graphH;
-//			if (b == selectedBeat and s == selectedStep) {
-//				// step selected
-//				ofSetColor(204, 102, 0);
-//			} else if (b == beat and s == step) {
-//				// step playing
-//				ofSetColor(255, 255, 255);
-//			} else if (num >= highlightStart and num < highlightEnd) {
-//				// step selected
-//				ofSetColor(0, 204, 0);
-//			} else {
-//				ofSetColor(0, 102, 204);
-//			} 
-//			ofRect(1 + xDrawPoint, graphH - val, graphColW, val);
-//			
-//			// Draw Axis
-//			string marker;
-//			if (s == 0) {
-//				marker = ofToString(b + 1);
-//				drawAxis(marker, 15, xDrawPoint, graphH);
-//			} else if (s == 8) {
-//				marker = ofToString(b + 1) + ".2";
-//				drawAxis(marker, 5, xDrawPoint, graphH);
-//			} else if (s == 16) {
-//				marker = ofToString(b + 1) + ".3";
-//				drawAxis(marker, 5, xDrawPoint, graphH);
-//			} else if (s == 24) {
-//				marker = ofToString(b + 1) + ".4";
-//				drawAxis(marker, 5, xDrawPoint, graphH);
-//			}
-//			
-//			
-//			// Draw highlightStart and highlightEnd
-//			if (num == highlightStart || num == highlightEnd) {
-//				ofSetColor(204, 102, 0);
-//				ofRect(xDrawPoint, graphY, 1, graphH + 20);
-//			}
-//			
-//		}
-//	}
-//	
-//}
-
-
-//--------------------------------------------------------------
-//void sequencerApp::drawAxis(string marker, int height, int x, int y) {
-//	int shift = 0;
-//	if (height == 15) {
-//		ofSetColor(255, 255, 255);
-//		shift = 3;
-//	} else {
-//		ofSetColor(150, 150, 150);
-//		shift = 9;
-//	}
-//	ofRect(x, y, 1, height);
-//	ofDrawBitmapString( marker, x - shift, y + height + 14 );
-//}
-
-
-//--------------------------------------------------------------
-void sequencerApp::drawSliders() {
-	
-	gainSlider->draw();
-	scaleSlider->draw();
-	
 }
 
 
@@ -456,27 +343,10 @@ void sequencerApp::drawNavigationItem(int x, int y, string name, bool selected) 
 //--------------------------------------------------------------
 void sequencerApp::keyPressed  (int key) {
 	
-//	// enter draw mode
-//	if ( key =='d' || key == 'D' ) {
-//		if (cursorMode != "draw") {
-//			cursorMode = "draw";
-//		}
-//	}
-	
 	main_graph->keyPressed(key);
 	
-	// Copy selected area to clipboard
-	if ( key =='c' || key == 'C' ) {
-		setStepClipBoard();
-	}
-	
-	// Paste clipboard 
-	else if ( key =='v' || key == 'R' ) {
-		pasteStepClipBoard();
-	}
-	
 	// Toggle renderMode
-	else if ( key =='r' || key == 'R' ) {
+	if ( key =='r' || key == 'R' ) {
 		if (renderMode == "filled") {
 			renderMode = "gradient";
 		} else {
@@ -485,24 +355,16 @@ void sequencerApp::keyPressed  (int key) {
 	}
 }
 
+
+//--------------------------------------------------------------
 void sequencerApp::keyReleased (int key) {
-	
 	main_graph->keyReleased(key);
-	
-//	// exit draw mode
-//	if ( key =='d' || key == 'D' ) {
-//		cursorMode = "select";
-//	} 
-	
-	
-	
 }
 
 
 //--------------------------------------------------------------
 void sequencerApp::mousePressed(int x, int y, int button) {
 	setSelected();
-	//setHighlightStart();
 	
 	// Change graph value
 	if ( mouseInside(graphX, graphY, graphW, graphH) ) {
@@ -522,7 +384,6 @@ void sequencerApp::mouseDragged(int x, int y, int button) {
 	}
 	else {
 		setSelected();
-		//setHighlightEnd();
 		main_graph->mouseDragged(x, y, button);
 	}
 }
@@ -533,27 +394,10 @@ void sequencerApp::mouseReleased() {
 	main_graph->mouseReleased();
 }
 
-//--------------------------------------------------------------
-// Returns the step number the mouse is over
-//int sequencerApp::mouseStep() {
-//	return mouseX / 5;
-//}
-
 
 //--------------------------------------------------------------
 void sequencerApp::setSelected() {
-	
-//	// Handle graph click
-//	if ( mouseInside(graphX, graphY, graphW, graphH) ) {
-//		
-//		// Change graph value
-//		if (cursorMode == "draw") {
-//			float val = (float) (graphH - mouseY) / graphH;
-//			selectedBeat = mouseStep() / NUM_STEPS;
-//			selectedStep = mouseStep() % NUM_STEPS;
-//			sPattern->getParam(selectedParam)->setStepValue(selectedBeat, selectedStep, val);
-//		}
-//	}
+
 	
 	// Handle clip nav click
 	if ( mouseInside(clipNavX, clipNavY, clipNavW, clipNavH) ) {
@@ -599,66 +443,6 @@ void sequencerApp::setSelected() {
 	}
 			 
 }
-
-
-//--------------------------------------------------------------
-// sets stepClipBoard to bunk value that won't be pasted
-void sequencerApp::clearStepClipBoard() {
-	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
-		stepClipBoard[i] = 100.0;
-	}
-}
-
-
-//--------------------------------------------------------------
-// sets stepClipBoard to values between highlightStart and highlightEnd
-void sequencerApp::setStepClipBoard() {
-	clearStepClipBoard();
-	int s = highlightStart;
-	while (s < highlightEnd) {
-		stepClipBoard[s - highlightStart] = sParam->getStepValue2(s);
-		s ++;
-	}
-//	// Log what's in the clipboard
-//	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
-//		if ( stepClipBoard[i] != 100.0 ) {
-//			cout << "stepClipBoard: #" << i << ", " << ofToString( stepClipBoard[i] ) << endl;
-//		}
-//	}
-}
-
-
-//--------------------------------------------------------------
-// paste the clipboard into the current param, starting at the highlightStart
-void sequencerApp::pasteStepClipBoard() {
-	int s = highlightStart;
-	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
-		// Value is not bunk, step fits inside the param
-		if (( stepClipBoard[i] != 100.0 ) and (s <= (NUM_STEPS * NUM_BEATS) - 1)) {
-			sParam->setStepValue2(s, stepClipBoard[i]);
-		}
-		s ++;
-	}
-}
-	
-
-//--------------------------------------------------------------
-// sets highlightStart to the current step (GRAPH)
-//void sequencerApp::setHighlightStart() {
-//	if (cursorMode == "select") {
-//		highlightStart = mouseStep();
-//		highlightEnd = mouseStep(); // Reset ending
-//	}
-//}
-
-
-//--------------------------------------------------------------
-// sets highlightEnd to the current step (GRAPH)
-//void sequencerApp::setHighlightEnd() {
-//	if (cursorMode == "select") {
-//		highlightEnd = mouseStep();
-//	}
-//}
 
 
 //--------------------------------------------------------------
@@ -708,8 +492,6 @@ void sequencerApp::setScaleSliderValue() {
 
 //--------------------------------------------------------------
 void sequencerApp::resetSelectValues() {
-//	selectedBeat = 0;
-//	selectedStep = 0;
 	gainSlider->setValue(0);
 	gainSliderValue = 0;
 	scaleSlider->setValue(0);

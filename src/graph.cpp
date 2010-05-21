@@ -29,6 +29,8 @@ graph::graph(int _x, int _y, int _w, int _h, sequencerApp* _sequencer) {
 	highlightStart = 5;
 	highlightEnd = 15;
 	
+	clearStepClipBoard();
+	
 }
 
 
@@ -103,21 +105,19 @@ void graph::drawAxis(string marker, int height, int x, int y) {
 }
 
 
+//--------------------------------------------------------------
 void graph::mousePressed(int x, int y, int button) {
-	
 	setHighlightStart();
 	editStep();
-
 }
 
 
+//--------------------------------------------------------------
 void graph::editStep() {
-	// draw param
 	if (cursorMode == "draw") {
 		float val = (float) (graphH - sequencer->getMouseY()) / graphH;
 		selectedBeat = mouseStep() / NUM_STEPS;
 		selectedStep = mouseStep() % NUM_STEPS;
-		//		sPattern->getParam(selectedParam)->setStepValue(selectedBeat, selectedStep, val);
 		sequencer->getSParam()->setStepValue(selectedBeat, selectedStep, val);
 	}
 }
@@ -175,6 +175,7 @@ void graph::keyPressed(int key) {
 }
 
 
+//--------------------------------------------------------------
 void graph::keyReleased (int key) {
 	
 	// exit draw mode
@@ -182,4 +183,55 @@ void graph::keyReleased (int key) {
 		cursorMode = "select";
 	} 
 	
+	// Copy selected area to clipboard
+	else if ( key =='c' || key == 'C' ) {
+		setStepClipBoard();
+	}
+	
+	// Paste clipboard 
+	else if ( key =='v' || key == 'R' ) {
+		pasteStepClipBoard();
+	}
+	
+}
+
+
+//--------------------------------------------------------------
+// sets stepClipBoard to bunk value that won't be pasted
+void graph::clearStepClipBoard() {
+	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
+		stepClipBoard[i] = 100.0;
+	}
+}
+
+
+//--------------------------------------------------------------
+// sets stepClipBoard to values between highlightStart and highlightEnd
+void graph::setStepClipBoard() {
+	clearStepClipBoard();
+	int s = highlightStart;
+	while (s < highlightEnd) {
+		stepClipBoard[s - highlightStart] = sequencer->getSParam()->getStepValue2(s);
+		s ++;
+	}
+	//	// Log what's in the clipboard
+	//	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
+	//		if ( stepClipBoard[i] != 100.0 ) {
+	//			cout << "stepClipBoard: #" << i << ", " << ofToString( stepClipBoard[i] ) << endl;
+	//		}
+	//	}
+}
+
+
+//--------------------------------------------------------------
+// paste the clipboard into the current param, starting at the highlightStart
+void graph::pasteStepClipBoard() {
+	int s = highlightStart;
+	for ( int i=0; i<(NUM_STEPS * NUM_BEATS); i++ ) {
+		// Value is not bunk, step fits inside the param
+		if (( stepClipBoard[i] != 100.0 ) and (s <= (NUM_STEPS * NUM_BEATS) - 1)) {
+			sequencer->getSParam()->setStepValue2(s, stepClipBoard[i]);
+		}
+		s ++;
+	}
 }
