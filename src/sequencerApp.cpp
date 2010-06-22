@@ -61,7 +61,10 @@ void sequencerApp::setup(){
 //	sender.setup( HOST, SEND_PORT );
 	
 	// listen on the given port
-	receiver.setup( RECIEVE_PORT );
+//	receiver.setup( RECIEVE_PORT );
+	current_set = new liveSet;
+//	receiver = current_set->getConnection()->getReceiver();
+	
 	
 	// load clip buffer
 	clipBuffer[0] = new clip(1, sqlite);
@@ -179,21 +182,21 @@ void sequencerApp::update() {
 		step = 0;
 	}
 	
-	// Recieve Data
-	while( receiver.hasWaitingMessages() ) {
-		ofxOscMessage m;
-		receiver.getNextMessage( &m );
-		
-		// Handle Beat
-		// ToDo: pass second argument to adjust tempo and adjust framerate
-		if ( m.getAddress() == "/bar_transport" ) {
-			int arg = m.getArgAsInt32( 0 ) - 1;
-			if (arg >= 0 and arg < NUM_BEATS) {
-				beat = arg;
-				step = 0;
-			}
-		}
-	}
+//	// Recieve Data
+//	while( receiver.hasWaitingMessages() ) {
+//		ofxOscMessage m;
+//		receiver.getNextMessage( &m );
+//		
+//		// Handle Beat
+//		// ToDo: pass second argument to adjust tempo and adjust framerate
+//		if ( m.getAddress() == "/bar_transport" ) {
+//			int arg = m.getArgAsInt32( 0 ) - 1;
+//			if (arg >= 0 and arg < NUM_BEATS) {
+//				beat = arg;
+//				step = 0;
+//			}
+//		}
+//	}
 	
 	// Send Data
 //	ofxOscMessage m;

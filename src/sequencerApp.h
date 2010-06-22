@@ -9,13 +9,14 @@
 
 #include "ofMain.h"
 #include "ofxOsc.h"
+#include "ofxAbleton.h"
 #include "ofxXmlSettings.h"
 #include "ofxSQLiteHeaders.h"
 
 //#define HOST "169.254.189.237"
 #define HOST "localhost"
-#define SEND_PORT 12345
-#define RECIEVE_PORT 7403
+//#define SEND_PORT 12345
+//#define RECIEVE_PORT 7403
 
 #define NUM_BEATS 4
 #define NUM_STEPS 32
@@ -67,6 +68,7 @@ class sequencerApp : public ofBaseApp{
 
   
 		ofxSQLite* sqlite;
+		liveSet* current_set;
 		ofTrueTypeFont TTF;
 	
 		string xmlStructure;
@@ -75,7 +77,7 @@ class sequencerApp : public ofBaseApp{
 	private:
 
 		ofxOscSender sender;
-		ofxOscReceiver	receiver;
+		ofxOscReceiver *receiver;
 	
 		param *connection;
 		graph *main_graph;
