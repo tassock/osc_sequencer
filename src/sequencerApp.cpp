@@ -54,17 +54,9 @@ void sequencerApp::setup(){
 	rWindowW = 640;
 	
 	renderMode = "gradient"; // "gradient", "filled"
-//	clearStepClipBoard();
 
-	
-//	// open an outgoing connection to HOST:PORT
-//	sender.setup( HOST, SEND_PORT );
-	
-	// listen on the given port
-//	receiver.setup( RECIEVE_PORT );
-	current_set = new liveSet;
-//	receiver = current_set->getConnection()->getReceiver();
-	
+//	// load liveSet
+//	current_set = new liveSet;
 	
 	// load clip buffer
 	clipBuffer[0] = new clip(1, sqlite);
@@ -176,39 +168,12 @@ void sequencerApp::initDatabase() {
 //--------------------------------------------------------------
 void sequencerApp::update() {
 	
-	// Increment step
-	step ++;
-	if (step == NUM_STEPS) {
-		step = 0;
-	}
-	
-//	// Recieve Data
-//	while( receiver.hasWaitingMessages() ) {
-//		ofxOscMessage m;
-//		receiver.getNextMessage( &m );
-//		
-//		// Handle Beat
-//		// ToDo: pass second argument to adjust tempo and adjust framerate
-//		if ( m.getAddress() == "/bar_transport" ) {
-//			int arg = m.getArgAsInt32( 0 ) - 1;
-//			if (arg >= 0 and arg < NUM_BEATS) {
-//				beat = arg;
-//				step = 0;
-//			}
-//		}
-//	}
-	
-	// Send Data
-//	ofxOscMessage m;
-//	m.setAddress( "/test" );
-//	for ( int pat=0; pat<( sClip->getNumPatterns() ); pat++ ) {
-//		for ( int p=0; p<NUM_PARAMS; p++ ) {
-//			m.addStringArg( ofToString( 
-//				sClip->getPattern(pat)->getParam(p)->getStepValue(beat, step)
-//			) );
-//		}
-//	}
-//	sender.sendMessage( m );
+//	// Update set
+//	current_set->update();
+//	
+//	// Fetch beat and step
+//	beat = current_set->getBeat();
+//	step = current_set->getStep();
 
 }
 
@@ -226,9 +191,18 @@ void sequencerApp::draw(){
 	
 	// Display step
 	string buf;
+	
+	// Display beat
+	buf = "beat: " + ofToString( beat );
+	ofSetColor(255, 255, 255);
+	ofDrawBitmapString( buf, 800, 380 );
+	
+	// Display step
 	buf = "step: " + ofToString( step );
 	ofSetColor(255, 255, 255);
 	ofDrawBitmapString( buf, 800, 400 );
+	
+	// Display rate
 	buf = "rate: " + ofToString( ofGetFrameRate() );
 	ofDrawBitmapString( buf, 800, 420 );
 	
