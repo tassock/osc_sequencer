@@ -6,6 +6,7 @@
 #include "param.h"
 #include "slider.h"
 #include "graph.h"
+#include "liveSequenceWindow.h"
 
 #include "ofMain.h"
 #include "ofxOsc.h"
@@ -69,6 +70,7 @@ class sequencerApp : public ofBaseApp{
   
 		ofxSQLite* sqlite;
 		liveSet* current_set;
+		liveSequenceWindow* sequence_window;
 		ofTrueTypeFont TTF;
 	
 		string xmlStructure;
@@ -141,6 +143,11 @@ class sequencerApp : public ofBaseApp{
 		int rWindowY;
 		int rWindowH;
 		int rWindowW;
+	
+		int sWindowX;
+		int sWindowY;
+		int sWindowW;
+		int sWindowH;
 
 };
 

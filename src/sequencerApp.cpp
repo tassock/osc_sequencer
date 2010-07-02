@@ -48,15 +48,25 @@ void sequencerApp::setup(){
 	paramNavW = navItemW;
 	paramNavH = graphH;
 	
+	// Render window dimensions
 	rWindowX = 0;
 	rWindowY = 340;
-	rWindowH = 480;
 	rWindowW = 640;
+	rWindowH = 480;
+	
+	// Sequencer window dimensions
+	sWindowX = 640;
+	sWindowY = 340;
+	sWindowW = 420;
+	sWindowH = 480;
 	
 	renderMode = "gradient"; // "gradient", "filled"
 
 //	// load liveSet
 //	current_set = new liveSet;
+	
+	// load sequence window
+	sequence_window = new liveSequenceWindow(sWindowX, sWindowY, sWindowW, sWindowH);
 	
 	// load clip buffer
 	clipBuffer[0] = new clip(1, sqlite);
@@ -189,25 +199,26 @@ void sequencerApp::draw(){
 	drawPatternNav();
 	drawParamNav();
 	
+	sequence_window->draw();
+	
 	// Display step
 	string buf;
 	
 	// Display beat
 	buf = "beat: " + ofToString( beat );
 	ofSetColor(255, 255, 255);
-	ofDrawBitmapString( buf, 800, 380 );
+	ofDrawBitmapString( buf, 800, 180 );
 	
 	// Display step
 	buf = "step: " + ofToString( step );
 	ofSetColor(255, 255, 255);
-	ofDrawBitmapString( buf, 800, 400 );
+	ofDrawBitmapString( buf, 800, 200 );
 	
 	// Display rate
 	buf = "rate: " + ofToString( ofGetFrameRate() );
-	ofDrawBitmapString( buf, 800, 420 );
+	ofDrawBitmapString( buf, 800, 220 );
 	
 }
-
 
 
 //--------------------------------------------------------------
