@@ -66,7 +66,7 @@ void sequencerApp::setup(){
 //	current_set = new liveSet;
 	
 	// load sequence window
-	sequence_window = new liveSequenceWindow(sWindowX, sWindowY, sWindowW, sWindowH);
+	sequence_window = new liveSequenceWindow(sqlite, sWindowX, sWindowY, sWindowW, sWindowH);
 	
 	// load clip buffer
 	clipBuffer[0] = new clip(1, sqlite);
@@ -169,6 +169,24 @@ void sequencerApp::initDatabase() {
 		" name TEXT," \
 		" pattern_id INTEGER," \
 		" step_data TEXT" \
+		");"
+	);
+	
+	sqlite->simpleQuery("" \
+		"CREATE TABLE IF NOT EXISTS sequences (" \
+		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+		" name TEXT" \
+		");"
+	);
+	
+	sqlite->simpleQuery("" \
+		"CREATE TABLE IF NOT EXISTS sequence_clips (" \
+		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+		" sequence_id INTEGER," \
+		" clip_id INTEGER," \
+		" track_id INTEGER," \
+		" bar_start INTEGER," \
+		" length INTEGER" \
 		");"
 	);
 	

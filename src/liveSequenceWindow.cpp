@@ -1,12 +1,12 @@
 #include "liveSequenceWindow.h"
 
-liveSequenceWindow::liveSequenceWindow(int _x, int _y, int _w, int _h) {
+liveSequenceWindow::liveSequenceWindow(ofxSQLite* _sqlite, int _x, int _y, int _w, int _h) {
+	sqlite = _sqlite;
 	x = _x;
 	y = _y;
 	w = _w;
 	h = _h;
-	sequence = new liveSequence();
-	cout << "NAME!!" << sequence->getName() << endl;
+	sequence = new liveSequence(sqlite, 1);
 }
 
 void liveSequenceWindow::draw() {
@@ -32,16 +32,15 @@ void liveSequenceWindow::draw() {
 	int clipH = 0;
 	
 	// Draw tracks
-	for(int i = 0; i < NUM_S_TRACKS; i++){
+	for(int t = 0; t < NUM_S_TRACKS; t++){
 		ofSetColor(128, 128, 128);
-		liveSequenceTrack* track = sequence->getTrack(i);
-		trackX = x + padding + (i * (trackW + padding));
+		trackX = x + padding + (t * (trackW + padding));
 		ofRect(trackX, trackY, trackW, trackH);
 		
 		// DrawClips
-		for(int i = 0; i < NUM_S_TRACKS; i++) { // find number of clips in track
+		for(int c = 0; c < sequence->numClipsInTrack(t); c++) { // find number of clips in track
 			ofSetColor(0, 128, 128);
-			liveSequenceClip* s_clip = track->getClip(i);
+			liveSequenceClip* s_clip = sequence->getClipInTrack(t, c);
 			clipX = trackX;
 			clipY = trackY + (s_clip->getStart() * beatHeight);
 			clipH = s_clip->getLength() * beatHeight;

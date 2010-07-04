@@ -11,10 +11,11 @@
 class liveSequenceWindow {
 	
 public:
-	liveSequenceWindow(int _x, int _y, int _w, int _h);
+	liveSequenceWindow(ofxSQLite* _sqlite, int _x, int _y, int _w, int _h);
 	void draw();
 	
 	liveSequence* sequence;
+	ofxSQLite* sqlite;
 	int x;
 	int y;
 	int w;
