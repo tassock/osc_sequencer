@@ -5,20 +5,24 @@
 #include "ofMain.h"
 #include "ofxSQLiteHeaders.h"
 #include "liveSequenceClip.h"
+#include "sequencerApp.h"
 
 #define NUM_S_TRACKS 2
 #define NUM_S_CLIPS 20
 
+class liveSequenceClip;
+
 class liveSequence {
 	
 public:
-	liveSequence(ofxSQLite* _sqlite, int _id);
+	liveSequence(sequencerApp* _sequencer, int _id);
 	void loadClips();
 	int numClipsInTrack(int track_id);
 	liveSequenceClip* getClipInTrack(int track_id, int clip_order);
 	string getName();
 	
 	int id;
+	sequencerApp* sequencer;
 	ofxSQLite* sqlite;
 	liveSequenceClip* clips[NUM_S_CLIPS];
 	int num_clips;

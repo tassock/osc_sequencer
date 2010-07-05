@@ -26,6 +26,7 @@
 #define NUM_CLIPS 2
 
 class graph;
+class liveSequenceWindow;
 
 //--------------------------------------------------------
 class sequencerApp : public ofBaseApp{
@@ -35,6 +36,8 @@ class sequencerApp : public ofBaseApp{
 		sequencerApp();
 	
 		void initDatabase();
+		ofxSQLite* getSQLite();
+		liveSet* getCurrentSet();
 
 		void setup();
 		void update();

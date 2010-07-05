@@ -3,9 +3,19 @@
 clip::clip(int _id, ofxSQLite* _sqlite) {
 	id = _id;
 	sqlite = _sqlite;
-	name = "clip_" + ofToString( id );
+	
+	// Get name/live_id from database
+	ofxSQLiteSelect sel = sqlite->select("live_id")
+	.from("clips")
+	.where("id", id)
+	.execute().begin();
+	while(sel.hasNext()) {
+		name = sel.getString();
+		sel.next();
+	}
+	
 	loadPatterns();
-	cout << "!! NUM PATTERNS:" << num_patterns << endl;
+	// cout << "!! NUM PATTERNS:" << num_patterns << endl;
 }
 
 string clip::getName() {

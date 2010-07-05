@@ -3,19 +3,22 @@
 
 #include <string>
 #include "ofMain.h"
-#include "ofxSQLiteHeaders.h"
 #include "liveSequence.h"
+#include "sequencerApp.h"
 
 #define NUM_S_TRACKS 2
+
+class sequencerApp;
+class liveSequence;
 
 class liveSequenceWindow {
 	
 public:
-	liveSequenceWindow(ofxSQLite* _sqlite, int _x, int _y, int _w, int _h);
-	void draw();
+	liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y, int _w, int _h);
+	void draw(int beat, int step);
 	
 	liveSequence* sequence;
-	ofxSQLite* sqlite;
+	sequencerApp* sequencer;
 	int x;
 	int y;
 	int w;

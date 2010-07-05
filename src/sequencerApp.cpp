@@ -62,11 +62,11 @@ void sequencerApp::setup(){
 	
 	renderMode = "gradient"; // "gradient", "filled"
 
-//	// load liveSet
-//	current_set = new liveSet;
+	// load liveSet
+	current_set = new liveSet;
 	
 	// load sequence window
-	sequence_window = new liveSequenceWindow(sqlite, sWindowX, sWindowY, sWindowW, sWindowH);
+	sequence_window = new liveSequenceWindow(this, sWindowX, sWindowY, sWindowW, sWindowH);
 	
 	// load clip buffer
 	clipBuffer[0] = new clip(1, sqlite);
@@ -77,68 +77,6 @@ void sequencerApp::setup(){
 	selectedPattern = 0; //patternBuffer[0];
 	selectedParam = 2;
 	setSelectedParamsAndPatterns();
-	
-	// load xml (not working yet?)
-	//patternBuffer[0]->loadXml();
-	
-	
-	
-//	// Load XML
-//	message = "loading toxine.xml";
-//	if( XML.loadFile("toxine.xml") ){
-//		message = "toxine.xml loaded!";
-//	}else{
-//		message = "unable to load toxine.xml check data/ folder";
-//	}
-//	
-//	// Load XML into paramBuffer
-//	int numTags = XML.getNumTags("val");
-//	int totalToRead = MIN( numTags, (NUM_BEATS * NUM_STEPS) );
-//	for(int i = 0; i < totalToRead; i++){
-//		paramBuffer[0] = ofToFloat( XML.getValue("val", "0.0", i) );
-//		//sPattern->getParam(selectedParam)->setStepValue(selectedBeat, selectedStep, val);
-//		//paramBuffer[i] = ofToFloat( XML.getValue("val", "0.0", i) );
-//	}
-	
-//	// Load paramBuffer into database
-//	string stepData = "";
-//	for(int i = 0; i < (NUM_BEATS * NUM_STEPS); i++) {
-//		stepData += " " + ofToString( paramBuffer[i] );
-//	}
-//	// cout << "stepData: " << stepData << endl;
-//	sqlite->insert("params")
-//		.use("name", "imported")
-//		.use("pattern_id",1)
-//		.use("step_data",stepData)
-//	.execute();
-	
-	
-//	// Load db entry into paramBuffer
-//	ofxSQLiteSelect sel = sqlite->select("step_data")
-//		.from("params")
-//		.where("id", 1)
-//	.execute().begin();
-//	string step_data;
-//	while(sel.hasNext()) {
-//		step_data = sel.getString();
-//		// cout << "step_data: " << step_data << endl;
-//		sel.next();
-//	}
-//	// http://www.daniweb.com/forums/thread28946.html#
-//	char * str = new char[step_data.size() + 1];
-//	std::strcpy ( str, step_data.c_str() );
-//
-//	char * pch;
-//	pch = strtok (str," ");
-//	int i = 0;
-//	while (pch != NULL)
-//	{
-//		//cout << "pch: " << pch << endl;
-//		paramBuffer[i] = ofToFloat( pch );
-//		i ++;
-//		pch = strtok (NULL, " ");
-//	}
-	
 	
 }
 
@@ -194,14 +132,26 @@ void sequencerApp::initDatabase() {
 
 
 //--------------------------------------------------------------
+ofxSQLite* sequencerApp::getSQLite() {
+	return sqlite;
+}
+
+
+//--------------------------------------------------------------
+liveSet* sequencerApp::getCurrentSet() {
+	return current_set;
+}
+
+
+//--------------------------------------------------------------
 void sequencerApp::update() {
 	
-//	// Update set
-//	current_set->update();
-//	
-//	// Fetch beat and step
-//	beat = current_set->getBeat();
-//	step = current_set->getStep();
+	// Update set
+	current_set->update();
+	
+	// Fetch beat and step
+	beat = current_set->getBeat();
+	step = current_set->getStep();
 
 }
 
@@ -217,7 +167,7 @@ void sequencerApp::draw(){
 	drawPatternNav();
 	drawParamNav();
 	
-	sequence_window->draw();
+	sequence_window->draw(beat, step);
 	
 	// Display step
 	string buf;
@@ -543,3 +493,66 @@ int sequencerApp::getMouseX() {
 int sequencerApp::getMouseY() {
 	return mouseY;
 }
+
+// Unused xml code
+
+// load xml (not working yet?)
+//patternBuffer[0]->loadXml();
+
+
+
+//	// Load XML
+//	message = "loading toxine.xml";
+//	if( XML.loadFile("toxine.xml") ){
+//		message = "toxine.xml loaded!";
+//	}else{
+//		message = "unable to load toxine.xml check data/ folder";
+//	}
+//	
+//	// Load XML into paramBuffer
+//	int numTags = XML.getNumTags("val");
+//	int totalToRead = MIN( numTags, (NUM_BEATS * NUM_STEPS) );
+//	for(int i = 0; i < totalToRead; i++){
+//		paramBuffer[0] = ofToFloat( XML.getValue("val", "0.0", i) );
+//		//sPattern->getParam(selectedParam)->setStepValue(selectedBeat, selectedStep, val);
+//		//paramBuffer[i] = ofToFloat( XML.getValue("val", "0.0", i) );
+//	}
+
+//	// Load paramBuffer into database
+//	string stepData = "";
+//	for(int i = 0; i < (NUM_BEATS * NUM_STEPS); i++) {
+//		stepData += " " + ofToString( paramBuffer[i] );
+//	}
+//	// cout << "stepData: " << stepData << endl;
+//	sqlite->insert("params")
+//		.use("name", "imported")
+//		.use("pattern_id",1)
+//		.use("step_data",stepData)
+//	.execute();
+
+
+//	// Load db entry into paramBuffer
+//	ofxSQLiteSelect sel = sqlite->select("step_data")
+//		.from("params")
+//		.where("id", 1)
+//	.execute().begin();
+//	string step_data;
+//	while(sel.hasNext()) {
+//		step_data = sel.getString();
+//		// cout << "step_data: " << step_data << endl;
+//		sel.next();
+//	}
+//	// http://www.daniweb.com/forums/thread28946.html#
+//	char * str = new char[step_data.size() + 1];
+//	std::strcpy ( str, step_data.c_str() );
+//
+//	char * pch;
+//	pch = strtok (str," ");
+//	int i = 0;
+//	while (pch != NULL)
+//	{
+//		//cout << "pch: " << pch << endl;
+//		paramBuffer[i] = ofToFloat( pch );
+//		i ++;
+//		pch = strtok (NULL, " ");
+//	}

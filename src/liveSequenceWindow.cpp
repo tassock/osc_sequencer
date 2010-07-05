@@ -1,15 +1,18 @@
 #include "liveSequenceWindow.h"
 
-liveSequenceWindow::liveSequenceWindow(ofxSQLite* _sqlite, int _x, int _y, int _w, int _h) {
-	sqlite = _sqlite;
+liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y, int _w, int _h) {
+	sequencer = _sequencer;
 	x = _x;
 	y = _y;
 	w = _w;
 	h = _h;
-	sequence = new liveSequence(sqlite, 1);
+	sequence = new liveSequence(sequencer, 1);
 }
 
-void liveSequenceWindow::draw() {
+void liveSequenceWindow::draw(int beat, int step) {
+	
+	// Fire clips
+	
 	
 	// Background
 	ofRect(x, y, w, h);
@@ -42,9 +45,15 @@ void liveSequenceWindow::draw() {
 			ofSetColor(0, 128, 128);
 			liveSequenceClip* s_clip = sequence->getClipInTrack(t, c);
 			clipX = trackX;
-			clipY = trackY + (s_clip->getStart() * beatHeight);
+			clipY = trackY + (s_clip->getStart() * beatHeight) - (beat * beatHeight) - (step * beatHeight / 32);
 			clipH = s_clip->getLength() * beatHeight;
 			ofRect(clipX, clipY, clipW, clipH);
+			
+			// Fire clip if ready:
+			if ((s_clip->getStart() == beat) and (step == 0)) {
+				cout << "FIRE!!" << endl;
+				s_clip->getLiveClip()->callFunction("fire");
+			}
 		}
 	}
 }

@@ -1,8 +1,9 @@
 #include "liveSequence.h"
 
-liveSequence::liveSequence(ofxSQLite* _sqlite, int _id) {
+liveSequence::liveSequence(sequencerApp* _sequencer, int _id) {
 	id = _id;
-	sqlite = _sqlite;
+	sequencer = _sequencer;
+	sqlite = sequencer->getSQLite();
 	
 	// Get name from database
 	ofxSQLiteSelect sel = sqlite->select("name")
@@ -28,14 +29,14 @@ void liveSequence::loadClips() {
 	// set results as instance variables
 	int count = 0;
 	while(sel.hasNext()) {
-		int sequencer_clip_id = sel.getInt();
+		int sequence_clip_id = sel.getInt();
 		int clip_id = sel.getInt();
 		int track_id = sel.getInt();
 		int bar_start = sel.getInt();
 		int length = sel.getInt();
 		
 		// store sequence clip in buffer
-		clips[count] = new liveSequenceClip(sqlite, sequencer_clip_id, clip_id, track_id, bar_start, length);
+		clips[count] = new liveSequenceClip(sequencer, sequence_clip_id, clip_id, track_id, bar_start, length);
 		
 		// next record
 		count ++;
