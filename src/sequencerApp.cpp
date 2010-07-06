@@ -86,6 +86,16 @@ void sequencerApp::initDatabase() {
 	
 	sqlite = new ofxSQLite("sequencer.db");
 	sqlite->simpleQuery("" \
+		"CREATE TABLE IF NOT EXISTS library_songs (" \
+		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+		" artist TEXT," \
+		" title TEXT," \
+		" bpm INTEGER," \
+		" key INTEGER," \
+		" major BOOLEAN" \
+		");"
+	);
+	sqlite->simpleQuery("" \
 		"CREATE TABLE IF NOT EXISTS clips (" \
 		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
 		" live_id TEXT," \
@@ -120,8 +130,21 @@ void sequencerApp::initDatabase() {
 	sqlite->simpleQuery("" \
 		"CREATE TABLE IF NOT EXISTS sequence_clips (" \
 		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+		" sequence_song_id INTEGER," \
+		" sequence_song_order INTEGER," \				
 		" sequence_id INTEGER," \
 		" clip_id INTEGER," \
+		" track_id INTEGER," \
+		" bar_start INTEGER," \
+		" length INTEGER" \
+		");"
+	);
+	
+	sqlite->simpleQuery("" \
+		"CREATE TABLE IF NOT EXISTS sequence_songs (" \
+		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+		" sequence_id INTEGER," \
+		" song_id INTEGER," \
 		" track_id INTEGER," \
 		" bar_start INTEGER," \
 		" length INTEGER" \

@@ -18,7 +18,6 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, int _id, int _clip_
 	live_clip = sequencer->getCurrentSet()->getClipByName(name);
 	
 	cout << "CLIP: id:" << id << ", name:" << name << ", clip_id:" << clip_id << ", bar_start:" << bar_start << ", length:" << length << endl;
-	// find clip by id and load into buffer.
 }
 
 
