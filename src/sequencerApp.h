@@ -1,6 +1,7 @@
 #ifndef _SEQUENCER_APP
 #define _SEQUENCER_APP
 
+#include "ofxFenster.h"
 #include "clip.h"
 #include "pattern.h"
 #include "param.h"
@@ -29,7 +30,7 @@ class graph;
 class liveSequenceWindow;
 
 //--------------------------------------------------------
-class sequencerApp : public ofBaseApp{
+class sequencerApp : public ofBaseApp, public ofxFensterListener{
 
 	public:
 	
@@ -43,7 +44,11 @@ class sequencerApp : public ofBaseApp{
 		void update();
 		void draw();
 	
-		void drawRenderWindow();
+		void fensterDraw();
+		void fensterUpdate();
+		void fensterWindowResized(int w, int h);
+	
+		void drawRenderWindow(int rWindowX, int rWindowY, int rWindowW, int rWindowH);
 		void drawClipNav();
 		void drawPatternNav();
 		void drawParamNav();
@@ -142,8 +147,8 @@ class sequencerApp : public ofBaseApp{
 		int paramNavW;
 		int paramNavH;
 	
-		int rWindowX;
-		int rWindowY;
+//		int rWindowX;
+//		int rWindowY;
 		int rWindowH;
 		int rWindowW;
 	

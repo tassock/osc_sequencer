@@ -5,6 +5,8 @@
 #include "ofxSQLiteHeaders.h"
 #include "sequencerApp.h"
 
+class sequencerApp;
+
 class librarySong {
 	
 public:

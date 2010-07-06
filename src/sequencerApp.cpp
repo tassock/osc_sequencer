@@ -7,6 +7,9 @@ sequencerApp::sequencerApp(){
 void sequencerApp::setup(){
 	
 	ofBackground( 0, 0, 0 );
+	ofSetVerticalSync(true);
+	ofEnableAlphaBlending();
+	fenster->setBackground(255, 255, 255);
 	initDatabase();
 	
 	// Set Defaults
@@ -49,8 +52,8 @@ void sequencerApp::setup(){
 	paramNavH = graphH;
 	
 	// Render window dimensions
-	rWindowX = 0;
-	rWindowY = 340;
+//	rWindowX = 0;
+//	rWindowY = 340;
 	rWindowW = 640;
 	rWindowH = 480;
 	
@@ -79,6 +82,19 @@ void sequencerApp::setup(){
 	setSelectedParamsAndPatterns();
 	
 }
+
+void sequencerApp::fensterUpdate(){
+}
+
+void sequencerApp::fensterDraw(){
+	fenster->setBackground(0, 0, 0);
+	drawRenderWindow(0, 0, rWindowW, rWindowH);
+}
+
+void sequencerApp::fensterWindowResized(int w, int h){
+	rWindowW = w;
+	rWindowH = h;
+};
 
 
 //--------------------------------------------------------------
@@ -182,7 +198,7 @@ void sequencerApp::update() {
 //--------------------------------------------------------------
 void sequencerApp::draw(){
 	
-	drawRenderWindow();
+	// drawRenderWindow(0, 340, 640, 480);
 	main_graph->draw();
 	gainSlider->draw();
 	scaleSlider->draw();
@@ -213,7 +229,7 @@ void sequencerApp::draw(){
 
 
 //--------------------------------------------------------------
-void sequencerApp::drawRenderWindow(){
+void sequencerApp::drawRenderWindow(int rWindowX, int rWindowY, int rWindowW, int rWindowH){
 	
 	// Render params
 	for ( int i=0; i<( sClip->getNumPatterns() ); i++ ) {
@@ -255,9 +271,9 @@ void sequencerApp::drawRenderWindow(){
 	}
 	
 	// Clear outside window
-	ofSetColor(0, 0, 0, 256 );
-	ofRect(0, 0, windowW, windowH - rWindowH); // Clear Top
-	ofRect(rWindowW, rWindowY, windowW - rWindowW, rWindowH); // Clear Right
+//	ofSetColor(0, 0, 0, 256 );
+//	ofRect(0, 0, windowW, windowH - rWindowH); // Clear Top
+//	ofRect(rWindowW, rWindowY, windowW - rWindowW, rWindowH); // Clear Right
 }
 
 
