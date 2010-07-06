@@ -148,7 +148,8 @@ void ofxFenster::draw(bool force){
 	int t= ofGetElapsedTimeMillis();
 	if (t>nextWinDraw || force) {
 		nextWinDraw = t+1000/fpsDraw;
-		ofSetVerticalSync(true);
+		//ofSetVerticalSync(true);
+		//ofSetFrameRate(64);
 		ofEnableAlphaBlending();
 
 		toContext();

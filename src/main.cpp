@@ -30,6 +30,7 @@ int main( ){
     ofAppGlutWindow window;
 	ofSetupOpenGL(&window, 1060,820, OF_WINDOW);			// <-------- setup the GL context
 	ofSetVerticalSync(true);
+	// ofSetFrameRate(64);
 	ofEnableAlphaBlending();
 	
 	sequencerApp* app = new sequencerApp;

@@ -89,6 +89,11 @@ void sequencerApp::fensterUpdate(){
 void sequencerApp::fensterDraw(){
 	fenster->setBackground(0, 0, 0);
 	drawRenderWindow(0, 0, rWindowW, rWindowH);
+	
+	// Draw frame rate
+	string buf = "rate: " + ofToString( ofGetFrameRate() );
+	ofSetColor(255, 255, 255);
+	ofDrawBitmapString( buf, 20, 20 );
 }
 
 void sequencerApp::fensterWindowResized(int w, int h){
