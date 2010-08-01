@@ -18,6 +18,7 @@ public:
 	void draw(int beat, int step);
 	string stringWithinWidth(string input, int length);
 	void keyPressed(int key);
+	void toggleSelectMode();
 	
 	liveSequence* sequence;
 	sequencerApp* sequencer;
@@ -25,6 +26,7 @@ public:
 	int y;
 	int w;
 	int h;
+	string select_mode;
 	
 	ofTrueTypeFont  franklinBook;
 	

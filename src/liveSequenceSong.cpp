@@ -26,7 +26,6 @@ void liveSequenceSong::loadClips() {
 	.execute().begin();
 	
 	// set results as instance variables
-	int count = 0;
 	while(sel.hasNext()) {
 		int sequence_clip_id = sel.getInt();
 		int clip_id = sel.getInt();
@@ -35,20 +34,21 @@ void liveSequenceSong::loadClips() {
 		int length = sel.getInt();
 		
 		// store sequence clip in buffer
-		clips[count] = new liveSequenceClip(sequencer, sequence_clip_id, clip_id, track_id, bar_start, length);
+		clips.insert ( clips.begin(), new liveSequenceClip(sequencer, sequence_clip_id, clip_id, track_id, bar_start, length) );
 		
 		// next record
-		count ++;
 		sel.next();
 	}
-	
-	// set clip count
-	num_clips = count;
 }
 
 
 liveSequenceClip* liveSequenceSong::getClip(int index) {
 	return clips[index];
+}
+
+
+vector<liveSequenceClip*> liveSequenceSong::getClips() {
+	return clips;
 }
 
 
