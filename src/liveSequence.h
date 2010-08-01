@@ -27,7 +27,9 @@ public:
 	int id;
 	sequencerApp* sequencer;
 	ofxSQLite* sqlite;
+	
 	liveSequenceSong* songs[NUM_S_SONGS];
+	liveSequenceSong* selected_song;
 	int num_songs;
 	string name;
 	

@@ -22,7 +22,7 @@ void liveSequenceSong::loadClips() {
 	// select all that match sequence id
 	ofxSQLiteSelect sel = sqlite->select("id, clip_id, track_id, bar_start, length")
 	.from("sequence_clips")
-	.where("sequence_id", id)
+	.where("sequence_song_id", id)
 	.execute().begin();
 	
 	// set results as instance variables

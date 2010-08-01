@@ -24,7 +24,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 	int trackX = 0;
 	int trackY = y + 20;
 	int trackW = 180;
-	int trackH = 400;
+	int trackH = 700;
 	
 	// Song vars
 	int songX = 0;
@@ -46,9 +46,12 @@ void liveSequenceWindow::draw(int beat, int step) {
 		ofRect(trackX, trackY, trackW, trackH);
 		
 		// Colors
-		int text_color = 0xFA4FFF;
-		int border_color = 0xFA4FFF;
+		int orange = 0xFFA24F;
+		int pink = 0xFA4FFF;
+		int grey = 0xBDBDBD;
 		int background_color = 0x000000;
+		int border_color = 0; // dynamic
+		int text_color = 0; // dynamic
 		
 		// DrawSongs()
 		for(int c = 0; c < sequence->numSongsInTrack(t); c++) { // find number of songs in track
@@ -56,6 +59,15 @@ void liveSequenceWindow::draw(int beat, int step) {
 			songX = trackX;
 			songY = trackY + (s_song->getStart() * beatHeight) - (beat * beatHeight) - (step * beatHeight / 32);
 			songH = s_song->getLength() * beatHeight;
+			
+			if (s_song == sequence->getSelectedSong()) {
+				border_color = orange;
+				text_color   = orange;
+			} else {
+				border_color = grey;
+				text_color   = grey;
+			}
+
 			
 			// Vertical song name
 			ofSetColor(0x00FF00);

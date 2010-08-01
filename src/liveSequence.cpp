@@ -40,6 +40,8 @@ void liveSequence::loadSongs() {
 		// store sequence song in buffer
 		songs[count] = new liveSequenceSong(sequencer, sequence_song_id, song_id, track_id, bar_start, length);
 		
+		selected_song = songs[count];
+		
 		// next record
 		count ++;
 		sel.next();
@@ -83,5 +85,5 @@ string liveSequence::getName() {
 
 
 liveSequenceSong* liveSequence::getSelectedSong() {
-	return songs[0];
+	return selected_song;
 }
