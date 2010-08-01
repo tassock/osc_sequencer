@@ -15,7 +15,9 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, int _id, int _clip_
 	name = library_clip->getName();
 	
 	// Get live clip
-	live_clip = sequencer->getCurrentSet()->getClipByName(name);
+	if (sequencer->getClipMode() == "live") {
+		live_clip = sequencer->getCurrentSet()->getClipByName(name);
+	}
 	
 	cout << "CLIP: id:" << id << ", name:" << name << ", clip_id:" << clip_id << ", bar_start:" << bar_start << ", length:" << length << endl;
 }

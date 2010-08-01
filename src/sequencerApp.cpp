@@ -13,6 +13,10 @@ void sequencerApp::setup(){
 	initDatabase();
 	franklinBook.loadFont("frabk.ttf", 32);
 	
+	// Set Modes
+	renderMode = "gradient"; // "gradient", "filled"
+	clipMode = "live"; // "test", "live"
+	
 	// Set Defaults
 	beat = 0; // might need to adjust this with real data
 	step = 0;
@@ -63,11 +67,11 @@ void sequencerApp::setup(){
 	sWindowY = 0;
 	sWindowW = 380;
 	sWindowH = 820;
-	
-	renderMode = "gradient"; // "gradient", "filled"
 
 	// load liveSet
-	current_set = new liveSet;
+	if (clipMode == "live") {
+		current_set = new liveSet;
+	}
 	
 	// load sequence window
 	sequence_window = new liveSequenceWindow(this, sWindowX, sWindowY, sWindowW, sWindowH);
@@ -189,14 +193,31 @@ liveSet* sequencerApp::getCurrentSet() {
 
 
 //--------------------------------------------------------------
+string sequencerApp::getClipMode() {
+	return clipMode;
+}
+
+
+//--------------------------------------------------------------
 void sequencerApp::update() {
 	
-	// Update set
-	current_set->update();
-	
 	// Fetch beat and step
-	beat = current_set->getBeat();
-	step = current_set->getStep();
+	if (clipMode == "live") {
+		// Update set
+		current_set->update();
+		beat = current_set->getBeat();
+		step = current_set->getStep();
+	} else {
+		// Update dummy beat / step
+		step = step + 1;
+		if (step == NUM_STEPS) {
+			step = 0;
+			beat = beat + 1;
+			if (beat == NUM_BEATS) {
+				beat = 0;
+			}
+		}
+	}
 
 }
 

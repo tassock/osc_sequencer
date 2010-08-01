@@ -121,7 +121,9 @@ void liveSequenceWindow::draw(int beat, int step) {
 			// Fire clip if ready:
 			if ((s_clip->getStart() == beat + 1) and (step == 0)) {
 				cout << "FIRE!!" << endl;
-				s_clip->getLiveClip()->callFunction("fire");
+				if (sequencer->getClipMode() == "live") {
+					s_clip->getLiveClip()->callFunction("fire");
+				}
 			}
 		}
 		

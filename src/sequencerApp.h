@@ -39,6 +39,7 @@ class sequencerApp : public ofBaseApp, public ofxFensterListener{
 		void initDatabase();
 		ofxSQLite* getSQLite();
 		liveSet* getCurrentSet();
+		string getClipMode();
 
 		void setup();
 		void update();
