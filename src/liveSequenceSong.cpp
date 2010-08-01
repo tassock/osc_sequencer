@@ -2,6 +2,7 @@
 
 liveSequenceSong::liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_id, int _track_id, int _bar_start, int _length) {
 	sequencer = _sequencer;
+	sqlite = sequencer->getSQLite();
 	id = _id;
 	song_id = _song_id;
 	track_id = _track_id;
@@ -11,7 +12,50 @@ liveSequenceSong::liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_
 	// Get library song
 	library_song = new librarySong(sequencer, song_id);
 	name = library_song->getName();
+	
+	// Load clips
+	loadClips();
 }
+
+
+void liveSequenceSong::loadClips() {
+	// select all that match sequence id
+	ofxSQLiteSelect sel = sqlite->select("id, clip_id, track_id, bar_start, length")
+	.from("sequence_clips")
+	.where("sequence_id", id)
+	.execute().begin();
+	
+	// set results as instance variables
+	int count = 0;
+	while(sel.hasNext()) {
+		int sequence_clip_id = sel.getInt();
+		int clip_id = sel.getInt();
+		int track_id = sel.getInt();
+		int bar_start = sel.getInt();
+		int length = sel.getInt();
+		
+		// store sequence clip in buffer
+		clips[count] = new liveSequenceClip(sequencer, sequence_clip_id, clip_id, track_id, bar_start, length);
+		
+		// next record
+		count ++;
+		sel.next();
+	}
+	
+	// set clip count
+	num_clips = count;
+}
+
+
+liveSequenceClip* liveSequenceSong::getClip(int index) {
+	return clips[index];
+}
+
+
+int liveSequenceSong::getNumClips() {
+	return num_clips;
+}
+
 
 int liveSequenceSong::getTrackId() {
 	return track_id;

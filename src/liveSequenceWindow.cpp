@@ -57,74 +57,64 @@ void liveSequenceWindow::draw(int beat, int step) {
 			songY = trackY + (s_song->getStart() * beatHeight) - (beat * beatHeight) - (step * beatHeight / 32);
 			songH = s_song->getLength() * beatHeight;
 			
-			// ofSetColor(0, 0, 128);
-			// ofRect(songX, songY, songW, songH);
-			
-			//------------------- bounding rectangle : 
+			// Vertical song name
 			ofSetColor(0x00FF00);
 			string tempString = stringWithinWidth( s_song->getName(), songH );
-			
-			
-			// ok first job to rotate around the center, is to get the bounding box:
 			ofRectangle rect = franklinBook.getStringBoundingBox(tempString, 0,0);
-			// this is the actual midpt (x + w/2, y + h/2);
 			float centerx = songH / 2; // rect.x + rect.width / 2;
 			float centery = rect.y + rect.height / 2;
-			
 			ofPushMatrix();
-				
 				// Translate and rotate
 				ofTranslate(songX + (rect.height / 2),songY + (songH / 2),0);
 				ofRotate(270, 0,0,1);
-			
 				// Border
 				ofNoFill();
 				ofSetLineWidth(2);
 				ofSetColor(border_color);
 				ofRect(rect.x - centerx, rect.y - centery, songH - 2, rect.height + 4);
 				ofFill();
-				
 				// Background
 				ofSetColor(background_color);
 				ofRect(rect.x - centerx, rect.y - centery, songH - 2, rect.height + 4);
-			
 				// Name
 				ofSetColor(text_color);
 				franklinBook.drawString(tempString, -centerx,-centery);
-			
 			ofPopMatrix();
-		}
-		
-		// DrawClips()
-		for(int c = 0; c < sequence->numClipsInTrack(t); c++) { // find number of clips in track
 			
-			liveSequenceClip* s_clip = sequence->getClipInTrack(t, c);
-			clipX = trackX + songW;
-			clipY = trackY + (s_clip->getStart() * beatHeight) - (beat * beatHeight) - (step * beatHeight / 32) + clipP;
-			clipH = (s_clip->getLength() * beatHeight) - clipP;
-			
-			// Border
-			ofNoFill();
-			ofSetLineWidth(2);
-			ofSetColor(border_color);
-			ofRect(clipX, clipY, clipW, clipH);
-			ofFill();
-			
-			// Background
-			ofSetColor(background_color);
-			ofRect(clipX, clipY, clipW, clipH);
-			
-			// Name
-			ofSetColor(text_color);
-			franklinBook.drawString(s_clip->getName(), clipX, clipY + 15);
-			
-			// Fire clip if ready:
-			if ((s_clip->getStart() == beat + 1) and (step == 0)) {
-				cout << "FIRE!!" << endl;
-				if (sequencer->getClipMode() == "live") {
-					s_clip->getLiveClip()->callFunction("fire");
+			// DrawClips()
+			for(int c = 0; c < s_song->getNumClips(); c++) { // find number of clips in track
+				
+				liveSequenceClip* s_clip = s_song->getClip(c);
+				clipX = trackX + songW;
+				clipY = trackY + ((s_clip->getStart() + s_song->getStart()) * beatHeight) - (beat * beatHeight) - (step * beatHeight / 32) + clipP;
+				clipH = (s_clip->getLength() * beatHeight) - clipP;
+				
+				// Border
+				ofNoFill();
+				ofSetLineWidth(2);
+				ofSetColor(border_color);
+				ofRect(clipX, clipY, clipW, clipH);
+				ofFill();
+				
+				// Background
+				ofSetColor(background_color);
+				ofRect(clipX, clipY, clipW, clipH);
+				
+				// Name
+				ofSetColor(text_color);
+				franklinBook.drawString(s_clip->getName(), clipX, clipY + 15);
+				
+				// Fire clip if ready:
+				if ((s_clip->getStart() == beat + 1) and (step == 0)) {
+					cout << "FIRE!!" << endl;
+					if (sequencer->getClipMode() == "live") {
+						s_clip->getLiveClip()->callFunction("fire");
+					}
 				}
 			}
+			
+			
+			
 		}
 		
 	}

@@ -15,7 +15,7 @@ void sequencerApp::setup(){
 	
 	// Set Modes
 	renderMode = "gradient"; // "gradient", "filled"
-	clipMode = "live"; // "test", "live"
+	clipMode = "test"; // "test", "live"
 	
 	// Set Defaults
 	beat = 0; // might need to adjust this with real data

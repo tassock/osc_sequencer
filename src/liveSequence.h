@@ -9,11 +9,9 @@
 #include "sequencerApp.h"
 
 #define NUM_S_TRACKS 2
-#define NUM_S_CLIPS 20
 #define NUM_S_SONGS 20
 
 class liveSequenceSong;
-class liveSequenceClip;
 
 class liveSequence {
 	
@@ -23,8 +21,6 @@ public:
 	void loadClips();
 	int numSongsInTrack(int track_id);
 	liveSequenceSong* getSongInTrack(int track_id, int song_order);
-	int numClipsInTrack(int track_id);
-	liveSequenceClip* getClipInTrack(int track_id, int clip_order);
 	string getName();
 	liveSequenceSong* getSelectedSong();
 	
@@ -32,9 +28,7 @@ public:
 	sequencerApp* sequencer;
 	ofxSQLite* sqlite;
 	liveSequenceSong* songs[NUM_S_SONGS];
-	liveSequenceClip* clips[NUM_S_CLIPS];
 	int num_songs;
-	int num_clips;
 	string name;
 	
 };
