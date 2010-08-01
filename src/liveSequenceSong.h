@@ -15,7 +15,9 @@ class liveSequenceSong {
 public:
 	liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_id, int _track_id, int _bar_start, int _length);
 	int getTrackId();
-	int getStart();
+	string getName();
+	int  getStart();
+	void setStart(int bar);
 	int getEnd();
 	int getLength();
 	

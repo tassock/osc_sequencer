@@ -103,6 +103,7 @@ class sequencerApp : public ofBaseApp, public ofxFensterListener{
 		param * sParam;
 	
 		string renderMode;
+		string clipMode;
 		string cursorMode;
 		int highlightStart;
 		int highlightEnd;
@@ -156,6 +157,8 @@ class sequencerApp : public ofBaseApp, public ofxFensterListener{
 		int sWindowY;
 		int sWindowW;
 		int sWindowH;
+	
+		ofTrueTypeFont  franklinBook;
 
 };
 

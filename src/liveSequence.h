@@ -26,6 +26,7 @@ public:
 	int numClipsInTrack(int track_id);
 	liveSequenceClip* getClipInTrack(int track_id, int clip_order);
 	string getName();
+	liveSequenceSong* getSelectedSong();
 	
 	int id;
 	sequencerApp* sequencer;

@@ -31,6 +31,11 @@ int liveSequenceClip::getTrackId() {
 }
 
 
+string liveSequenceClip::getName() {
+	return name;
+}
+
+
 int liveSequenceClip::getStart() {
 	return bar_start;
 }

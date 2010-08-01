@@ -137,3 +137,8 @@ liveSequenceClip* liveSequence::getClipInTrack(int track_id, int clip_order) {
 string liveSequence::getName() {
 	return name;
 }
+
+
+liveSequenceSong* liveSequence::getSelectedSong() {
+	return songs[0];
+}

@@ -15,6 +15,7 @@ public:
 	liveSequenceClip(sequencerApp* _sequencer, int _id, int _clip_id, int _track_id, int _bar_start, int _length);
 	liveClip* getLiveClip();
 	int getTrackId();
+	string getName();
 	int getStart();
 	int getEnd();
 	int getLength();

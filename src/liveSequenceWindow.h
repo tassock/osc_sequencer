@@ -16,6 +16,8 @@ class liveSequenceWindow {
 public:
 	liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y, int _w, int _h);
 	void draw(int beat, int step);
+	string stringWithinWidth(string input, int length);
+	void keyPressed(int key);
 	
 	liveSequence* sequence;
 	sequencerApp* sequencer;
@@ -23,6 +25,8 @@ public:
 	int y;
 	int w;
 	int h;
+	
+	ofTrueTypeFont  franklinBook;
 	
 };
 

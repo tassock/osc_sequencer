@@ -11,6 +11,7 @@ void sequencerApp::setup(){
 	ofEnableAlphaBlending();
 	fenster->setBackground(255, 255, 255);
 	initDatabase();
+	franklinBook.loadFont("frabk.ttf", 32);
 	
 	// Set Defaults
 	beat = 0; // might need to adjust this with real data
@@ -58,10 +59,10 @@ void sequencerApp::setup(){
 	rWindowH = 480;
 	
 	// Sequencer window dimensions
-	sWindowX = 640;
-	sWindowY = 340;
-	sWindowW = 420;
-	sWindowH = 480;
+	sWindowX = 1060;
+	sWindowY = 0;
+	sWindowW = 380;
+	sWindowH = 820;
 	
 	renderMode = "gradient"; // "gradient", "filled"
 
@@ -230,6 +231,28 @@ void sequencerApp::draw(){
 	buf = "rate: " + ofToString( ofGetFrameRate() );
 	ofDrawBitmapString( buf, 800, 220 );
 	
+	
+	
+//	//------------------- bounding rectangle : 
+//	ofSetColor(0x00FF00);
+//	string tempString = "peter";
+//	// ok first job to rotate around the center, is to get the bounding box:
+//	ofRectangle rect = franklinBook.getStringBoundingBox(tempString, 0,0);
+//	// this is the actual midpt (x + w/2, y + h/2);
+//	float centerx = rect.x + rect.width / 2;
+//	float centery = rect.y + rect.height / 2;
+//	cout << "centerx:" << centerx << " centery" << centery << endl;
+//	
+//	ofPushMatrix();
+//		ofTranslate((rect.height / 2),(rect.width / 2),0);
+//		ofRotate(270, 0,0,1);
+//		// draw type & rect centered around 0,0 (subtract midpt from both):
+//		ofSetColor(0xcccccc);
+//		ofRect(rect.x - centerx, rect.y - centery, rect.width, rect.height);
+//		ofSetColor(0xff3399);
+//		franklinBook.drawString(tempString, -centerx,-centery);
+//	ofPopMatrix();
+	
 }
 
 
@@ -344,6 +367,7 @@ void sequencerApp::drawNavigationItem(int x, int y, string name, bool selected) 
 void sequencerApp::keyPressed  (int key) {
 	
 	main_graph->keyPressed(key);
+	sequence_window->keyPressed(key);
 	
 	// Toggle renderMode
 	if ( key =='r' || key == 'R' ) {

@@ -18,8 +18,17 @@ int liveSequenceSong::getTrackId() {
 }
 
 
+string liveSequenceSong::getName() {
+	return name;
+}
+
+
 int liveSequenceSong::getStart() {
 	return bar_start;
+}
+
+void liveSequenceSong::setStart(int bar) {
+	bar_start = bar;
 }
 
 
