@@ -34,7 +34,7 @@ void liveSequenceSong::loadClips() {
 		int length = sel.getInt();
 		
 		// store sequence clip in buffer
-		clips.insert ( clips.begin(), new liveSequenceClip(sequencer, sequence_clip_id, clip_id, track_id, bar_start, length) );
+		clips.insert ( clips.end(), new liveSequenceClip(sequencer, this, sequence_clip_id, clip_id, track_id, bar_start, length) );
 		
 		// next record
 		sel.next();

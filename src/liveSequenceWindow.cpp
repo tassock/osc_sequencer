@@ -1,3 +1,5 @@
+// Contains logic to render and manipulate sequence
+
 #include "liveSequenceWindow.h"
 
 liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y, int _w, int _h) {
@@ -7,6 +9,9 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	w = _w;
 	h = _h;
 	sequence = new liveSequence(sequencer, 1);
+	
+	selected_song = sequence->getSongs()[0];
+	selected_clip = selected_song->getClip(0);
 	
 	select_mode = "song";
 	
@@ -63,7 +68,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 			songH = s_song->getLength() * beatHeight;
 			
 			// Color
-			if (select_mode == "song" and s_song == sequence->getSelectedSong() ) {
+			if (select_mode == "song" and s_song == selected_song ) {
 				color = orange;
 			} else {
 				color = grey;
@@ -103,7 +108,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 				clipH = (s_clip->getLength() * beatHeight) - clipP;
 				
 				// Color
-				if (select_mode == "clip" and s_clip == sequence->getSelectedClip() ) {
+				if (select_mode == "clip" and s_clip == selected_clip ) {
 					color = orange;
 				} else {
 					color = grey;
@@ -156,27 +161,43 @@ string liveSequenceWindow::stringWithinWidth(string input, int length) {
 
 
 void liveSequenceWindow::keyPressed(int key) {
-	int selected_song_start = sequence->getSelectedSong()->getStart();
+	int selected_song_start = selected_song->getStart();
+	int selected_track = selected_clip->getSong()->getTrackId();
 	switch (key) {
 		case 'j':
+			cout << "DOWN" << endl;
 			if (select_mode == "clip") {
-				cout << "goin down" << endl;
+				int selected_order = sequence->getClipOrder(selected_clip);
+				int clips_in_selected_track = sequence->getTrackClips(selected_track).size();
+				if ( (selected_order + 1) < clips_in_selected_track ) {
+					selected_clip = sequence->getTrackClips(selected_track)[selected_order + 1];
+				}
 			} else {
-				sequence->getSelectedSong()->setStart(selected_song_start + 4);
+				selected_song->setStart(selected_song_start + 4);
 			}
 			break;
 		case 'k':
+			cout << "UP" << endl;
 			if (select_mode == "clip") {
-				cout << "goin up" << endl;
+				int selected_order = sequence->getClipOrder(selected_clip);
+				if ( (selected_order - 1) >= 0 ) {
+					selected_clip = sequence->getTrackClips(selected_track)[selected_order - 1];
+				}
 			} else {
-				sequence->getSelectedSong()->setStart(selected_song_start - 4);
+				selected_song->setStart(selected_song_start - 4);
 			}
 			break;
 		case 'l':
-			cout << "goin left" << endl;
+			cout << "LEFT" << endl;
+			if (selected_track == 1) {
+				selected_clip = sequence->getTrackClips(selected_track - 1)[0];
+			}
 			break;
 		case ';':
-			cout << "goin right" << endl;
+			cout << "RIGHT" << endl;
+			if (selected_track == 0) {
+				selected_clip = sequence->getTrackClips(selected_track + 1)[0];
+			}
 			break;
 		case 'f':
 			cout << "toggle" << endl;
@@ -191,7 +212,9 @@ void liveSequenceWindow::keyPressed(int key) {
 void liveSequenceWindow::toggleSelectMode() {
 	if (select_mode == "clip") {
 		select_mode = "song";
+		selected_song = selected_clip->getSong();
 	} else {
 		select_mode = "clip";
+		selected_clip = selected_song->getClips()[0];
 	}
 }

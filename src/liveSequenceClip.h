@@ -6,14 +6,17 @@
 #include "clip.h"
 #include "liveClip.h"
 #include "sequencerApp.h"
+#include "liveSequenceSong.h"
 
 class sequencerApp;
+class liveSequenceSong;
 
 class liveSequenceClip {
 	
 public:
-	liveSequenceClip(sequencerApp* _sequencer, int _id, int _clip_id, int _track_id, int _bar_start, int _length);
+	liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, int _id, int _clip_id, int _track_id, int _bar_start, int _length);
 	liveClip* getLiveClip();
+	liveSequenceSong* getSong();
 	int getTrackId();
 	string getName();
 	int getStart();
@@ -21,6 +24,7 @@ public:
 	int getLength();
 	
 	sequencerApp* sequencer;
+	liveSequenceSong* song;
 	ofxSQLite* sqlite;
 	clip* library_clip;
 	liveClip* live_clip;

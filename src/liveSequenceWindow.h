@@ -4,12 +4,16 @@
 #include <string>
 #include "ofMain.h"
 #include "liveSequence.h"
+#include "liveSequenceSong.h"
+#include "liveSequenceClip.h"
 #include "sequencerApp.h"
 
 #define NUM_S_TRACKS 2
 
 class sequencerApp;
 class liveSequence;
+class liveSequenceSong;
+class liveSequenceClip;
 
 class liveSequenceWindow {
 	
@@ -22,6 +26,8 @@ public:
 	
 	liveSequence* sequence;
 	sequencerApp* sequencer;
+	liveSequenceSong* selected_song;
+	liveSequenceClip* selected_clip;
 	int x;
 	int y;
 	int w;

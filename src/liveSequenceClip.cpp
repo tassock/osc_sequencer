@@ -1,7 +1,8 @@
 #include "liveSequenceClip.h"
 
-liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, int _id, int _clip_id, int _track_id, int _bar_start, int _length) {
+liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, int _id, int _clip_id, int _track_id, int _bar_start, int _length) {
 	sequencer = _sequencer;
+	song = _song;
 	sqlite = sequencer->getSQLite();
 	
 	id = _id;
@@ -25,6 +26,11 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, int _id, int _clip_
 
 liveClip* liveSequenceClip::getLiveClip() {
 	return live_clip;
+}
+
+
+liveSequenceSong* liveSequenceClip::getSong() {
+	return song;
 }
 
 

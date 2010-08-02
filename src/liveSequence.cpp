@@ -38,9 +38,7 @@ void liveSequence::loadSongs() {
 		int length = sel.getInt();
 		
 		// store sequence song in buffer
-		songs.insert ( songs.begin(), new liveSequenceSong(sequencer, sequence_song_id, song_id, track_id, bar_start, length) );
-		
-		selected_song = songs[0];
+		songs.insert ( songs.end(), new liveSequenceSong(sequencer, sequence_song_id, song_id, track_id, bar_start, length) );
 		
 		// next record
 		sel.next();
@@ -48,31 +46,9 @@ void liveSequence::loadSongs() {
 }
 
 
-//int liveSequence::numSongsInTrack(int track_id) {
-//	int count = 0;
-//	for(int i = 0; i < num_songs; i++) {
-//		liveSequenceSong* s_song = songs[i];
-//		if (s_song->getTrackId() == track_id) {
-//			count += 1;
-//		}
-//	}
-//	return count;
-//}
-//
-//
-//liveSequenceSong* liveSequence::getSongInTrack(int track_id, int song_order) {
-//	int offset = 0;
-//	for(int i = 0; i < num_songs; i++) {
-//		liveSequenceSong* s_song = songs[i];
-//		if (s_song->getTrackId() == track_id) {
-//			if (offset == song_order) {
-//				return songs[i];
-//			} else {
-//				offset += 1;
-//			}
-//		}
-//	}
-//}
+vector<liveSequenceSong*> liveSequence::getSongs() {
+	return songs;
+}
 
 
 vector<liveSequenceSong*> liveSequence::getTrackSongs(int track_id) {
@@ -80,11 +56,17 @@ vector<liveSequenceSong*> liveSequence::getTrackSongs(int track_id) {
 	for(int i = 0; i < songs.size(); i++) {
 		liveSequenceSong* s_song = songs[i];
 		if (s_song->getTrackId() == track_id) {
-			song_buffer.insert(song_buffer.begin(), s_song);
+			song_buffer.insert(song_buffer.end(), s_song);
 		}
 	}
+	
+	// log contents
+//	for(int i = 0; i < song_buffer.size(); i++) {
+//		cout << "TRACK#" << track_id << " getTrackSongs: #" << i << ", " << song_buffer[i]->getName() << endl;
+//	}
+	
 	return song_buffer;
-}
+}	
 
 
 vector<liveSequenceClip*> liveSequence::getTrackClips(int track_id) {
@@ -92,28 +74,36 @@ vector<liveSequenceClip*> liveSequence::getTrackClips(int track_id) {
 	vector<liveSequenceClip*> clip_buffer;
 	for(int i = 0; i < song_buffer.size(); i++) {
 		liveSequenceSong* s_song = song_buffer[i];
+//		cout << "TRACK#" << track_id << " getTrackClips: #" << i << ", " << s_song->getName() << endl;
 		vector<liveSequenceClip*> song_clip_buffer = s_song->getClips();
 		for(int c = 0; c < song_clip_buffer.size(); c++) {
 			liveSequenceClip* clip_insert = song_clip_buffer[c];
-			clip_buffer.insert( clip_buffer.begin(), clip_insert );
+			clip_buffer.insert( clip_buffer.end(), clip_insert );
 		}
 	}
+	
+//	// log contents
+//	for(int i = 0; i < clip_buffer.size(); i++) {
+//		cout << "getTrackClips: #" << i << ", " << clip_buffer[i]->getName() << endl;
+//	}
+	
 	return clip_buffer;
+}
+
+
+int liveSequence::getClipOrder(liveSequenceClip* l_clip) {
+	int track_id = l_clip->getSong()->getTrackId();
+	vector<liveSequenceClip*> clip_buffer = getTrackClips(track_id);
+	for(int i = 0; i < clip_buffer.size(); i++) {
+		if (clip_buffer[i] == l_clip) {
+			return i;
+		}
+	}
 }
 
 
 string liveSequence::getName() {
 	return name;
-}
-
-
-liveSequenceSong* liveSequence::getSelectedSong() {
-	return selected_song;
-}
-
-
-liveSequenceClip* liveSequence::getSelectedClip() {
-	return selected_song->getClip(0);
 }
 
 
