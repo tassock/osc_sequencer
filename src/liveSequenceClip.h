@@ -21,6 +21,7 @@ public:
 	liveClip* getLiveClip();
 	liveSequenceSong* getSong();
 	clip* getClip();
+	int getId();
 	int getClipId();
 	int getTrackId();
 	string getName();

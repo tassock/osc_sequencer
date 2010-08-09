@@ -82,7 +82,13 @@ liveSequenceClip* liveSequenceSong::removeClip(liveSequenceClip* delete_clip) {
 		for(int c = 0; c < clips.size(); c++) {
 			if (clips[c] == delete_clip) {
 				cout << "DELETE " << clips[c]->getName() << endl;
+				// Delete from db
+				sqlite->remove("sequence_clips")
+				.where("id", clips[c]->getId() )
+				.execute();
+				// Delete from buffer
 				clips.erase( clips.begin() + c );
+				// Set skip info
 				next_clip_index = c;
 				deleted = true;
 			}

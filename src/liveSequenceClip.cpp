@@ -80,6 +80,11 @@ liveSequenceSong* liveSequenceClip::getSong() {
 }
 
 
+int liveSequenceClip::getId() {
+	return id;
+}
+
+
 int liveSequenceClip::getClipId() {
 	return clip_id;
 }
