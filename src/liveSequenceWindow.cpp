@@ -191,12 +191,14 @@ void liveSequenceWindow::keyPressed(int key) {
 			cout << "LEFT" << endl;
 			if (selected_track == 1) {
 				selected_clip = sequence->getTrackClips(selected_track - 1)[0];
+				selected_song = selected_clip->getSong();
 			}
 			break;
 		case ';':
 			cout << "RIGHT" << endl;
 			if (selected_track == 0) {
 				selected_clip = sequence->getTrackClips(selected_track + 1)[0];
+				selected_song = selected_clip->getSong();
 			}
 			break;
 		case 'f':
