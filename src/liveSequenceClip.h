@@ -16,6 +16,7 @@ class liveSequenceClip {
 public:
 	liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, int _id, int _clip_id, int _track_id, int _bar_start, int _length);
 	liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip*);
+	void save();
 	void fetchLiveClip();
 	liveClip* getLiveClip();
 	liveSequenceSong* getSong();

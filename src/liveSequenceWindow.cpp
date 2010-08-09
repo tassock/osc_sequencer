@@ -76,7 +76,9 @@ void liveSequenceWindow::draw(int beat, int step) {
 			
 			// Vertical song name
 			ofSetColor(0x00FF00);
-			string tempString = stringWithinWidth( s_song->getName(), songH );
+			vector<liveSequenceClip*> clip_buffer_1 = s_song->getClips();
+			int size = clip_buffer_1.size();
+			string tempString = stringWithinWidth( ofToString( size ) + " " + s_song->getName(), songH );
 			ofRectangle rect = franklinBook.getStringBoundingBox(tempString, 0,0);
 			float centerx = songH / 2; // rect.x + rect.width / 2;
 			float centery = rect.y + rect.height / 2;
@@ -204,6 +206,10 @@ void liveSequenceWindow::keyPressed(int key) {
 		case 'f':
 			cout << "TOGGLE" << endl;
 			toggleSelectMode();
+			break;
+		case 's':
+			cout << "SAVE" << endl;
+			sequence->save();
 			break;
 		case 127: // Delete
 			cout << "DELETE " << selected_clip->getName() << endl;

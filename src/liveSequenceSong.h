@@ -16,12 +16,14 @@ class liveSequenceSong {
 	
 public:
 	liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_id, int _track_id, int _bar_start, int _length);
+	void save();
 	void loadClips();
 	vector<liveSequenceClip*> getClips();
 	liveSequenceClip* getClip(int index);
 	int getNumClips();
 	liveSequenceClip* removeClip(liveSequenceClip* delete_clip);
 	liveSequenceClip* duplicateClip(liveSequenceClip* duplicate_clip);
+	int getId();
 	int getTrackId();
 	string getName();
 	int  getStart();

@@ -19,6 +19,14 @@ liveSequence::liveSequence(sequencerApp* _sequencer, int _id) {
 	loadSongs();
 }
 
+
+void liveSequence::save() {
+	for(int i = 0; i < songs.size(); i++) {
+		songs[i]->save();
+	}
+}
+
+
 //--------------------------------------------------------------
 // Query for liveSequencerSong's in the sequence. Load the song and its clips into buffers. 
 void liveSequence::loadSongs() {

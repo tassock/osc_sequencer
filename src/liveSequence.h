@@ -18,6 +18,7 @@ class liveSequence {
 	
 public:
 	liveSequence(sequencerApp* _sequencer, int _id);
+	void save();
 	void loadSongs();
 	void loadClips();
 	vector<liveSequenceSong*> getSongs();

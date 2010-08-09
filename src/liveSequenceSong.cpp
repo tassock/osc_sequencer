@@ -18,12 +18,29 @@ liveSequenceSong::liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_
 }
 
 
+void liveSequenceSong::save() {
+	cout << "SAVING SONG" << endl;
+	
+	// Update self
+	sqlite->update("sequence_songs")
+	.use("bar_start", bar_start)
+	.where("id", id)
+	.execute();
+	
+	// Update clips
+	for(int i = 0; i < clips.size(); i++) {
+		clips[i]->save();
+	}
+}
+
+
 // load liveSequenceClip objects into buffer
 void liveSequenceSong::loadClips() {
 	// select all that match sequence id
 	ofxSQLiteSelect sel = sqlite->select("id, clip_id, track_id, bar_start, length")
 	.from("sequence_clips")
 	.where("sequence_song_id", id)
+	.order("bar_start", " ASC ")
 	.execute().begin();
 	
 	// set results as instance variables
@@ -116,6 +133,11 @@ liveSequenceClip* liveSequenceSong::duplicateClip(liveSequenceClip* duplicate_cl
 
 int liveSequenceSong::getNumClips() {
 	return num_clips;
+}
+
+
+int liveSequenceSong::getId() {
+	return id;
 }
 
 

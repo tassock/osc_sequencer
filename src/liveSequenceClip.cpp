@@ -39,6 +39,30 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip* d
 }
 
 
+void liveSequenceClip::save() {
+	cout << "SAVING CLIP" << endl;
+	
+	if (id == NULL) {
+		// Save self
+		sqlite->insert("sequence_clips")
+		.use("clip_id", clip_id)
+		.use("track_id", track_id)
+		.use("bar_start", bar_start)
+		.use("length", length)
+		.use("sequence_song_id", song->getId())
+		.execute();
+		// Set id
+		id = sqlite->lastInsertID();
+	} else {
+		// Update self
+		sqlite->update("sequence_clips")
+		.use("bar_start", bar_start)
+		.where("id", id)
+		.execute();
+	}
+}
+
+
 void liveSequenceClip::fetchLiveClip() {
 	if (sequencer->getClipMode() == "live") {
 		live_clip = sequencer->getCurrentSet()->getClipByName(name);
