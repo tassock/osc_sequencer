@@ -18,6 +18,7 @@ liveSequenceSong::liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_
 }
 
 
+// load liveSequenceClip objects into buffer
 void liveSequenceSong::loadClips() {
 	// select all that match sequence id
 	ofxSQLiteSelect sel = sqlite->select("id, clip_id, track_id, bar_start, length")
@@ -52,6 +53,67 @@ vector<liveSequenceClip*> liveSequenceSong::getClips() {
 }
 
 
+// Remove given clip from buffer. Return next clip in buffer. 
+liveSequenceClip* liveSequenceSong::removeClip(liveSequenceClip* delete_clip) {
+	if (clips.size() == 1) {
+		return delete_clip;
+	} else {
+		// remove delete clip, shift succeeding clips up.
+		int next_clip_index = 0;
+		bool deleted = false;
+		int clip_count = clips.size();
+		for(int c = 0; c < clips.size(); c++) {
+			if (clips[c] == delete_clip) {
+				cout << "DELETE " << clips[c]->getName() << endl;
+				clips.erase( clips.begin() + c );
+				next_clip_index = c;
+				deleted = true;
+			}
+			if (deleted) {
+				int new_start = clips[c]->getStart() - delete_clip->getLength();
+				cout << "SHIFT: " << clips[c]->getName() << ", s: " << new_start << endl;
+				// Shift clip up
+				clips[c]->setStart( new_start );
+			}
+		}
+		// Check if next_clip_index is out of bounds 
+		cout << "SIZE " << clips.size() << endl;
+		cout << "next_clip_index " << next_clip_index << endl;
+		if ( next_clip_index >= (clips.size() - 1) ) {
+			next_clip_index = clips.size() - 1;
+		}
+		cout << "next_clip_index " << next_clip_index << endl;
+		// Return next clip
+		return clips[next_clip_index];
+	}
+}
+
+
+// Duplicate given clip. Return duplicated clip. 
+liveSequenceClip* liveSequenceSong::duplicateClip(liveSequenceClip* duplicate_clip) {
+	int new_clip_index = 0;
+	bool duplicated = false;
+	for(int c = 0; c < clips.size(); c++) {
+		if (clips[c] == duplicate_clip) {
+			cout << "DUPLICATE " << clips[c]->getName() << endl;
+			clips.insert( clips.begin() + c, new liveSequenceClip(sequencer, duplicate_clip) );
+			new_clip_index = c;
+			duplicated = true;
+			c++;
+		}  
+		if (duplicated) {
+			int new_start = clips[c]->getStart() + duplicate_clip->getLength();
+			cout << "SHIFT: " << clips[c]->getName() << ", s: " << new_start << endl;
+			// Shift clip down
+			clips[c]->setStart( new_start );
+		}
+	}
+	// Return new clip
+	cout << "NEW SIZE: " << clips.size() << endl;
+	return clips[new_clip_index];
+}
+
+
 int liveSequenceSong::getNumClips() {
 	return num_clips;
 }
@@ -82,5 +144,8 @@ int liveSequenceSong::getEnd() {
 
 
 int liveSequenceSong::getLength() {
-	return length;
+	//return length;
+	int start = clips[0]->getStart();
+	int end = clips[clips.size() - 1]->getEnd();
+	return end - start;
 }

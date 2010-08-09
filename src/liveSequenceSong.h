@@ -20,6 +20,8 @@ public:
 	vector<liveSequenceClip*> getClips();
 	liveSequenceClip* getClip(int index);
 	int getNumClips();
+	liveSequenceClip* removeClip(liveSequenceClip* delete_clip);
+	liveSequenceClip* duplicateClip(liveSequenceClip* duplicate_clip);
 	int getTrackId();
 	string getName();
 	int  getStart();

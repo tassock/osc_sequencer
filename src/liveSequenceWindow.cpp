@@ -127,11 +127,11 @@ void liveSequenceWindow::draw(int beat, int step) {
 				
 				// Name
 				ofSetColor(color);
-				franklinBook.drawString(s_clip->getName(), clipX, clipY + 15);
+				franklinBook.drawString(s_clip->getName() + " s: " + ofToString(s_clip->getStart()), clipX, clipY + 15);
 				
 				// Fire clip if ready:
 				if ((s_clip->getStart() == beat + 1) and (step == 0)) {
-					cout << "FIRE!!" << endl;
+					//cout << "FIRE!!" << endl;
 					if (sequencer->getClipMode() == "live") {
 						s_clip->getLiveClip()->callFunction("fire");
 					}
@@ -153,7 +153,6 @@ string liveSequenceWindow::stringWithinWidth(string input, int length) {
 	while (rect.width > length) {
 		input = input.substr(0, 100 - i);
 		rect = franklinBook.getStringBoundingBox(input, 0,0);
-		// cout << "!! STRING: " << tempString << " WIDTH: " << rect.width << endl;
 		i ++;
 	}
 	return input;
@@ -161,6 +160,7 @@ string liveSequenceWindow::stringWithinWidth(string input, int length) {
 
 
 void liveSequenceWindow::keyPressed(int key) {
+//	cout << "!!KEY: " << key << endl;
 	int selected_song_start = selected_song->getStart();
 	int selected_track = selected_clip->getSong()->getTrackId();
 	switch (key) {
@@ -200,8 +200,20 @@ void liveSequenceWindow::keyPressed(int key) {
 			}
 			break;
 		case 'f':
-			cout << "toggle" << endl;
+			cout << "TOGGLE" << endl;
 			toggleSelectMode();
+			break;
+		case 127: // Delete
+			cout << "DELETE " << selected_clip->getName() << endl;
+			if (select_mode == "clip") {
+				selected_clip = selected_song->removeClip(selected_clip);
+			}
+			break;
+		case 13:  // Enter
+			cout << "DUPLICATE " << selected_clip->getName() << endl;
+			if (select_mode == "clip") {
+				selected_clip = selected_song->duplicateClip(selected_clip);
+			}
 			break;
 		default:
 			break;
