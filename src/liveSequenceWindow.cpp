@@ -76,9 +76,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 			
 			// Vertical song name
 			ofSetColor(0x00FF00);
-			vector<liveSequenceClip*> clip_buffer_1 = s_song->getClips();
-			int size = clip_buffer_1.size();
-			string tempString = stringWithinWidth( ofToString( size ) + " " + s_song->getName(), songH );
+			string tempString = stringWithinWidth( s_song->getName(), songH );
 			ofRectangle rect = franklinBook.getStringBoundingBox(tempString, 0,0);
 			float centerx = songH / 2; // rect.x + rect.width / 2;
 			float centery = rect.y + rect.height / 2;
@@ -175,7 +173,11 @@ void liveSequenceWindow::keyPressed(int key) {
 					selected_clip = sequence->getTrackClips(selected_track)[selected_order + 1];
 				}
 			} else {
-				selected_song->setStart(selected_song_start + 4);
+				int next_song_start = sequence->nextSongStart(selected_song);
+				if ( next_song_start >= (selected_song->getEnd() + 4) ) {
+					selected_song->setStart(selected_song_start + 4);
+				}
+				
 			}
 			break;
 		case 'k':
@@ -186,7 +188,11 @@ void liveSequenceWindow::keyPressed(int key) {
 					selected_clip = sequence->getTrackClips(selected_track)[selected_order - 1];
 				}
 			} else {
-				selected_song->setStart(selected_song_start - 4);
+				//selected_song->setStart(selected_song_start - 4);
+				int prev_song_end = sequence->prevSongEnd(selected_song);
+				if ( prev_song_end <= (selected_song->getStart() - 4) ) {
+					selected_song->setStart(selected_song_start - 4);
+				}
 			}
 			break;
 		case 'l':

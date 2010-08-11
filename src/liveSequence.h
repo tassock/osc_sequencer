@@ -25,6 +25,8 @@ public:
 	vector<liveSequenceSong*> getTrackSongs(int track_id);
 	vector<liveSequenceClip*> getTrackClips(int track_id);
 	int getClipOrder(liveSequenceClip* l_clip);
+	int nextSongStart(liveSequenceSong* l_song);
+	int prevSongEnd(liveSequenceSong* l_song);
 	string getName();
 	void selectPosition(char direction);
 	
