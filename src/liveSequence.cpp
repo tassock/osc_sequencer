@@ -121,10 +121,8 @@ int liveSequence::nextSongStart(liveSequenceSong* l_song) {
 	}
 	// Check to see if next_track_index is outside bounds
 	if ( (next_track_index + 1) > song_buffer.size() ) {
-		cout << "nextSongStart: Infinite" << endl;
 		return 99999999; // Huge number so that there isn't a conflict
 	} else {
-		cout << "nextSongStart: " << song_buffer[next_track_index]->getStart() << endl;
 		return song_buffer[next_track_index]->getStart();
 	}
 }
@@ -132,7 +130,7 @@ int liveSequence::nextSongStart(liveSequenceSong* l_song) {
 
 // Get the end value of the previous song in a song's track. 
 int liveSequence::prevSongEnd(liveSequenceSong* l_song) {
-	// Find next_track_index
+	// Find prev_track_index
 	int prev_track_index = NULL;
 	vector<liveSequenceSong*> song_buffer = getTrackSongs( l_song->getTrackId() );
 	for(int i = 0; i < song_buffer.size(); i++) {
@@ -142,10 +140,8 @@ int liveSequence::prevSongEnd(liveSequenceSong* l_song) {
 	}
 	// Check to see if prev_track_index is outside bounds
 	if ( prev_track_index < 0 ) {
-		cout << "nextSongStart: Infinite" << endl;
 		return -99999999; // Huge number so that there isn't a conflict
 	} else {
-		cout << "nextSongStart: " << song_buffer[prev_track_index]->getEnd() << endl;
 		return song_buffer[prev_track_index]->getEnd();
 	}
 }

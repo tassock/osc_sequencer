@@ -167,7 +167,7 @@ void liveSequenceSong::setStart(int bar) {
 
 
 int liveSequenceSong::getEnd() {
-	return bar_start + length;
+	return bar_start + getLength();
 }
 
 
