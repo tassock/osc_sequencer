@@ -110,38 +110,46 @@ int liveSequence::getClipOrder(liveSequenceClip* l_clip) {
 }
 
 // Get the start value of the next song in a song's track. 
-int liveSequence::nextSongStart(liveSequenceSong* l_song) {
+int liveSequence::nextSongStart(int track_id, int bar) {
 	// Find next_track_index
-	int next_track_index = NULL;
-	vector<liveSequenceSong*> song_buffer = getTrackSongs( l_song->getTrackId() );
+	int next_track_index = 99999999;
+	vector<liveSequenceSong*> song_buffer = getTrackSongs( track_id );
 	for(int i = 0; i < song_buffer.size(); i++) {
-		if (song_buffer[i] == l_song) {
-			next_track_index = i + 1;
+		//cout << "song_buffer[i]->getStart(): " << song_buffer[i]->getStart() << " , bar: " << bar << endl;
+		if (song_buffer[i]->getStart() >= bar ) {
+			next_track_index = i;
+			break;
 		}
 	}
 	// Check to see if next_track_index is outside bounds
-	if ( (next_track_index + 1) > song_buffer.size() ) {
-		return 99999999; // Huge number so that there isn't a conflict
+	if ( next_track_index == 99999999 ) {
+		//cout << "nextSongStart: HUGE" << endl;
+		return 99999999; // Infinite number so that there isn't a conflict
 	} else {
+		//cout << "nextSongStart: " << song_buffer[next_track_index]->getStart() << endl;
 		return song_buffer[next_track_index]->getStart();
 	}
 }
 
 
 // Get the end value of the previous song in a song's track. 
-int liveSequence::prevSongEnd(liveSequenceSong* l_song) {
+int liveSequence::prevSongEnd(int track_id, int bar) {
 	// Find prev_track_index
-	int prev_track_index = NULL;
-	vector<liveSequenceSong*> song_buffer = getTrackSongs( l_song->getTrackId() );
+	int prev_track_index = 99999999;
+	vector<liveSequenceSong*> song_buffer = getTrackSongs( track_id );
+	//cout << "size: " << song_buffer.size() << endl;
 	for(int i = 0; i < song_buffer.size(); i++) {
-		if (song_buffer[i] == l_song) {
-			prev_track_index = i - 1;
+		if (song_buffer[i]->getEnd() <= bar) {
+			//cout << "prev_track_index = " << i << endl;
+			prev_track_index = i;
 		}
 	}
 	// Check to see if prev_track_index is outside bounds
-	if ( prev_track_index < 0 ) {
-		return -99999999; // Huge number so that there isn't a conflict
+	if ( prev_track_index == 99999999 ) {
+		//cout << "prevSongEnd: HUGE" << endl;
+		return -99999999; // Infinite number so that there isn't a conflict
 	} else {
+		//cout << "prevSongEnd: " << song_buffer[prev_track_index]->getEnd() << endl;
 		return song_buffer[prev_track_index]->getEnd();
 	}
 }

@@ -160,7 +160,7 @@ string liveSequenceWindow::stringWithinWidth(string input, int length) {
 
 
 void liveSequenceWindow::keyPressed(int key) {
-//	cout << "!!KEY: " << key << endl;
+	cout << "!!KEY: " << key << endl;
 	int selected_song_start = selected_song->getStart();
 	int selected_track = selected_clip->getSong()->getTrackId();
 	switch (key) {
@@ -174,11 +174,10 @@ void liveSequenceWindow::keyPressed(int key) {
 				}
 			} else {
 				// check if there's room
-				int next_song_start = sequence->nextSongStart(selected_song);
+				int next_song_start = sequence->nextSongStart( selected_song->getTrackId(), selected_song->getEnd() );
 				if ( next_song_start >= (selected_song->getEnd() + 4) ) {
 					selected_song->setStart(selected_song_start + 4);
 				}
-				
 			}
 			break;
 		case 'k':
@@ -190,7 +189,7 @@ void liveSequenceWindow::keyPressed(int key) {
 				}
 			} else {
 				// check if there's room
-				int prev_song_end = sequence->prevSongEnd(selected_song);
+				int prev_song_end = sequence->prevSongEnd( selected_song->getTrackId(), selected_song->getStart() );
 				if ( prev_song_end <= (selected_song->getStart() - 4) ) {
 					selected_song->setStart(selected_song_start - 4);
 				}
@@ -198,9 +197,21 @@ void liveSequenceWindow::keyPressed(int key) {
 			break;
 		case 'l':
 			cout << "LEFT" << endl;
-			if (selected_track == 1) {
-				selected_clip = sequence->getTrackClips(selected_track - 1)[0];
-				selected_song = selected_clip->getSong();
+			if (select_mode == "clip") {
+				// change selected_clip
+				if (selected_track == 1) {
+					selected_clip = sequence->getTrackClips(selected_track - 1)[0];
+					selected_song = selected_clip->getSong();
+				}
+			} else {
+				// move selected song left
+//				if (selected_track == 1) {
+//					// check if there's room in the other track
+//					int next_song_start = sequence->nextSongStart(selected_song->, 0);
+//					if ( next_song_start >= (selected_song->getEnd() + 4) ) {
+//						selected_song->setStart(selected_song_start + 4);
+//					}
+//				}
 			}
 			break;
 		case ';':
@@ -228,7 +239,7 @@ void liveSequenceWindow::keyPressed(int key) {
 			cout << "DUPLICATE " << selected_clip->getName() << endl;
 			if (select_mode == "clip") {
 				// check if there's room
-				int next_song_start = sequence->nextSongStart(selected_song);
+				int next_song_start = sequence->nextSongStart( selected_song->getTrackId(), selected_song->getEnd() );
 				if ( next_song_start >= (selected_song->getEnd() + selected_clip->getLength() ) ) {
 					selected_clip = selected_song->duplicateClip(selected_clip);
 				}
