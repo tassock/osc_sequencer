@@ -4,6 +4,7 @@
 
 liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y, int _w, int _h) {
 	sequencer = _sequencer;
+	sqlite = sequencer->getSQLite();
 	x = _x;
 	y = _y;
 	w = _w;
@@ -16,9 +17,12 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	select_mode = "song";
 	
 	franklinBook.loadFont("frabk.ttf", 12);
+	loadSongBuffer();
 }
 
 void liveSequenceWindow::draw(int beat, int step) {
+	
+	drawBrowser();
 	
 	// Background
 	ofRect(x, y, w, h);
@@ -31,7 +35,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 	int trackX = 0;
 	int trackY = y + 20;
 	int trackW = 180;
-	int trackH = 700;
+	int trackH = 750;
 	
 	// Song vars
 	int songX = 0;
@@ -146,6 +150,48 @@ void liveSequenceWindow::draw(int beat, int step) {
 }
 
 
+void liveSequenceWindow::drawBrowser() {
+	int x = 640;
+	int y = 300;
+	int w = 420;
+	int h = 520;
+	
+	// Background
+	ofSetColor(50, 50, 50);
+	ofRect(x, y, w, h);
+	
+	// Search box
+	ofSetColor(255, 255, 255);
+	ofRect(x + 20, y + 20, w - 40, 30);
+	
+	// Song list
+	for(int i = 0; i < song_buffer.size(); i++) {
+		librarySong* s_song = song_buffer[i];
+		franklinBook.drawString( s_song->getName(), x + 20, y + 70 + (i * 20) );
+	}
+}
+
+
+// load librarySong objects into song_buffer
+void liveSequenceWindow::loadSongBuffer() {
+	// select all that match sequence id
+	ofxSQLiteSelect sel = sqlite->select("id")
+	.from("library_songs")
+	.execute().begin();
+	
+	// set results as instance variables
+	while(sel.hasNext()) {
+		int song_id = sel.getInt();
+		
+		// store sequence clip in buffer
+		song_buffer.insert ( song_buffer.end(), new librarySong(sequencer, song_id) );
+		
+		// next record
+		sel.next();
+	}
+}
+
+
 // crop string to fit song length by testing against stringWidth
 string liveSequenceWindow::stringWithinWidth(string input, int length) {
 	ofRectangle rect = franklinBook.getStringBoundingBox(input, 0,0);
@@ -205,21 +251,38 @@ void liveSequenceWindow::keyPressed(int key) {
 				}
 			} else {
 				// move selected song left
-//				if (selected_track == 1) {
-//					// check if there's room in the other track
-//					int next_song_start = sequence->nextSongStart(selected_song->, 0);
-//					if ( next_song_start >= (selected_song->getEnd() + 4) ) {
-//						selected_song->setStart(selected_song_start + 4);
-//					}
-//				}
+				if (selected_track == 1) {
+					// check if there's room in the other track
+					int next_song_start = sequence->nextSongStart(0, selected_song->getStart() );
+					int prev_song_end = sequence->prevSongEnd(0, selected_song->getEnd() );
+					cout << "prev_song_end: " << prev_song_end << endl;
+					if ( next_song_start >= (selected_song->getEnd()) and prev_song_end <= (selected_song->getStart()) ) {
+						selected_song->setTrackId(0);
+					}
+				}
 			}
 			break;
 		case ';':
 			cout << "RIGHT" << endl;
-			if (selected_track == 0) {
-				selected_clip = sequence->getTrackClips(selected_track + 1)[0];
-				selected_song = selected_clip->getSong();
+			if (select_mode == "clip") {
+				// change selected_clip
+				if (selected_track == 0) {
+					selected_clip = sequence->getTrackClips(selected_track + 1)[0];
+					selected_song = selected_clip->getSong();
+				}
+			} else {
+				// move selected song left
+				if (selected_track == 0) {
+					// check if there's room in the other track
+					int next_song_start = sequence->nextSongStart(1, selected_song->getStart() );
+					int prev_song_end = sequence->prevSongEnd(1, selected_song->getEnd() );
+					if ( next_song_start >= (selected_song->getEnd()) and prev_song_end <= (selected_song->getStart()) ) {
+						selected_song->setTrackId(1);
+					}
+				}
 			}
+			
+			
 			break;
 		case 'f':
 			cout << "TOGGLE" << endl;

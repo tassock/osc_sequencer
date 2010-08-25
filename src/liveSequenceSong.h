@@ -25,6 +25,7 @@ public:
 	liveSequenceClip* duplicateClip(liveSequenceClip* duplicate_clip);
 	int getId();
 	int getTrackId();
+	void setTrackId(int _track_id);
 	string getName();
 	int  getStart();
 	void setStart(int bar);

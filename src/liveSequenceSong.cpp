@@ -152,6 +152,11 @@ int liveSequenceSong::getTrackId() {
 }
 
 
+void liveSequenceSong::setTrackId(int _track_id) {
+	track_id = _track_id;
+}
+
+
 string liveSequenceSong::getName() {
 	return name;
 }
