@@ -115,16 +115,6 @@ void liveSequenceClip::setOrder(int _order) {
 }
 
 
-//void liveSequenceClip::setStart(int bar) {
-//	bar_start = bar;
-//}
-//
-//
-//int liveSequenceClip::getEnd() {
-//	return bar_start + length;
-//}
-
-
 int liveSequenceClip::getLength() {
 	return length;
 }
