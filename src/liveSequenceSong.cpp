@@ -37,10 +37,10 @@ void liveSequenceSong::save() {
 // load liveSequenceClip objects into buffer
 void liveSequenceSong::loadClips() {
 	// select all that match sequence id
-	ofxSQLiteSelect sel = sqlite->select("id, clip_id, track_id, bar_start, length")
+	ofxSQLiteSelect sel = sqlite->select("id, clip_id, track_id, sequence_song_order, length")
 	.from("sequence_clips")
 	.where("sequence_song_id", id)
-	.order("bar_start", " ASC ")
+	.order("sequence_song_order", " ASC ")
 	.execute().begin();
 	
 	// set results as instance variables
@@ -48,11 +48,11 @@ void liveSequenceSong::loadClips() {
 		int sequence_clip_id = sel.getInt();
 		int clip_id = sel.getInt();
 		int track_id = sel.getInt();
-		int bar_start = sel.getInt();
+		int sequence_song_order = sel.getInt();
 		int length = sel.getInt();
 		
 		// store sequence clip in buffer
-		clips.insert ( clips.end(), new liveSequenceClip(sequencer, this, sequence_clip_id, clip_id, track_id, bar_start, length) );
+		clips.insert ( clips.end(), new liveSequenceClip(sequencer, this, sequence_clip_id, clip_id, track_id, sequence_song_order, length) );
 		
 		// next record
 		sel.next();
@@ -81,7 +81,6 @@ liveSequenceClip* liveSequenceSong::removeClip(liveSequenceClip* delete_clip) {
 		int clip_count = clips.size();
 		for(int c = 0; c < clips.size(); c++) {
 			if (clips[c] == delete_clip) {
-				cout << "DELETE " << clips[c]->getName() << endl;
 				// Delete from db
 				sqlite->remove("sequence_clips")
 				.where("id", clips[c]->getId() )
@@ -93,21 +92,40 @@ liveSequenceClip* liveSequenceSong::removeClip(liveSequenceClip* delete_clip) {
 				deleted = true;
 			}
 			if (deleted) {
-				int new_start = clips[c]->getStart() - delete_clip->getLength();
-				cout << "SHIFT: " << clips[c]->getName() << ", s: " << new_start << endl;
+				int new_order = clips[c]->getOrder() - 1;
 				// Shift clip up
-				clips[c]->setStart( new_start );
+				clips[c]->setOrder( new_order );
 			}
 		}
 		// Check if next_clip_index is out of bounds 
-		cout << "SIZE " << clips.size() << endl;
-		cout << "next_clip_index " << next_clip_index << endl;
 		if ( next_clip_index >= (clips.size() - 1) ) {
 			next_clip_index = clips.size() - 1;
 		}
-		cout << "next_clip_index " << next_clip_index << endl;
 		// Return next clip
 		return clips[next_clip_index];
+	}
+}
+
+
+void liveSequenceSong::insertClip(clip* _insert_clip, int _order) {
+	int _id = NULL;
+	int _clip_id   = _insert_clip->getId();
+	int _track_id  = track_id;
+	int _bar_start = 0;
+	int _length    = _insert_clip->getLength();
+	
+	bool duplicated = false;
+	for(int c = 0; c < clips.size(); c++) {
+		if (c == _order) {
+			clips.insert( clips.begin() + _order + 1, new liveSequenceClip(sequencer, this, _id, _clip_id, _track_id, _bar_start, _length) );
+			duplicated = true;
+			c++;
+		}  
+		if (duplicated) {
+			int new_order = clips[c]->getOrder() + 1;
+			// Shift clip down
+			clips[c]->setOrder( new_order );
+		}
 	}
 }
 
@@ -118,21 +136,18 @@ liveSequenceClip* liveSequenceSong::duplicateClip(liveSequenceClip* duplicate_cl
 	bool duplicated = false;
 	for(int c = 0; c < clips.size(); c++) {
 		if (clips[c] == duplicate_clip) {
-			cout << "DUPLICATE " << clips[c]->getName() << endl;
 			clips.insert( clips.begin() + c, new liveSequenceClip(sequencer, duplicate_clip) );
 			new_clip_index = c;
 			duplicated = true;
 			c++;
 		}  
 		if (duplicated) {
-			int new_start = clips[c]->getStart() + duplicate_clip->getLength();
-			cout << "SHIFT: " << clips[c]->getName() << ", s: " << new_start << endl;
+			int new_order = clips[c]->getOrder() + 1;
 			// Shift clip down
-			clips[c]->setStart( new_start );
+			clips[c]->setOrder( new_order );
 		}
 	}
 	// Return new clip
-	cout << "NEW SIZE: " << clips.size() << endl;
 	return clips[new_clip_index];
 }
 
@@ -177,8 +192,14 @@ int liveSequenceSong::getEnd() {
 
 
 int liveSequenceSong::getLength() {
-	//return length;
-	int start = clips[0]->getStart();
-	int end = clips[clips.size() - 1]->getEnd();
-	return end - start;
+	int _length = 0;
+	for(int c = 0; c < clips.size(); c++) {
+		_length = _length + clips[c]->getLength();
+	}
+	return _length;
+}
+
+
+librarySong* liveSequenceSong::getLibrarySong() {
+	return library_song;
 }

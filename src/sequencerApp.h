@@ -15,11 +15,15 @@
 #include "ofxXmlSettings.h"
 #include "ofxSQLiteHeaders.h"
 
-//#define HOST "169.254.189.237"
 #define HOST "localhost"
-//#define SEND_PORT 12345
-//#define RECIEVE_PORT 7403
 
+// COLORS
+#define GREY 0xBDBDBD
+#define ORANGE 0xFFA24F
+
+#define CLIP_WIDTH 230
+#define CLIP_PADDING 2
+#define BEAT_HEIGHT 10
 #define NUM_BEATS 4
 #define NUM_STEPS 32
 #define NUM_PATTERNS 3
@@ -28,9 +32,10 @@
 
 class graph;
 class liveSequenceWindow;
+class clip;
 
 //--------------------------------------------------------
-class sequencerApp : public ofBaseApp, public ofxFensterListener{
+class sequencerApp : public ofBaseApp {//, public ofxFensterListener{
 
 	public:
 	
@@ -49,6 +54,7 @@ class sequencerApp : public ofBaseApp, public ofxFensterListener{
 		void fensterUpdate();
 		void fensterWindowResized(int w, int h);
 	
+		void drawStats();
 		void drawRenderWindow(int rWindowX, int rWindowY, int rWindowW, int rWindowH);
 		void drawClipNav();
 		void drawPatternNav();

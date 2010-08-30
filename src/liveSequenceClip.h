@@ -3,18 +3,19 @@
 
 #include "ofMain.h"
 #include "ofxSQLiteHeaders.h"
-#include "clip.h"
 #include "liveClip.h"
+#include "clip.h"
 #include "sequencerApp.h"
 #include "liveSequenceSong.h"
 
+class clip;
 class sequencerApp;
 class liveSequenceSong;
 
 class liveSequenceClip {
 	
 public:
-	liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, int _id, int _clip_id, int _track_id, int _bar_start, int _length);
+	liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, int _id, int _clip_id, int _track_id, int _sequence_song_order, int _length);
 	liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip*);
 	void save();
 	void fetchLiveClip();
@@ -25,9 +26,10 @@ public:
 	int getClipId();
 	int getTrackId();
 	string getName();
-	int getStart();
-	void setStart(int bar);
-	int getEnd();
+	int getOrder();
+	void setOrder(int _order);
+//	void setStart(int bar);
+//	int getEnd();
 	int getLength();
 	
 	sequencerApp* sequencer;
@@ -38,7 +40,7 @@ public:
 	int id;
 	int clip_id;
 	int track_id;
-	int bar_start;
+	int sequence_song_order;
 	int length;
 	string name;
 	

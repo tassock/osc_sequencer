@@ -1,6 +1,6 @@
 #include "liveSequenceClip.h"
 
-liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, int _id, int _clip_id, int _track_id, int _bar_start, int _length) {
+liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, int _id, int _clip_id, int _track_id, int _sequence_song_order, int _length) {
 	sequencer = _sequencer;
 	song = _song;
 	sqlite = sequencer->getSQLite();
@@ -8,7 +8,7 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _
 	id = _id;
 	clip_id = _clip_id;
 	track_id = _track_id;
-	bar_start = _bar_start;
+	sequence_song_order = _sequence_song_order;
 	length = _length;
 	
 	// Get library clip
@@ -17,7 +17,7 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _
 	
 	fetchLiveClip();
 	
-	cout << "CLIP: id:" << id << ", name:" << name << ", clip_id:" << clip_id << ", bar_start:" << bar_start << ", length:" << length << endl;
+	cout << "CLIP: id:" << id << ", name:" << name << ", clip_id:" << clip_id << ", sequence_song_order:" << sequence_song_order << ", length:" << length << endl;
 }
 
 
@@ -29,7 +29,7 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip* d
 	id = NULL;
 	clip_id   = duplicate_clip->getClipId();
 	track_id  = duplicate_clip->getTrackId();
-	bar_start = duplicate_clip->getStart();
+	sequence_song_order = duplicate_clip->getOrder();
 	length    = duplicate_clip->getLength();
 	
 	library_clip = duplicate_clip->getClip();
@@ -47,7 +47,7 @@ void liveSequenceClip::save() {
 		sqlite->insert("sequence_clips")
 		.use("clip_id", clip_id)
 		.use("track_id", track_id)
-		.use("bar_start", bar_start)
+		.use("sequence_song_order", sequence_song_order)
 		.use("length", length)
 		.use("sequence_song_id", song->getId())
 		.execute();
@@ -56,7 +56,7 @@ void liveSequenceClip::save() {
 	} else {
 		// Update self
 		sqlite->update("sequence_clips")
-		.use("bar_start", bar_start)
+		.use("sequence_song_order", sequence_song_order)
 		.where("id", id)
 		.execute();
 	}
@@ -65,7 +65,7 @@ void liveSequenceClip::save() {
 
 void liveSequenceClip::fetchLiveClip() {
 	if (sequencer->getClipMode() == "live") {
-		live_clip = sequencer->getCurrentSet()->getClipByName(name);
+		live_clip = sequencer->getCurrentSet()->getClipByName(name, song->getTrackId());
 	}
 }
 
@@ -105,18 +105,24 @@ string liveSequenceClip::getName() {
 }
 
 
-int liveSequenceClip::getStart() {
-	return bar_start;
-}
-
-void liveSequenceClip::setStart(int bar) {
-	bar_start = bar;
+int liveSequenceClip::getOrder() {
+	return sequence_song_order;
 }
 
 
-int liveSequenceClip::getEnd() {
-	return bar_start + length;
+void liveSequenceClip::setOrder(int _order) {
+	sequence_song_order = _order;
 }
+
+
+//void liveSequenceClip::setStart(int bar) {
+//	bar_start = bar;
+//}
+//
+//
+//int liveSequenceClip::getEnd() {
+//	return bar_start + length;
+//}
 
 
 int liveSequenceClip::getLength() {

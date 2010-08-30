@@ -23,6 +23,7 @@ public:
 	int getNumClips();
 	liveSequenceClip* removeClip(liveSequenceClip* delete_clip);
 	liveSequenceClip* duplicateClip(liveSequenceClip* duplicate_clip);
+	void insertClip(clip* _insert_clip, int _order);
 	int getId();
 	int getTrackId();
 	void setTrackId(int _track_id);
@@ -31,6 +32,7 @@ public:
 	void setStart(int bar);
 	int getEnd();
 	int getLength();
+	librarySong* getLibrarySong();
 	
 	sequencerApp* sequencer;
 	ofxSQLite* sqlite;

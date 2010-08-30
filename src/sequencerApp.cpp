@@ -9,13 +9,13 @@ void sequencerApp::setup(){
 	ofBackground( 0, 0, 0 );
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
-	fenster->setBackground(255, 255, 255);
+//	fenster->setBackground(255, 255, 255);
 	initDatabase();
 	franklinBook.loadFont("frabk.ttf", 32);
 	
 	// Set Modes
 	renderMode = "gradient"; // "gradient", "filled"
-	clipMode = "test"; // "test", "live"
+	clipMode = "live"; // "test", "live"
 	
 	// Set Defaults
 	beat = 0; // might need to adjust this with real data
@@ -63,10 +63,14 @@ void sequencerApp::setup(){
 	rWindowH = 480;
 	
 	// Sequencer window dimensions
-	sWindowX = 1060;
-	sWindowY = 0;
-	sWindowW = 380;
-	sWindowH = 820;
+//	sWindowX = 1060;
+//	sWindowY = 0;
+//	sWindowW = 380;
+//	sWindowH = 820;
+	sWindowX = 0;
+	sWindowY = 20;
+	sWindowW = 580;
+	sWindowH = 1000;
 
 	// load liveSet
 	if (clipMode == "live") {
@@ -89,10 +93,11 @@ void sequencerApp::setup(){
 }
 
 void sequencerApp::fensterUpdate(){
+	cout << "UPDATE!!" << endl;
 }
 
 void sequencerApp::fensterDraw(){
-	fenster->setBackground(0, 0, 0);
+//	fenster->setBackground(0, 0, 0);
 	drawRenderWindow(0, 0, rWindowW, rWindowH);
 	
 	// Draw frame rate
@@ -105,79 +110,6 @@ void sequencerApp::fensterWindowResized(int w, int h){
 	rWindowW = w;
 	rWindowH = h;
 };
-
-
-//--------------------------------------------------------------
-void sequencerApp::initDatabase() {
-	
-	sqlite = new ofxSQLite("sequencer.db");
-	sqlite->simpleQuery("" \
-		"CREATE TABLE IF NOT EXISTS library_songs (" \
-		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
-		" artist TEXT," \
-		" title TEXT," \
-		" bpm INTEGER," \
-		" key INTEGER," \
-		" major BOOLEAN" \
-		");"
-	);
-	sqlite->simpleQuery("" \
-		"CREATE TABLE IF NOT EXISTS clips (" \
-		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
-		" live_id TEXT," \
-		" song_id INTEGER" \
-		");"
-	);
-	
-	sqlite->simpleQuery("" \
-		"CREATE TABLE IF NOT EXISTS patterns (" \
-		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
-		" name TEXT," \
-		" clip_id INTEGER" \
-		");"
-	);
-	
-	sqlite->simpleQuery("" \
-		"CREATE TABLE IF NOT EXISTS params (" \
-		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
-		" name TEXT," \
-		" pattern_id INTEGER," \
-		" step_data TEXT" \
-		");"
-	);
-	
-	sqlite->simpleQuery("" \
-		"CREATE TABLE IF NOT EXISTS sequences (" \
-		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
-		" name TEXT" \
-		");"
-	);
-	
-	sqlite->simpleQuery("" \
-		"CREATE TABLE IF NOT EXISTS sequence_clips (" \
-		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
-		" sequence_song_id INTEGER," \
-		" sequence_song_order INTEGER," \				
-		" sequence_id INTEGER," \
-		" clip_id INTEGER," \
-		" track_id INTEGER," \
-		" bar_start INTEGER," \
-		" length INTEGER" \
-		");"
-	);
-	
-	sqlite->simpleQuery("" \
-		"CREATE TABLE IF NOT EXISTS sequence_songs (" \
-		" id INTEGER PRIMARY KEY AUTOINCREMENT," \
-		" sequence_id INTEGER," \
-		" song_id INTEGER," \
-		" track_id INTEGER," \
-		" bar_start INTEGER," \
-		" length INTEGER" \
-		");"
-	);
-	
-}
 
 
 //--------------------------------------------------------------
@@ -225,56 +157,33 @@ void sequencerApp::update() {
 //--------------------------------------------------------------
 void sequencerApp::draw(){
 	
-	// drawRenderWindow(0, 340, 640, 480);
-	main_graph->draw();
-	gainSlider->draw();
-	scaleSlider->draw();
-	drawClipNav();
-	drawPatternNav();
-	drawParamNav();
+	//drawRenderWindow(0, 340, 640, 480);
+	//main_graph->draw();
+	//gainSlider->draw();
+	//scaleSlider->draw();
+	//drawClipNav();
+	//drawPatternNav();
+	//drawParamNav();
 	
 	sequence_window->draw(beat, step);
-	
-	// Display step
-	string buf;
-	
-	// Display beat
-	buf = "beat: " + ofToString( beat );
-	ofSetColor(255, 255, 255);
-	ofDrawBitmapString( buf, 800, 180 );
-	
-	// Display step
-	buf = "step: " + ofToString( step );
-	ofSetColor(255, 255, 255);
-	ofDrawBitmapString( buf, 800, 200 );
-	
-	// Display rate
-	buf = "rate: " + ofToString( ofGetFrameRate() );
-	ofDrawBitmapString( buf, 800, 220 );
-	
-	
-	
-//	//------------------- bounding rectangle : 
-//	ofSetColor(0x00FF00);
-//	string tempString = "peter";
-//	// ok first job to rotate around the center, is to get the bounding box:
-//	ofRectangle rect = franklinBook.getStringBoundingBox(tempString, 0,0);
-//	// this is the actual midpt (x + w/2, y + h/2);
-//	float centerx = rect.x + rect.width / 2;
-//	float centery = rect.y + rect.height / 2;
-//	cout << "centerx:" << centerx << " centery" << centery << endl;
-//	
-//	ofPushMatrix();
-//		ofTranslate((rect.height / 2),(rect.width / 2),0);
-//		ofRotate(270, 0,0,1);
-//		// draw type & rect centered around 0,0 (subtract midpt from both):
-//		ofSetColor(0xcccccc);
-//		ofRect(rect.x - centerx, rect.y - centery, rect.width, rect.height);
-//		ofSetColor(0xff3399);
-//		franklinBook.drawString(tempString, -centerx,-centery);
-//	ofPopMatrix();
+	drawStats();
 	
 }
+
+
+//--------------------------------------------------------------
+void sequencerApp::drawStats() {
+	// background
+	ofSetColor(0, 0, 0 );
+	ofRect( 0, 0, 515, 20);
+	// Display stats
+	string buf;
+	buf = "Beat: " + ofToString( beat ) + ", Step: " + ofToString( step ) + ", Rate: " + ofToString( ofGetFrameRate() );
+	ofSetColor(255, 255, 255);
+	ofDrawBitmapString( buf, 10, 15 );
+	
+}
+	
 
 
 //--------------------------------------------------------------
@@ -396,6 +305,15 @@ void sequencerApp::keyPressed  (int key) {
 			renderMode = "gradient";
 		} else {
 			renderMode = "filled";
+		}
+	}
+	
+	// Start live set
+	if (clipMode == "live") { 
+		if (key == 32) { // Space
+			current_set->play();
+		} else if (key == 96) { // ~
+			current_set->stop();
 		}
 	}
 }
@@ -581,6 +499,79 @@ int sequencerApp::getMouseX() {
 //--------------------------------------------------------------
 int sequencerApp::getMouseY() {
 	return mouseY;
+}
+
+
+//--------------------------------------------------------------
+void sequencerApp::initDatabase() {
+	
+	sqlite = new ofxSQLite("sequencer.db");
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS library_songs (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" artist TEXT," \
+						" title TEXT," \
+						" bpm INTEGER," \
+						" key INTEGER," \
+						" major BOOLEAN" \
+						");"
+						);
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS clips (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" live_id TEXT," \
+						" song_id INTEGER" \
+						");"
+						);
+	
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS patterns (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" name TEXT," \
+						" clip_id INTEGER" \
+						");"
+						);
+	
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS params (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" name TEXT," \
+						" pattern_id INTEGER," \
+						" step_data TEXT" \
+						");"
+						);
+	
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS sequences (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" name TEXT" \
+						");"
+						);
+	
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS sequence_clips (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" sequence_song_id INTEGER," \
+						" sequence_song_order INTEGER," \				
+						" sequence_id INTEGER," \
+						" clip_id INTEGER," \
+						" track_id INTEGER," \
+						" bar_start INTEGER," \
+						" length INTEGER" \
+						");"
+						);
+	
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS sequence_songs (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" sequence_id INTEGER," \
+						" song_id INTEGER," \
+						" track_id INTEGER," \
+						" bar_start INTEGER," \
+						" length INTEGER" \
+						");"
+						);
+	
 }
 
 // Unused xml code

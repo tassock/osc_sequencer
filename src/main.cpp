@@ -28,15 +28,17 @@
 int main( ){
 	
     ofAppGlutWindow window;
-	ofSetupOpenGL(&window, 1440,820, OF_WINDOW);			// <-------- setup the GL context
+	//ofSetupOpenGL(&window, 1440,820, OF_WINDOW);			// <-------- setup the GL context
+	ofSetupOpenGL(&window, 515,1020, OF_WINDOW);			// <-------- setup the GL context
 	ofSetVerticalSync(true);
 	// ofSetFrameRate(64);
 	ofEnableAlphaBlending();
 	
 	sequencerApp* app = new sequencerApp;
 	
-	ofxFenster fenster;
-	fenster.init(app);
+	// Render Window
+	// ofxFenster fenster;
+	// fenster.init(app);
 	
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN

@@ -9,12 +9,20 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	y = _y;
 	w = _w;
 	h = _h;
-	sequence = new liveSequence(sequencer, 1);
+	browserX = 45;
+	browserY = 300;
+	browserH = 520;
+	browserW = 420;
+	clip_select_index = 0;
+	sequence = new liveSequence(sequencer, 2);
 	
 	selected_song = sequence->getSongs()[0];
 	selected_clip = selected_song->getClip(0);
+	clip_buffer = selected_song->getLibrarySong()->getClips();
 	
 	select_mode = "song";
+	focus = "sequence";
+	query = "";
 	
 	franklinBook.loadFont("frabk.ttf", 12);
 	loadSongBuffer();
@@ -22,20 +30,18 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 
 void liveSequenceWindow::draw(int beat, int step) {
 	
-	drawBrowser();
-	
 	// Background
+	ofSetColor(0, 0, 0);
 	ofRect(x, y, w, h);
 	
 	// Sequencer vars
-	int beatHeight = 20;
 	int padding = 5;
 	
 	// Track vars
 	int trackX = 0;
-	int trackY = y + 20;
-	int trackW = 180;
-	int trackH = 750;
+	int trackY = y;
+	int trackW = 250;
+	int trackH = 1000;
 	
 	// Song vars
 	int songX = 0;
@@ -46,13 +52,12 @@ void liveSequenceWindow::draw(int beat, int step) {
 	// Clip vars
 	int clipX = 0;
 	int clipY = 0;
-	int clipW = 160; 
 	int clipH = 0;
 	int clipP = 2;
 	
 	// Draw tracks
 	for(int t = 0; t < NUM_S_TRACKS; t++){
-		ofSetColor(128, 128, 128);
+		ofSetColor(30, 30, 30);
 		trackX = x + padding + (t * (trackW + padding));
 		ofRect(trackX, trackY, trackW, trackH);
 		
@@ -68,8 +73,8 @@ void liveSequenceWindow::draw(int beat, int step) {
 		for(int c = 0; c < song_buffer.size(); c++) { // find number of songs in track
 			liveSequenceSong* s_song = song_buffer[c];
 			songX = trackX;
-			songY = trackY + (s_song->getStart() * beatHeight) - (beat * beatHeight) - (step * beatHeight / 32);
-			songH = s_song->getLength() * beatHeight;
+			songY = trackY + (s_song->getStart() * BEAT_HEIGHT) - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32);
+			songH = s_song->getLength() * BEAT_HEIGHT;
 			
 			// Color
 			if (select_mode == "song" and s_song == selected_song ) {
@@ -103,71 +108,100 @@ void liveSequenceWindow::draw(int beat, int step) {
 			ofPopMatrix();
 			
 			// DrawClips()
-			vector<liveSequenceClip*> clip_buffer = s_song->getClips();
-			for(int c = 0; c < clip_buffer.size(); c++) { // find number of clips in track
+			vector<liveSequenceClip*> s_clip_buffer = s_song->getClips();
+			int bar_count = 0;
+			for(int c = 0; c < s_clip_buffer.size(); c++) { // find number of clips in track
 				
-				liveSequenceClip* s_clip = clip_buffer[c];
+				liveSequenceClip* s_clip = s_clip_buffer[c];
+				int bar_start = bar_count + s_song->getStart();
 				clipX = trackX + songW;
-				clipY = trackY + ((s_clip->getStart() + s_song->getStart()) * beatHeight) - (beat * beatHeight) - (step * beatHeight / 32) + clipP;
-				clipH = (s_clip->getLength() * beatHeight) - clipP;
-				
-				// Color
-				if (select_mode == "clip" and s_clip == selected_clip ) {
-					color = orange;
-				} else {
-					color = grey;
-				}
-				
-				// Border
-				ofNoFill();
-				ofSetLineWidth(2);
-				ofSetColor(color);
-				ofRect(clipX, clipY, clipW, clipH);
-				ofFill();
-				
-				// Background
-				ofSetColor(background_color);
-				ofRect(clipX, clipY, clipW, clipH);
-				
-				// Name
-				ofSetColor(color);
-				franklinBook.drawString(s_clip->getName() + " s: " + ofToString(s_clip->getStart()), clipX, clipY + 15);
+				clipY = trackY + (bar_start * BEAT_HEIGHT) - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32) + clipP;
+				bool selected = (select_mode == "clip" and s_clip == selected_clip );
+				s_clip->getClip()->draw(clipX, clipY, selected);
 				
 				// Fire clip if ready:
-				if ((s_clip->getStart() == beat + 1) and (step == 0)) {
-					//cout << "FIRE!!" << endl;
+				if (step == 0 and bar_start == beat + 1) {
+					cout << "FIRE!! " << s_clip->getName() << endl;
+					cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
+					//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
 					if (sequencer->getClipMode() == "live") {
-						s_clip->getLiveClip()->callFunction("fire");
+						s_clip->getLiveClip()->fire();
 					}
 				}
+				
+				bar_count = bar_count + s_clip->getLength();
 			}
-			
-			
-			
+		}
+	}
+	drawBrowser();
+}
+
+
+void liveSequenceWindow::drawBrowser() {
+	
+	if (focus == "browser") {
+		
+		// Mute sequencer background
+		ofSetColor(0, 0, 0, 130);
+		ofRect(x, y, w, h);
+		
+		// Browser background
+		ofSetColor(50, 50, 50);
+		ofRect(browserX, browserY, browserW, browserH);
+		
+		if (select_mode == "clip") {
+			drawClipBrowser();
+		} else if (select_mode == "song") {
+			drawSongBrowser();
 		}
 		
 	}
 }
 
 
-void liveSequenceWindow::drawBrowser() {
-	int x = 640;
-	int y = 300;
-	int w = 420;
-	int h = 520;
+void liveSequenceWindow::drawSongBrowser() {
 	
-	// Background
-	ofSetColor(50, 50, 50);
-	ofRect(x, y, w, h);
+	int padding = 20;
 	
 	// Search box
 	ofSetColor(255, 255, 255);
-	ofRect(x + 20, y + 20, w - 40, 30);
+	ofRect(browserX + padding, browserY + padding, browserW - (2 * padding), 30);
+	ofSetColor(0, 0, 0);
+	string query_text = query;
+	query_text =query + "|";
+	franklinBook.drawString( query_text, browserX + padding, browserY + (2 * padding) );
+	
+	// lowercase query
+	string lwr_query = query;
+	std::transform(lwr_query.begin(), lwr_query.end(), lwr_query.begin(), ::tolower);
 	
 	// Song list
+	int count = 0;
 	for(int i = 0; i < song_buffer.size(); i++) {
+		// filter songs
 		librarySong* s_song = song_buffer[i];
-		franklinBook.drawString( s_song->getName(), x + 20, y + 70 + (i * 20) );
+		size_t found = s_song->getLowercaseName().find(lwr_query);
+		if ( lwr_query == "" or (found!=string::npos) ) {
+			ofSetColor(255, 255, 255);
+			franklinBook.drawString( s_song->getName(), browserX + padding, browserY + 70 + (count * 20) );
+			count ++;
+		}
+	}
+}
+
+
+void liveSequenceWindow::drawClipBrowser() {
+	
+	int padding = 20;
+	
+	// song name
+	ofSetColor(255, 255, 255);
+	franklinBook.drawString( selected_song->getName(), browserX + padding, browserY + padding);
+	
+	for(int i = 0; i < clip_buffer.size(); i++) {
+		clip* s_clip = selected_song->getLibrarySong()->getClip(i);
+		bool selected = (clip_select_index == i);
+		s_clip->draw(browserX + padding, browserY + (2 * padding) + (i * s_clip->getLength() * BEAT_HEIGHT ), selected );
 	}
 }
 
@@ -175,16 +209,21 @@ void liveSequenceWindow::drawBrowser() {
 // load librarySong objects into song_buffer
 void liveSequenceWindow::loadSongBuffer() {
 	// select all that match sequence id
-	ofxSQLiteSelect sel = sqlite->select("id")
+	ofxSQLiteSelect sel = sqlite->select("id, artist, title, bpm, key, major")
 	.from("library_songs")
 	.execute().begin();
 	
 	// set results as instance variables
 	while(sel.hasNext()) {
-		int song_id = sel.getInt();
+		int _id = sel.getInt();
+		string _artist = sel.getString();
+		string _title = sel.getString();
+		int _bpm = sel.getInt();
+		int _key = sel.getInt();
+		int _major = sel.getInt();
 		
 		// store sequence clip in buffer
-		song_buffer.insert ( song_buffer.end(), new librarySong(sequencer, song_id) );
+		song_buffer.insert ( song_buffer.end(), new librarySong(sequencer, _id, _artist, _title, _bpm, _key, _major) );
 		
 		// next record
 		sel.next();
@@ -205,12 +244,83 @@ string liveSequenceWindow::stringWithinWidth(string input, int length) {
 }
 
 
+// Handle key press
 void liveSequenceWindow::keyPressed(int key) {
 	cout << "!!KEY: " << key << endl;
+	
+	// direct focus specific key actions
+	if (focus == "sequence") {
+		sequenceKeyPressed(key);
+	} else if (focus == "browser") {
+		if (select_mode == "clip") {
+			clipBrowserKeyPressed(key);
+		} else if (select_mode == "song") {
+			songBrowserKeyPressed(key);
+		}
+	}
+	
+	// toggle focus
+	if (key == 'i' and focus == "sequence") {
+		focus = "browser";
+	}
+	if (key == 92 and focus == "browser") {
+		focus = "sequence";
+	}
+}
+
+
+// Handle key press in browser focus
+void liveSequenceWindow::songBrowserKeyPressed(int key) {
+	switch (key) {
+		case 92: // /
+			break;
+		case 13: // Enter
+			cout << "ENTER" << endl;
+			break;
+		case 127: // Delete
+			cout << "DELETE" << endl;
+			query = query.substr(0, query.size()-1);
+			break;
+		default:
+			cout << "!!BROSWER KEY: " << key << endl;
+			char buf = key;
+			query = query + buf;
+			break;
+	}
+}
+
+
+// Handle key press in browser focus
+void liveSequenceWindow::clipBrowserKeyPressed(int key) {
+	switch (key) {
+		case 92: // /
+			break;
+		case 13: // Enter
+			cout << "ENTER" << endl;
+			cout << "INSERT CLIP " << clip_buffer[clip_select_index]->getName() << endl;
+			selected_song->insertClip( clip_buffer[clip_select_index], sequence->getClipOrder(selected_clip) );
+			focus = "sequence";
+			break;
+		case 'j': // UP
+			if (clip_select_index > 0) {
+				clip_select_index = clip_select_index - 1;
+			}
+			break;
+		case 'k': // DOWN
+			if (clip_select_index < (clip_buffer.size() - 1) ) {
+				clip_select_index ++;
+			}
+			break;
+	}
+}
+
+
+// Handle key press in sequence focus
+void liveSequenceWindow::sequenceKeyPressed(int key) {
 	int selected_song_start = selected_song->getStart();
 	int selected_track = selected_clip->getSong()->getTrackId();
 	switch (key) {
-		case 'j':
+		case 'k':
 			cout << "DOWN" << endl;
 			if (select_mode == "clip") {
 				int selected_order = sequence->getClipOrder(selected_clip);
@@ -226,7 +336,7 @@ void liveSequenceWindow::keyPressed(int key) {
 				}
 			}
 			break;
-		case 'k':
+		case 'j':
 			cout << "UP" << endl;
 			if (select_mode == "clip") {
 				int selected_order = sequence->getClipOrder(selected_clip);
