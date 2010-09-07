@@ -13,8 +13,10 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	browserY = 300;
 	browserH = 520;
 	browserW = 420;
+	
+	song_browser = new librarySongBrowser(sequencer);
+	
 	clip_select_index = 0;
-	song_select_index = 0;
 	sequence = new liveSequence(sequencer, 2);
 	
 	selected_song = sequence->getSongs()[0];
@@ -23,10 +25,8 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	
 	select_mode = "song";
 	focus = "sequence";
-	query = "";
 	
 	franklinBook.loadFont("frabk.ttf", 12);
-	loadSongBuffer();
 }
 
 void liveSequenceWindow::draw(int beat, int step) {
@@ -153,45 +153,9 @@ void liveSequenceWindow::drawBrowser() {
 		if (select_mode == "clip") {
 			drawClipBrowser();
 		} else if (select_mode == "song") {
-			drawSongBrowser();
+			song_browser->draw();
 		}
 		
-	}
-}
-
-
-void liveSequenceWindow::drawSongBrowser() {
-	
-	int padding = 20;
-	
-	// Search box
-	ofSetColor(255, 255, 255);
-	ofRect(browserX + padding, browserY + padding, browserW - (2 * padding), 30);
-	ofSetColor(0, 0, 0);
-	string query_text = query;
-	query_text =query + "|";
-	franklinBook.drawString( query_text, browserX + padding, browserY + (2 * padding) );
-	
-	// lowercase query
-	string lwr_query = query;
-	std::transform(lwr_query.begin(), lwr_query.end(), lwr_query.begin(), ::tolower);
-	
-	// Song list
-	int count = 0;
-	for(int i = 0; i < song_buffer.size(); i++) {
-		// filter songs
-		librarySong* s_song = song_buffer[i];
-		size_t found = s_song->getLowercaseName().find(lwr_query);
-		if ( lwr_query == "" or (found!=string::npos) ) {
-			// draw selector
-			if (count == song_select_index) {
-				ofSetColor(255, 255, 0);
-			} else {
-				ofSetColor(255, 255, 255);
-			}
-			franklinBook.drawString( s_song->getName(), browserX + padding, browserY + 70 + (count * 20) );
-			count ++;
-		}
 	}
 }
 
@@ -208,31 +172,6 @@ void liveSequenceWindow::drawClipBrowser() {
 		clip* s_clip = selected_song->getLibrarySong()->getClip(i);
 		bool selected = (clip_select_index == i);
 		s_clip->draw(browserX + padding, browserY + (2 * padding) + (i * s_clip->getLength() * BEAT_HEIGHT ), selected );
-	}
-}
-
-
-// load librarySong objects into song_buffer
-void liveSequenceWindow::loadSongBuffer() {
-	// select all that match sequence id
-	ofxSQLiteSelect sel = sqlite->select("id, artist, title, bpm, key, major")
-	.from("library_songs")
-	.execute().begin();
-	
-	// set results as instance variables
-	while(sel.hasNext()) {
-		int _id = sel.getInt();
-		string _artist = sel.getString();
-		string _title = sel.getString();
-		int _bpm = sel.getInt();
-		int _key = sel.getInt();
-		int _major = sel.getInt();
-		
-		// store sequence clip in buffer
-		song_buffer.insert ( song_buffer.end(), new librarySong(sequencer, _id, _artist, _title, _bpm, _key, _major) );
-		
-		// next record
-		sel.next();
 	}
 }
 
@@ -261,7 +200,7 @@ void liveSequenceWindow::keyPressed(int key) {
 		if (select_mode == "clip") {
 			clipBrowserKeyPressed(key);
 		} else if (select_mode == "song") {
-			songBrowserKeyPressed(key);
+			song_browser->keyPressed(key);
 		}
 	}
 	
@@ -271,31 +210,6 @@ void liveSequenceWindow::keyPressed(int key) {
 	}
 	if (key == 92 and focus == "browser") {
 		focus = "sequence";
-	}
-}
-
-
-// Handle key press in browser focus
-void liveSequenceWindow::songBrowserKeyPressed(int key) {
-	switch (key) {
-		case 92: // /
-			break;
-		case 13: // Enter
-			cout << "ENTER" << endl;
-			break;
-		case 127: // Delete
-			cout << "DELETE" << endl;
-			query = query.substr(0, query.size()-1);
-			break;
-		case 9: // Tab
-			cout << "Change selection" << endl;
-			song_select_index ++;
-			break;
-		default:
-			cout << "!!BROSWER KEY: " << key << endl;
-			char buf = key;
-			query = query + buf;
-			break;
 	}
 }
 
