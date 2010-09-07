@@ -28,8 +28,6 @@ public:
 	string getName();
 	int getOrder();
 	void setOrder(int _order);
-//	void setStart(int bar);
-//	int getEnd();
 	int getLength();
 	
 	sequencerApp* sequencer;

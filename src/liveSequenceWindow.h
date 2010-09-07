@@ -47,6 +47,7 @@ public:
 	int browserH;
 	int browserW;
 	int clip_select_index;
+	int song_select_index;
 	string select_mode;
 	string focus;
 	string query;

@@ -39,7 +39,7 @@ librarySong::librarySong(sequencerApp* _sequencer, int _id, string _artist, stri
 void librarySong::loadClips() {
 	// Get clips
 	ofxSQLiteSelect sel = sequencer->getSQLite()->select("id, length, live_id")
-	.from("clips")
+	.from("library_clips")
 	.where("song_id", id)
 	.execute().begin();
 	while(sel.hasNext()) {

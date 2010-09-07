@@ -14,6 +14,7 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	browserH = 520;
 	browserW = 420;
 	clip_select_index = 0;
+	song_select_index = 0;
 	sequence = new liveSequence(sequencer, 2);
 	
 	selected_song = sequence->getSongs()[0];
@@ -182,7 +183,12 @@ void liveSequenceWindow::drawSongBrowser() {
 		librarySong* s_song = song_buffer[i];
 		size_t found = s_song->getLowercaseName().find(lwr_query);
 		if ( lwr_query == "" or (found!=string::npos) ) {
-			ofSetColor(255, 255, 255);
+			// draw selector
+			if (count == song_select_index) {
+				ofSetColor(255, 255, 0);
+			} else {
+				ofSetColor(255, 255, 255);
+			}
 			franklinBook.drawString( s_song->getName(), browserX + padding, browserY + 70 + (count * 20) );
 			count ++;
 		}
@@ -280,6 +286,10 @@ void liveSequenceWindow::songBrowserKeyPressed(int key) {
 		case 127: // Delete
 			cout << "DELETE" << endl;
 			query = query.substr(0, query.size()-1);
+			break;
+		case 9: // Tab
+			cout << "Change selection" << endl;
+			song_select_index ++;
 			break;
 		default:
 			cout << "!!BROSWER KEY: " << key << endl;

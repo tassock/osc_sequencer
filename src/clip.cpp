@@ -19,7 +19,7 @@ clip::clip(int _id, ofxSQLite* _sqlite) {
 	
 	// Get name/live_id from database
 	ofxSQLiteSelect sel = sqlite->select("length, live_id")
-	.from("clips")
+	.from("library_clips")
 	.where("id", id)
 	.execute().begin();
 	while(sel.hasNext()) {
