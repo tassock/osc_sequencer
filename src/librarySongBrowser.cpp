@@ -23,6 +23,7 @@ librarySongBrowser::librarySongBrowser(sequencerApp* _sequencer) {
 	franklinBook.loadFont("frabk.ttf", 12);
 	
 	loadSongBuffer();
+	updateQueryBuffer();
 }
 
 
@@ -52,6 +53,27 @@ void librarySongBrowser::loadSongBuffer() {
 	}
 }
 
+
+void librarySongBrowser::updateQueryBuffer() {
+	
+	// lowercase query
+	string lwr_query = query;
+	std::transform(lwr_query.begin(), lwr_query.end(), lwr_query.begin(), ::tolower);
+	
+	// empty buffer
+	query_buffer.clear();
+	
+	// filter songs
+	for(int i = 0; i < song_buffer.size(); i++) {
+		librarySong* s_song = song_buffer[i];
+		size_t found = s_song->getLowercaseName().find(lwr_query);
+		if ( lwr_query == "" or (found!=string::npos) ) {
+			query_buffer.insert ( query_buffer.end(), s_song);
+		}
+	}
+}
+
+
 void librarySongBrowser::draw() {
 	
 	int padding = 20;
@@ -64,26 +86,15 @@ void librarySongBrowser::draw() {
 	query_text =query + "|";
 	franklinBook.drawString( query_text, browserX + padding, browserY + (2 * padding) );
 	
-	// lowercase query
-	string lwr_query = query;
-	std::transform(lwr_query.begin(), lwr_query.end(), lwr_query.begin(), ::tolower);
-	
 	// Song list
-	int count = 0;
-	for(int i = 0; i < song_buffer.size(); i++) {
-		// filter songs
-		librarySong* s_song = song_buffer[i];
-		size_t found = s_song->getLowercaseName().find(lwr_query);
-		if ( lwr_query == "" or (found!=string::npos) ) {
-			// draw selector
-			if (count == select_index) {
-				ofSetColor(255, 255, 0);
-			} else {
-				ofSetColor(255, 255, 255);
-			}
-			franklinBook.drawString( s_song->getName(), browserX + padding, browserY + 70 + (count * 20) );
-			count ++;
+	for(int i = 0; i < query_buffer.size(); i++) {
+		librarySong* s_song = query_buffer[i];
+		if (i == select_index) {
+			ofSetColor(ORANGE);
+		} else {
+			ofSetColor(255, 255, 255);
 		}
+		franklinBook.drawString( s_song->getName(), browserX + padding, browserY + 70 + (i * 20) );
 	}
 }
 
@@ -94,19 +105,26 @@ void librarySongBrowser::keyPressed(int key) {
 			break;
 		case 13: // Enter
 			cout << "ENTER" << endl;
+			cout << "INSERT: " << query_buffer[select_index]->getName() << endl;
 			break;
 		case 127: // Delete
 			cout << "DELETE" << endl;
 			query = query.substr(0, query.size()-1);
+			updateQueryBuffer();
 			break;
 		case 9: // Tab
 			cout << "Change selection" << endl;
-			select_index ++;
+			if (select_index < (query_buffer.size() - 1) ) {
+				select_index ++;
+			} else {
+				select_index = 0;
+			}
 			break;
 		default:
 			cout << "!!BROSWER KEY: " << key << endl;
 			char buf = key;
 			query = query + buf;
+			updateQueryBuffer();
 			break;
 	}
 }

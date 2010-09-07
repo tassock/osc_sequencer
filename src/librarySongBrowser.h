@@ -11,6 +11,7 @@ class librarySongBrowser {
 public:
 	librarySongBrowser(sequencerApp* _sequencer);
 	void loadSongBuffer();
+	void updateQueryBuffer();
 	void draw();
 	void keyPressed(int key);
 	
@@ -18,6 +19,7 @@ public:
 	ofxSQLite* sqlite;
 	
 	vector<librarySong*> song_buffer;
+	vector<librarySong*> query_buffer;
 	string query;
 	int select_index;
 	
