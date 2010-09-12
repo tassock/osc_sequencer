@@ -7,7 +7,7 @@ clip::clip(sequencerApp* _sequencer, int _id, int _length, string _name) {
 	id = _id;
 	length = _length;
 	name = _name;
-	franklinBook.loadFont("frabk.ttf", 12);
+	franklinBook.loadFont("frabk.ttf", 11);
 }
 
 
@@ -57,7 +57,7 @@ void clip::draw(int clipX, int clipY, bool selected) {
 	
 	// Name
 	ofSetColor(color);
-	franklinBook.drawString(name, clipX, clipY + 15);
+	franklinBook.drawString(name, clipX, clipY + 13);
 	//franklinBook.drawString(name + " s: " + ofToString(start), clipX, clipY + 15);
 }
 

@@ -23,7 +23,7 @@
 
 #define CLIP_WIDTH 230
 #define CLIP_PADDING 2
-#define BEAT_HEIGHT 10
+#define BEAT_HEIGHT 5
 #define NUM_BEATS 4
 #define NUM_STEPS 32
 #define NUM_PATTERNS 3

@@ -105,9 +105,11 @@ void librarySongBrowser::draw() {
 		
 		librarySong* s_song = query_buffer[select_index];
 		vector<clip*> s_clips = s_song->getClips();
+		int shift = 0;
 		for(int i = 0; i < s_clips.size(); i++) {
 			clip* s_clip = s_clips[i];
-			s_clip->draw(browserX + padding, browserY + (2 * padding) + (i * s_clip->getLength() * BEAT_HEIGHT ), false );
+			s_clip->draw(browserX + padding, browserY + (2 * padding) + (shift * BEAT_HEIGHT ), false );
+			shift = shift + s_clip->getLength();
 		}
 	}
 }

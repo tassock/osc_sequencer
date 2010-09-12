@@ -122,10 +122,11 @@ void liveSequenceWindow::draw(int beat, int step) {
 				
 				// Fire clip if ready:
 				if (step == 0 and bar_start == beat + 1) {
-					cout << "FIRE!! " << s_clip->getName() << endl;
-					cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
 					//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
 					if (sequencer->getClipMode() == "live") {
+						s_clip->fetchLiveClip();
+						cout << "FIRE!! " << s_clip->getName() << endl;
+						cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
 						s_clip->getLiveClip()->fire();
 					}
 				}

@@ -16,7 +16,7 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _
 	library_clip = new clip(clip_id, sqlite);
 	name = library_clip->getName();
 	
-	fetchLiveClip();
+	//fetchLiveClip();
 	
 	cout << "CLIP: id:" << id << ", name:" << name << ", clip_id:" << clip_id << ", sequence_song_order:" << sequence_song_order << ", length:" << length << endl;
 }
@@ -37,7 +37,7 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip* d
 	library_clip = duplicate_clip->getClip();
 	name = library_clip->getName();
 	
-	fetchLiveClip();
+	//fetchLiveClip();
 }
 
 
@@ -56,7 +56,7 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _
 	library_clip = _clip;
 	name = library_clip->getName();
 	
-	fetchLiveClip();
+	//fetchLiveClip();
 }
 	
 
