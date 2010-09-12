@@ -8,6 +8,7 @@
 
 class sequencerApp;
 class clip;
+class liveSequenceSong;
 
 class librarySong {
 	
@@ -15,8 +16,11 @@ public:
 	librarySong(sequencerApp* _sequencer, int _id);
 	librarySong(sequencerApp* _sequencer, int _id, string _artist, string _title, int _bpm, int _key, int _major);
 	void loadClips();
+	void loadSequenceSongs();
+	vector<liveSequenceSong*> getSequenceSongs();
 	string getName();
 	string getLowercaseName();
+	int getId();
 	vector<clip*> getClips();
 	clip* getClip(int index);
 	
@@ -28,6 +32,7 @@ public:
 	int key;
 	bool major;
 	vector<clip*> clips;
+	vector<liveSequenceSong*> sequence_songs;
 	
 };
 

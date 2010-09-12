@@ -187,3 +187,10 @@ void liveSequence::selectPosition(char direction) {
 //	}
 
 }
+
+
+// Create and return a new liveSequenceSong given a specified librarySong
+liveSequenceSong* liveSequence::addLibrarySong(librarySong* song, int track_id, int bar) {
+	songs.insert ( songs.end(), new liveSequenceSong(sequencer, song, track_id, bar, id) );
+	return songs[songs.size() - 1];
+}

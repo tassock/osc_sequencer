@@ -14,6 +14,8 @@ public:
 	void updateQueryBuffer();
 	void draw();
 	void keyPressed(int key);
+	string getView();
+	librarySong* getSelectedSong();
 	
 	sequencerApp* sequencer;
 	ofxSQLite* sqlite;
@@ -21,6 +23,7 @@ public:
 	vector<librarySong*> song_buffer;
 	vector<librarySong*> query_buffer;
 	string query;
+	string view;
 	int select_index;
 	
 	int browserX;

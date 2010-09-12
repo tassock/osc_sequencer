@@ -193,6 +193,19 @@ string liveSequenceWindow::stringWithinWidth(string input, int length) {
 void liveSequenceWindow::keyPressed(int key) {
 	cout << "!!KEY: " << key << endl;
 	
+	// listen for browser exit
+	if (key == 92 and focus == "browser" and song_browser->getView() == "song_select") { // |
+		focus = "sequence";
+	}
+	
+	// listen for song insertion
+	if (key == 13 and focus == "browser" and song_browser->getView() == "sequence_select") { // ENTER
+		librarySong* i_song = song_browser->getSelectedSong();
+		cout << "INSERT: " << i_song->getName() << endl;
+		selected_song = sequence->addLibrarySong( i_song, selected_song->getTrackId(), selected_song->getEnd() );
+		focus = "sequence";
+	}
+	
 	// direct focus specific key actions
 	if (focus == "sequence") {
 		sequenceKeyPressed(key);
@@ -204,13 +217,11 @@ void liveSequenceWindow::keyPressed(int key) {
 		}
 	}
 	
-	// toggle focus
+	// listen for browser entry
 	if (key == 'i' and focus == "sequence") {
 		focus = "browser";
 	}
-	if (key == 92 and focus == "browser") {
-		focus = "sequence";
-	}
+	
 }
 
 

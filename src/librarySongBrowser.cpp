@@ -22,6 +22,8 @@ librarySongBrowser::librarySongBrowser(sequencerApp* _sequencer) {
 	
 	franklinBook.loadFont("frabk.ttf", 12);
 	
+	view = "song_select";
+	
 	loadSongBuffer();
 	updateQueryBuffer();
 }
@@ -78,53 +80,91 @@ void librarySongBrowser::draw() {
 	
 	int padding = 20;
 	
-	// Search box
-	ofSetColor(255, 255, 255);
-	ofRect(browserX + padding, browserY + padding, browserW - (2 * padding), 30);
-	ofSetColor(0, 0, 0);
-	string query_text = query;
-	query_text =query + "|";
-	franklinBook.drawString( query_text, browserX + padding, browserY + (2 * padding) );
-	
-	// Song list
-	for(int i = 0; i < query_buffer.size(); i++) {
-		librarySong* s_song = query_buffer[i];
-		if (i == select_index) {
-			ofSetColor(ORANGE);
-		} else {
-			ofSetColor(255, 255, 255);
+	if (view == "song_select") {
+		// Search box
+		ofSetColor(255, 255, 255);
+		ofRect(browserX + padding, browserY + padding, browserW - (2 * padding), 30);
+		ofSetColor(0, 0, 0);
+		string query_text = query;
+		query_text =query + "|";
+		franklinBook.drawString( query_text, browserX + padding, browserY + (2 * padding) );
+		
+		// Song list
+		for(int i = 0; i < query_buffer.size(); i++) {
+			librarySong* s_song = query_buffer[i];
+			if (i == select_index) {
+				ofSetColor(ORANGE);
+			} else {
+				ofSetColor(255, 255, 255);
+			}
+			franklinBook.drawString( s_song->getName(), browserX + padding, browserY + 70 + (i * 20) );
 		}
-		franklinBook.drawString( s_song->getName(), browserX + padding, browserY + 70 + (i * 20) );
+	} else {
+		ofSetColor(255, 255, 255);
+		franklinBook.drawString( "sequences", browserX + padding, browserY + padding );
+		
+		librarySong* s_song = query_buffer[select_index];
+		vector<clip*> s_clips = s_song->getClips();
+		for(int i = 0; i < s_clips.size(); i++) {
+			clip* s_clip = s_clips[i];
+			s_clip->draw(browserX + padding, browserY + (2 * padding) + (i * s_clip->getLength() * BEAT_HEIGHT ), false );
+		}
 	}
 }
 
 
 void librarySongBrowser::keyPressed(int key) {
-	switch (key) {
-		case 92: // /
+	if (view == "sequence_select") {
+		switch (key) {
+//			case 13: // Enter
+//				cout << "INSERT: " << query_buffer[select_index]->getName() << endl;
+//				break;
+			case 9: // Tab
+				break;
+			case 92: // |
+				cout << "EXIT" << endl;
+				view = "song_select";
+				break;
+		}
+	} else {
+		switch (key) {
+			case 92: // /
+				break;
+			case 13: // Enter
+				cout << "ENTER" << endl;
+				view = "sequence_select";
+				cout << "SIZE: " << query_buffer[select_index]->getSequenceSongs().size() << endl;
+				break;
+			case 127: // Delete
+				cout << "DELETE" << endl;
+				query = query.substr(0, query.size()-1);
+				updateQueryBuffer();
+				break;
+			case 9: // Tab
+				cout << "Change selection" << endl;
+				if (select_index < (query_buffer.size() - 1) ) {
+					select_index ++;
+				} else {
+					select_index = 0;
+				}
+				break;
+			default:
+				cout << "!!BROSWER KEY: " << key << endl;
+				char buf = key;
+				query = query + buf;
+				updateQueryBuffer();
 			break;
-		case 13: // Enter
-			cout << "ENTER" << endl;
-			cout << "INSERT: " << query_buffer[select_index]->getName() << endl;
-			break;
-		case 127: // Delete
-			cout << "DELETE" << endl;
-			query = query.substr(0, query.size()-1);
-			updateQueryBuffer();
-			break;
-		case 9: // Tab
-			cout << "Change selection" << endl;
-			if (select_index < (query_buffer.size() - 1) ) {
-				select_index ++;
-			} else {
-				select_index = 0;
-			}
-			break;
-		default:
-			cout << "!!BROSWER KEY: " << key << endl;
-			char buf = key;
-			query = query + buf;
-			updateQueryBuffer();
-			break;
+		}
 	}
+}
+
+
+string librarySongBrowser::getView() {
+	return view;
+}
+
+
+librarySong* librarySongBrowser::getSelectedSong() {
+	view = "song_select";
+	return query_buffer[select_index];
 }

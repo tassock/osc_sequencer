@@ -1,6 +1,8 @@
 #include "liveSequenceSong.h"
 
+// Constructor to load existing liveSequenceSong from db
 liveSequenceSong::liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_id, int _track_id, int _bar_start, int _length) {
+	cout << "liveSequenceSong (db)" << endl;
 	sequencer = _sequencer;
 	sqlite = sequencer->getSQLite();
 	id = _id;
@@ -18,14 +20,52 @@ liveSequenceSong::liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_
 }
 
 
+// Contructor to create new liveSequenceSong
+liveSequenceSong::liveSequenceSong(sequencerApp* _sequencer, librarySong* song, int _track_id, int _bar_start, int _sequence_id) {
+	cout << "liveSequenceSong (new)" << endl;
+	sequencer = _sequencer;
+	sqlite = sequencer->getSQLite();
+	id = NULL;
+	song_id = song->getId();
+	track_id = _track_id;
+	bar_start = _bar_start;
+	library_song = song;
+	name = library_song->getName();
+	sequence_id = _sequence_id;
+	
+	// Create new liveSequenceClips from librarySong's clips
+	vector<clip*> s_clips = library_song->getClips();
+	for(int i = 0; i < s_clips.size(); i++) {
+		clip* s_clip = s_clips[i];
+		clips.insert ( clips.end(), new liveSequenceClip(sequencer, this, s_clip, i) );
+	}
+	
+	length = getLength();
+}
+
+
 void liveSequenceSong::save() {
 	cout << "SAVING SONG" << endl;
 	
-	// Update self
-	sqlite->update("sequence_songs")
-	.use("bar_start", bar_start)
-	.where("id", id)
-	.execute();
+	// Save or update self
+	if (id == NULL) {
+		// Save self
+		sqlite->insert("sequence_songs")
+		.use("song_id", song_id)
+		.use("track_id", track_id)
+		.use("bar_start", bar_start)
+		.use("length", length)
+		.use("sequence_id", sequence_id)
+		.execute();
+		// Set id
+		id = sqlite->lastInsertID();
+	} else {
+		// Update self
+		sqlite->update("sequence_songs")
+		.use("bar_start", bar_start)
+		.where("id", id)
+		.execute();
+	}
 	
 	// Update clips
 	for(int i = 0; i < clips.size(); i++) {

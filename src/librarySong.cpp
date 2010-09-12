@@ -52,6 +52,40 @@ void librarySong::loadClips() {
 }
 
 
+void librarySong::loadSequenceSongs() {
+	
+	cout << "loadSequenceSongs()" << endl;
+	
+	// select all that match sequence id
+	ofxSQLiteSelect sel = sequencer->getSQLite()->select("id, song_id, track_id, bar_start, length")
+	.from("sequence_songs")
+	.where("song_id", id)
+	.execute().begin();
+	
+	// set results as instance variables
+	while(sel.hasNext()) {
+		cout << "song found" << endl;
+		int sequence_song_id = sel.getInt();
+		int song_id = sel.getInt();
+		int track_id = sel.getInt();
+		int bar_start = sel.getInt();
+		int length = sel.getInt();
+		
+		// store sequence song in buffer
+		sequence_songs.insert ( sequence_songs.end(), new liveSequenceSong(sequencer, sequence_song_id, song_id, track_id, bar_start, length) );
+		
+		// next record
+		sel.next();
+	}	
+}
+
+
+vector<liveSequenceSong*> librarySong::getSequenceSongs() {
+	loadSequenceSongs();
+	return sequence_songs;
+}
+
+
 string librarySong::getName() {
 	return (artist + " - " + title);
 }
@@ -61,6 +95,11 @@ string librarySong::getLowercaseName() {
 	string data = getName();
 	std::transform(data.begin(), data.end(), data.begin(), ::tolower);
 	return data;
+}
+
+
+int librarySong::getId() {
+	return id;
 }
 
 

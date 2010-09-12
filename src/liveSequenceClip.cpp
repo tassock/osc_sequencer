@@ -1,5 +1,6 @@
 #include "liveSequenceClip.h"
 
+// Constructor to load existing liveSequenceClip from db
 liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, int _id, int _clip_id, int _track_id, int _sequence_song_order, int _length) {
 	sequencer = _sequencer;
 	song = _song;
@@ -21,6 +22,7 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _
 }
 
 
+// Constructor for duplicate liveSequenceClip
 liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip* duplicate_clip) {
 	sequencer = _sequencer;
 	song = duplicate_clip->getSong();
@@ -37,6 +39,26 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip* d
 	
 	fetchLiveClip();
 }
+
+
+// Constructor for new liveSequenceClip
+liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _song, clip* _clip, int _sequence_song_order) {
+	sequencer = _sequencer;
+	song = _song;
+	sqlite = sequencer->getSQLite();
+	
+	id = NULL;
+	clip_id = _clip->getId();
+	track_id = _song->getTrackId();
+	sequence_song_order = _sequence_song_order;
+	length = _clip->getLength();
+	
+	library_clip = _clip;
+	name = library_clip->getName();
+	
+	fetchLiveClip();
+}
+	
 
 
 void liveSequenceClip::save() {

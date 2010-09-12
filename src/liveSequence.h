@@ -13,6 +13,7 @@
 
 class liveSequenceSong;
 class liveSequenceClip;
+class librarySong;
 
 class liveSequence {
 	
@@ -29,6 +30,7 @@ public:
 	int prevSongEnd(int track_id, int bar);
 	string getName();
 	void selectPosition(char direction);
+	liveSequenceSong* addLibrarySong(librarySong* song, int track_id, int bar);
 	
 	int id;
 	sequencerApp* sequencer;

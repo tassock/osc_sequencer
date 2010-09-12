@@ -16,6 +16,7 @@ class liveSequenceSong {
 	
 public:
 	liveSequenceSong(sequencerApp* _sequencer, int _id, int _song_id, int _track_id, int _bar_start, int _length);
+	liveSequenceSong(sequencerApp* _sequencer, librarySong* song, int _track_id, int _bar_start, int _sequence_id);
 	void save();
 	void loadClips();
 	vector<liveSequenceClip*> getClips();
@@ -41,6 +42,7 @@ public:
 	int track_id;
 	int bar_start;
 	int length;
+	int sequence_id;
 	string name;
 	librarySong* library_song;
 	
