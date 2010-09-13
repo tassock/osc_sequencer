@@ -32,7 +32,7 @@ clip::clip(int _id, ofxSQLite* _sqlite) {
 }
 
 
-void clip::draw(int clipX, int clipY, bool selected) {
+void clip::draw(int clipX, int clipY, bool selected, bool show_name) {
 	int clipH = (length * BEAT_HEIGHT) - CLIP_PADDING;
 	
 	// Color
@@ -56,9 +56,10 @@ void clip::draw(int clipX, int clipY, bool selected) {
 	ofRect(clipX, clipY, CLIP_WIDTH, clipH);
 	
 	// Name
-	ofSetColor(color);
-	franklinBook.drawString(name, clipX, clipY + 13);
-	//franklinBook.drawString(name + " s: " + ofToString(start), clipX, clipY + 15);
+	if (show_name or selected) {
+		ofSetColor(color);
+		franklinBook.drawString(name, clipX, clipY + 13);
+	}
 }
 
 

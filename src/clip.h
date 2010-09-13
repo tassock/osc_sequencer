@@ -16,7 +16,7 @@ class clip {
 public:
 	clip(sequencerApp* _sequencer, int _id, int _length, string _name);
 	clip(int _id, ofxSQLite* _sqlite);
-	void draw(int clipX, int clipY, bool selected);
+	void draw(int clipX, int clipY, bool selected, bool show_name);
 	string getName();
 	int getLength();
 	int getId();

@@ -255,14 +255,14 @@ void liveSequenceSong::draw(int songX, int songY, string select_mode, liveSequen
 	
 	int color = 0;
 	
-	// border color
+	// Set border color
 	if (select_mode == "song" and this == selected_song ) {
 		color = ORANGE;
 	} else {
 		color = GREY;
 	}
 	
-	// Vertical song name
+	// Draw vertical song name
 	ofSetColor(0x00FF00);
 	string tempString = stringWithinWidth( getName(), songH );
 	ofRectangle rect = franklinBook.getStringBoundingBox(tempString, 0,0);
@@ -286,28 +286,20 @@ void liveSequenceSong::draw(int songX, int songY, string select_mode, liveSequen
 		franklinBook.drawString(tempString, -centerx,-centery);
 	ofPopMatrix();
 	
-	// DrawClips()
+	// Draw clips
 	int bar_count = 0;
+	string prev_clip_name = "";
 	for(int c = 0; c < clips.size(); c++) { // find number of clips in track
-		
 		liveSequenceClip* s_clip = clips[c];
 		int clipX = songX + songW;
 		int clipY = songY + (bar_count * BEAT_HEIGHT) + CLIP_PADDING;
 		bool selected = (select_mode == "clip" and s_clip == selected_clip );
-		s_clip->getClip()->draw(clipX, clipY, selected);
+		bool show_name = (s_clip->getName() != prev_clip_name);
+		s_clip->getClip()->draw(clipX, clipY, selected, show_name);
 		
-//		// Fire clip if ready:
-//		if (step == 0 and bar_start == beat + 1) {
-//			//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
-//			if (sequencer->getClipMode() == "live") {
-//				s_clip->fetchLiveClip();
-//				cout << "FIRE!! " << s_clip->getName() << endl;
-//				cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
-//				s_clip->getLiveClip()->fire();
-//			}
-//		}
-		
+		// Set things for next iteration
 		bar_count = bar_count + s_clip->getLength();
+		prev_clip_name = s_clip->getName();
 	}
 }
 

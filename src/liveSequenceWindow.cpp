@@ -101,7 +101,7 @@ void liveSequenceWindow::drawClipBrowser() {
 	for(int i = 0; i < clip_buffer.size(); i++) {
 		clip* s_clip = selected_song->getLibrarySong()->getClip(i);
 		bool selected = (clip_select_index == i);
-		s_clip->draw(browserX + padding, browserY + (2 * padding) + (i * s_clip->getLength() * BEAT_HEIGHT ), selected );
+		s_clip->draw(browserX + padding, browserY + (2 * padding) + (i * s_clip->getLength() * BEAT_HEIGHT ), selected, true );
 	}
 }
 

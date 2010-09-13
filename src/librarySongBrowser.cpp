@@ -108,7 +108,7 @@ void librarySongBrowser::draw() {
 		int shift = 0;
 		for(int i = 0; i < s_clips.size(); i++) {
 			clip* s_clip = s_clips[i];
-			s_clip->draw(browserX + padding, browserY + (2 * padding) + (shift * BEAT_HEIGHT ), false );
+			s_clip->draw(browserX + padding, browserY + (2 * padding) + (shift * BEAT_HEIGHT ), false, true );
 			shift = shift + s_clip->getLength();
 		}
 	}
