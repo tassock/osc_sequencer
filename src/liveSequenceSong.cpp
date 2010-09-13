@@ -294,12 +294,42 @@ void liveSequenceSong::draw(int songX, int songY, string select_mode, liveSequen
 		int clipX = songX + songW;
 		int clipY = songY + (bar_count * BEAT_HEIGHT) + CLIP_PADDING;
 		bool selected = (select_mode == "clip" and s_clip == selected_clip );
-		bool show_name = (s_clip->getName() != prev_clip_name);
-		s_clip->getClip()->draw(clipX, clipY, selected, show_name);
+		bool new_clip = (s_clip->getName() != prev_clip_name);
+		s_clip->getClip()->draw(clipX, clipY, selected, new_clip);
 		
 		// Set things for next iteration
 		bar_count = bar_count + s_clip->getLength();
 		prev_clip_name = s_clip->getName();
+	}
+	
+	// Draw groups
+	bar_count = 0; // overall bar count of song
+	prev_clip_name = "";
+	// Interate through clips
+	for(int c = 0; c < clips.size(); c++) {
+		liveSequenceClip* s_clip = clips[c];
+		// Iterate looking for matches
+		int group_count = 0; // count of group
+		int m = c;
+		while ( m < clips.size() and clips[m]->getName() == clips[c]->getName() ) {
+			if (group_count > 0) { // skip first match
+				c++; 
+			}
+			group_count = group_count + clips[m]->getLength();
+			m ++;
+		}
+		// Draw group
+		int groupX = songX + songW;
+		int groupY = songY + (bar_count * BEAT_HEIGHT);
+		int groupW = CLIP_WIDTH;
+		int groupH = (group_count * BEAT_HEIGHT);
+		ofNoFill();
+		ofSetLineWidth(2);
+		ofSetColor(GREY);
+		ofRect(groupX, groupY, groupW, groupH);
+		ofFill();
+		// Set interator vals
+		bar_count = bar_count + group_count;
 	}
 }
 

@@ -35,19 +35,22 @@ clip::clip(int _id, ofxSQLite* _sqlite) {
 void clip::draw(int clipX, int clipY, bool selected, bool show_name) {
 	int clipH = (length * BEAT_HEIGHT) - CLIP_PADDING;
 	
-	// Color
-	int color = 0; // dynamic
+	// Colors
+	int text_color = 0; // dynamic
+	int border_color = 0; // dynamic
 	int background_color = 0x000000;
 	if (selected) {
-		color = ORANGE;
+		text_color = ORANGE;
+		border_color = ORANGE;
 	} else {
-		color = GREY;
+		text_color = GREY;
+		border_color = 0x676767;
 	}
 	
 	// Border
 	ofNoFill();
 	ofSetLineWidth(2);
-	ofSetColor(color);
+	ofSetColor(border_color);
 	ofRect(clipX, clipY, CLIP_WIDTH, clipH);
 	ofFill();
 	
@@ -57,7 +60,7 @@ void clip::draw(int clipX, int clipY, bool selected, bool show_name) {
 	
 	// Name
 	if (show_name or selected) {
-		ofSetColor(color);
+		ofSetColor(text_color);
 		franklinBook.drawString(name, clipX, clipY + 13);
 	}
 }
