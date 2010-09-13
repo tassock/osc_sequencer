@@ -23,14 +23,15 @@ class liveSequenceWindow {
 	
 public:
 	liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y, int _w, int _h);
+	void update(int beat, int step);
 	void draw(int beat, int step);
 	void drawBrowser();
 	void drawClipBrowser();
-	string stringWithinWidth(string input, int length);
 	void keyPressed(int key);
 	void sequenceKeyPressed(int key);
 	void clipBrowserKeyPressed(int key);
 	void toggleSelectMode();
+	void fireClips(int beat, int step);
 	
 	liveSequence* sequence;
 	sequencerApp* sequencer;

@@ -150,6 +150,8 @@ void sequencerApp::update() {
 			}
 		}
 	}
+	
+	sequence_window->update(beat, step);
 
 }
 

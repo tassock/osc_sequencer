@@ -34,6 +34,8 @@ public:
 	int getEnd();
 	int getLength();
 	librarySong* getLibrarySong();
+	void draw(int songX, int songY, string select_mode, liveSequenceSong* selected_song, liveSequenceClip* selected_clip);
+	string stringWithinWidth(string input, int length);
 	
 	sequencerApp* sequencer;
 	ofxSQLite* sqlite;
@@ -48,6 +50,8 @@ public:
 	
 	int num_clips;
 	vector<liveSequenceClip*> clips;
+	
+	ofTrueTypeFont  franklinBook;
 };
 
 #endif

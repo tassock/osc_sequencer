@@ -29,6 +29,12 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	franklinBook.loadFont("frabk.ttf", 12);
 }
 
+
+void liveSequenceWindow::update(int beat, int step) {
+	fireClips(beat, step);
+}
+
+
 void liveSequenceWindow::draw(int beat, int step) {
 	
 	// Background
@@ -44,95 +50,18 @@ void liveSequenceWindow::draw(int beat, int step) {
 	int trackW = 250;
 	int trackH = 1000;
 	
-	// Song vars
-	int songX = 0;
-	int songY = 0;
-	int songW = 20;
-	int songH = 0;
-	
-	// Clip vars
-	int clipX = 0;
-	int clipY = 0;
-	int clipH = 0;
-	int clipP = 2;
-	
 	// Draw tracks
 	for(int t = 0; t < NUM_S_TRACKS; t++){
 		ofSetColor(30, 30, 30);
 		trackX = x + padding + (t * (trackW + padding));
 		ofRect(trackX, trackY, trackW, trackH);
-		
-		// Default Colors
-		int orange = 0xFFA24F;
-		int pink = 0xFA4FFF;
-		int grey = 0xBDBDBD;
-		int background_color = 0x000000;
-		int color = 0; // dynamic
-		
 		// DrawSongs()
 		vector<liveSequenceSong*> song_buffer = sequence->getTrackSongs(t);
 		for(int c = 0; c < song_buffer.size(); c++) { // find number of songs in track
 			liveSequenceSong* s_song = song_buffer[c];
-			songX = trackX;
-			songY = trackY + (s_song->getStart() * BEAT_HEIGHT) - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32);
-			songH = s_song->getLength() * BEAT_HEIGHT;
-			
-			// Color
-			if (select_mode == "song" and s_song == selected_song ) {
-				color = orange;
-			} else {
-				color = grey;
-			}
-			
-			// Vertical song name
-			ofSetColor(0x00FF00);
-			string tempString = stringWithinWidth( s_song->getName(), songH );
-			ofRectangle rect = franklinBook.getStringBoundingBox(tempString, 0,0);
-			float centerx = songH / 2; // rect.x + rect.width / 2;
-			float centery = rect.y + rect.height / 2;
-			ofPushMatrix();
-				// Translate and rotate
-				ofTranslate(songX + (rect.height / 2),songY + (songH / 2),0);
-				ofRotate(270, 0,0,1);
-				// Border
-				ofNoFill();
-				ofSetLineWidth(2);
-				ofSetColor(color);
-				ofRect(rect.x - centerx, rect.y - centery, songH - 2, rect.height + 4);
-				ofFill();
-				// Background
-				ofSetColor(background_color);
-				ofRect(rect.x - centerx, rect.y - centery, songH - 2, rect.height + 4);
-				// Name
-				ofSetColor(color);
-				franklinBook.drawString(tempString, -centerx,-centery);
-			ofPopMatrix();
-			
-			// DrawClips()
-			vector<liveSequenceClip*> s_clip_buffer = s_song->getClips();
-			int bar_count = 0;
-			for(int c = 0; c < s_clip_buffer.size(); c++) { // find number of clips in track
-				
-				liveSequenceClip* s_clip = s_clip_buffer[c];
-				int bar_start = bar_count + s_song->getStart();
-				clipX = trackX + songW;
-				clipY = trackY + (bar_start * BEAT_HEIGHT) - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32) + clipP;
-				bool selected = (select_mode == "clip" and s_clip == selected_clip );
-				s_clip->getClip()->draw(clipX, clipY, selected);
-				
-				// Fire clip if ready:
-				if (step == 0 and bar_start == beat + 1) {
-					//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
-					if (sequencer->getClipMode() == "live") {
-						s_clip->fetchLiveClip();
-						cout << "FIRE!! " << s_clip->getName() << endl;
-						cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
-						s_clip->getLiveClip()->fire();
-					}
-				}
-				
-				bar_count = bar_count + s_clip->getLength();
-			}
+			int songX = trackX;
+			int songY = trackY + (s_song->getStart() * BEAT_HEIGHT) - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32);
+			s_song->draw(songX, songY, select_mode, selected_song, selected_clip);
 		}
 	}
 	drawBrowser();
@@ -174,19 +103,6 @@ void liveSequenceWindow::drawClipBrowser() {
 		bool selected = (clip_select_index == i);
 		s_clip->draw(browserX + padding, browserY + (2 * padding) + (i * s_clip->getLength() * BEAT_HEIGHT ), selected );
 	}
-}
-
-
-// crop string to fit song length by testing against stringWidth
-string liveSequenceWindow::stringWithinWidth(string input, int length) {
-	ofRectangle rect = franklinBook.getStringBoundingBox(input, 0,0);
-	int i = 0;
-	while (rect.width > length) {
-		input = input.substr(0, 100 - i);
-		rect = franklinBook.getStringBoundingBox(input, 0,0);
-		i ++;
-	}
-	return input;
 }
 
 
@@ -369,3 +285,32 @@ void liveSequenceWindow::toggleSelectMode() {
 		selected_clip = selected_song->getClips()[0];
 	}
 }
+
+// Fire clip if ready:
+void liveSequenceWindow::fireClips(int beat, int step) {
+	vector<liveSequenceSong*> song_buffer = sequence->getSongs();
+	for(int c = 0; c < song_buffer.size(); c++) { // find number of songs in track
+		liveSequenceSong* s_song = song_buffer[c];
+		vector<liveSequenceClip*> s_clip_buffer = s_song->getClips();
+		int bar_count = 0;
+		for(int c = 0; c < s_clip_buffer.size(); c++) { // find number of clips in track
+			
+			liveSequenceClip* s_clip = s_clip_buffer[c];
+			int bar_start = bar_count + s_song->getStart();
+			
+			// Fire clip if ready:
+			if (step == 0 and bar_start == beat + 1) {
+				//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
+				if (sequencer->getClipMode() == "live") {
+					s_clip->fetchLiveClip();
+					cout << "FIRE!! " << s_clip->getName() << endl;
+					cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
+					s_clip->getLiveClip()->fire();
+				}
+			}
+			
+			bar_count = bar_count + s_clip->getLength();
+		}
+	}
+}
+	
