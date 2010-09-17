@@ -44,7 +44,7 @@ void clip::draw(int clipX, int clipY, bool selected, bool show_name) {
 		border_color = ORANGE;
 	} else {
 		text_color = GREY;
-		border_color = 0x676767;
+		border_color = 0x343434;
 	}
 	
 	// Border

@@ -212,6 +212,7 @@ int liveSequenceSong::getTrackId() {
 
 
 void liveSequenceSong::setTrackId(int _track_id) {
+	cout << "SET TRACK ID " << _track_id << endl;
 	track_id = _track_id;
 }
 

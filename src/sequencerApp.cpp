@@ -313,6 +313,7 @@ void sequencerApp::keyPressed  (int key) {
 	// Start live set
 	if (clipMode == "live") { 
 		if (key == 32) { // Space
+			//sequence_window->fireClips(beat - 1, step);
 			current_set->play();
 		} else if (key == 96) { // ~
 			current_set->stop();
@@ -329,12 +330,21 @@ void sequencerApp::keyReleased (int key) {
 
 //--------------------------------------------------------------
 void sequencerApp::mousePressed(int x, int y, int button) {
-	setSelected();
 	
-	// Change graph value
-	if ( mouseInside(graphX, graphY, graphW, graphH) ) {
-		main_graph->mousePressed(x, y, button);
-	}
+	cout << "sequencerApp mouseX: " << mouseX << ", mouseY: " << mouseY << endl;
+	
+//	setSelected();
+//	
+//	// Change graph value
+//	if ( mouseInside(graphX, graphY, graphW, graphH) ) {
+//		main_graph->mousePressed(x, y, button);
+//	}
+//	
+//	if ( mouseInside(sWindowX, sWindowY, sWindowW, sWindowH) ) {
+//		sequence_window->mousePressed(x, y, button);
+//	}
+	
+	sequence_window->mousePressed(x, y, button);
 }
 
 
@@ -351,12 +361,15 @@ void sequencerApp::mouseDragged(int x, int y, int button) {
 		setSelected();
 		main_graph->mouseDragged(x, y, button);
 	}
+	
+	sequence_window->mouseDragged(x, y, button);
 }
 
 void sequencerApp::mouseReleased() {
 	gainSlider->setSelected(0);
 	scaleSlider->setSelected(0);
 	main_graph->mouseReleased();
+	sequence_window->mouseReleased();
 }
 
 
@@ -471,7 +484,6 @@ bool sequencerApp::mouseInside (int x, int y, int width, int height) {
 	} else {
 		return false;
 	}
-
 }
 
 //--------------------------------------------------------------

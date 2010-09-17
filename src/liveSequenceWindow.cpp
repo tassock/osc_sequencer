@@ -27,6 +27,10 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	focus = "sequence";
 	
 	franklinBook.loadFont("frabk.ttf", 12);
+	
+	int laneX = (CLIP_WIDTH * 2) + 80;
+	int laneY = y;
+	lane = new liveAutoLane(1, laneX, laneY);
 }
 
 
@@ -47,7 +51,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 	// Track vars
 	int trackX = 0;
 	int trackY = y;
-	int trackW = 250;
+	int trackW = CLIP_WIDTH + 20;
 	int trackH = 1000;
 	
 	// Draw tracks
@@ -64,6 +68,10 @@ void liveSequenceWindow::draw(int beat, int step) {
 			s_song->draw(songX, songY, select_mode, selected_song, selected_clip);
 		}
 	}
+	
+	// Draw Automation lane
+	lane->draw();
+	
 	drawBrowser();
 }
 
@@ -171,6 +179,7 @@ void liveSequenceWindow::clipBrowserKeyPressed(int key) {
 void liveSequenceWindow::sequenceKeyPressed(int key) {
 	int selected_song_start = selected_song->getStart();
 	int selected_track = selected_clip->getSong()->getTrackId();
+	cout << " selected_track: " << selected_track << endl;
 	switch (key) {
 		case 'k':
 			cout << "DOWN" << endl;
@@ -303,8 +312,8 @@ void liveSequenceWindow::fireClips(int beat, int step) {
 				//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
 				if (sequencer->getClipMode() == "live") {
 					s_clip->fetchLiveClip();
-					cout << "FIRE!! " << s_clip->getName() << endl;
-					cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
+					cout << "FIRE!! " << s_clip->getName() << ", BEAT: " << beat << ", START: " << bar_start << endl;
+					//cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
 					s_clip->getLiveClip()->fire();
 				}
 			}
@@ -313,4 +322,24 @@ void liveSequenceWindow::fireClips(int beat, int step) {
 		}
 	}
 }
-	
+
+
+void liveSequenceWindow::mousePressed(int _x, int _y, int button) {
+	cout << "liveSequenceWindow mouseX: " << _x << " (" << x << "), mouseY: " << _y << " (" << y << ")" << endl;
+	if ( mouseInside(_x, _y) ) {
+		cout << "INSIDE liveSequenceWindow mouseX: " << _x << ", mouseY: " << _y << endl;
+		lane->mousePressed(_x, _y, button);
+	}
+}
+
+
+void liveSequenceWindow::mouseDragged(int _x, int _y, int button) {
+	if ( mouseInside(_x, _y) ) {
+		lane->mouseDragged(_x, _y, button);
+	}
+}
+
+
+void liveSequenceWindow::mouseReleased() {
+	lane->mouseReleased();
+}
