@@ -26,6 +26,7 @@ public:
 	float getVal();
 	void setVal(float _val);
 	bool getDragging();
+	void setSelected(bool _selected);
 	
 	int bar;
 	float val;

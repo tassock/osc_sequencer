@@ -82,3 +82,8 @@ void liveAutoPoint::setVal(float _val) {
 bool liveAutoPoint::getDragging() {
 	return dragging;
 }
+
+
+void liveAutoPoint::setSelected(bool _selected) {
+	selected = _selected;
+}

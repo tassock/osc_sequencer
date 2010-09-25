@@ -28,6 +28,21 @@ void liveAutoLane::draw() {
 	ofSetColor(30, 30, 30);
 	ofRect(x, y, w, h);
 	
+	// Draw lines
+	for(int i = 0; i < points.size() - 1; i++) {
+		liveAutoPoint* point_a = points[i];
+		liveAutoPoint* point_b = points[i + 1];
+		int x1 = x + (w * point_a->getVal() ) + 4;
+		int y1 = y + (BEAT_HEIGHT * point_a->getBar() ) + 4;
+		int x2 = x + (w * point_b->getVal() ) + 4;
+		int y2 = y + (BEAT_HEIGHT * point_b->getBar() ) + 4;
+		
+		ofEnableSmoothing();
+		ofSetColor(128, 128, 128);
+		ofLine(x1, y1, x2, y2);
+		ofDisableSmoothing();
+	}
+	
 	// Draw points
 	for(int i = 0; i < points.size(); i++) {
 		liveAutoPoint* s_point = points[i];
@@ -41,6 +56,11 @@ void liveAutoLane::draw() {
 void liveAutoLane::mousePressed(int _x, int _y, int button) {
 	if ( mouseInside(_x, _y) ) {
 		cout << "liveAutoLane!!!" << endl;
+		// De-select all
+		for(int i = 0; i < points.size(); i++) {
+			points[i]->setSelected(false);
+		}
+		// check for mouseover
 		for(int i = 0; i < points.size(); i++) {
 			points[i]->mousePressed(_x, _y, button);
 		}
