@@ -22,6 +22,7 @@ public:
 	void mouseDragged(int _x, int _y, int button);
 	void mouseReleased();
 	int getBar();
+	void setBar(int _bar);
 	float getVal();
 	void setVal(float _val);
 	bool getDragging();

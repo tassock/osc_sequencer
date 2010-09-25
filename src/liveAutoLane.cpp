@@ -52,6 +52,7 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 	if ( mouseInside(_x, _y) ) {
 		for(int i = 0; i < points.size(); i++) {
 			if ( points[i]->getDragging() ) {
+				// Set Val
 				float x_dist = _x - x; 
 				float x_range = (float)w;
 				float new_val = x_dist / x_range;
@@ -59,6 +60,11 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 					cout << "new_val: " << new_val << endl;
 					points[i]->setVal(new_val);
 				}
+				// Set Bar
+				int y_dist = _y - y; 
+				int new_bar = y_dist / BEAT_HEIGHT;
+				cout << "new_bar: " << new_bar << endl;
+				points[i]->setBar(new_bar);
 			}
 		}
 	}

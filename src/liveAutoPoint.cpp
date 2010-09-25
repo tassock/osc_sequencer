@@ -64,6 +64,11 @@ int liveAutoPoint::getBar() {
 }
 
 
+void liveAutoPoint::setBar(int _bar) {
+	bar = _bar;
+}
+
+
 float liveAutoPoint::getVal() {
 	return val;
 }
