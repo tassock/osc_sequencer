@@ -23,8 +23,13 @@ public:
 	void mousePressed(int _x, int _y, int button);
 	void mouseDragged(int _x, int _y, int button);
 	void mouseReleased();
+	float valFromX(int _x);
+	int barFromY(int _y);
 	
 	int id;
+	
+	int last_click_x;
+	int last_click_y;
 	
 	int range;
 	

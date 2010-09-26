@@ -16,6 +16,9 @@ liveAutoLane::liveAutoLane(int _id, int _x, int _y) {
 	w = 100;
 	h = 1000;
 	
+	last_click_x = 0;
+	last_click_y = 0;
+	
 	range = 92;
 	
 	points.insert ( points.end(), new liveAutoPoint(0, 0.5) );
@@ -60,11 +63,31 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 		for(int i = 0; i < points.size(); i++) {
 			points[i]->setSelected(false);
 		}
-		// check for mouseover
+		// Check for mouseover
 		for(int i = 0; i < points.size(); i++) {
 			points[i]->mousePressed(_x, _y, button);
 		}
+		// Check if last click coordinates are the same
+		if (last_click_x == _x and last_click_y == _y) {
+			// check if mouse is outside current points
+			bool outside_points = true;
+			for(int i = 0; i < points.size(); i++) {
+				if ( points[i]->mouseInside(_x, _y) ) {
+					outside_points = false;
+					points.erase ( points.begin() + i );
+				}
+			}
+			// create new point if it's outside
+			if (outside_points) {
+				cout << "CREATE NEW POINT" << endl;
+				int new_bar = barFromY(_y);
+				float new_val = valFromX(_x);
+				points.insert ( points.end(), new liveAutoPoint(new_bar, new_val) );
+			}
+		}
 	}
+	last_click_x = _x;
+	last_click_y = _y;
 }
 
 
@@ -74,15 +97,13 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 			if ( points[i]->getDragging() ) {
 				// Set Val
 				float x_dist = _x - x; 
-				float x_range = (float)w;
-				float new_val = x_dist / x_range;
+				float new_val = valFromX(_x);
 				if (x_dist <= (float)range) {
 					cout << "new_val: " << new_val << endl;
 					points[i]->setVal(new_val);
 				}
 				// Set Bar
-				int y_dist = _y - y; 
-				int new_bar = y_dist / BEAT_HEIGHT;
+				int new_bar = barFromY(_y);
 				cout << "new_bar: " << new_bar << endl;
 				points[i]->setBar(new_bar);
 			}
@@ -96,3 +117,17 @@ void liveAutoLane::mouseReleased() {
 		points[i]->mouseReleased();;
 	}
 }
+
+
+float liveAutoLane::valFromX(int _x) {
+	float x_dist = _x - x; 
+	float x_range = (float)w;
+	return x_dist / x_range;
+}
+
+
+int liveAutoLane::barFromY(int _y) {
+	int y_dist = _y - y; 
+	return y_dist / BEAT_HEIGHT;
+}
+	
