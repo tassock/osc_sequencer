@@ -22,7 +22,7 @@ liveAutoLane::liveAutoLane(int _id, int _x, int _y) {
 	range = 92;
 	
 	points.insert ( points.end(), new liveAutoPoint(0, 0.5) );
-	points.insert ( points.end(), new liveAutoPoint(4, 0.5) );
+	points.insert ( points.end(), new liveAutoPoint(16, 0.5) );
 }
 
 void liveAutoLane::draw() {
@@ -82,7 +82,14 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 				cout << "CREATE NEW POINT" << endl;
 				int new_bar = barFromY(_y);
 				float new_val = valFromX(_x);
-				points.insert ( points.end(), new liveAutoPoint(new_bar, new_val) );
+				// iterate through existing points to find valid spot
+				int insert_point = 0;
+				for(int i = 0; i < points.size(); i++) {
+					if ( points[i]->getBar() < new_bar ) {
+						insert_point = i + 1;
+					}
+				}
+				points.insert ( points.begin() + insert_point, new liveAutoPoint(new_bar, new_val) );
 			}
 		}
 	}
@@ -113,8 +120,12 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 				if ( i < points.size() - 1 ) {
 					new_max = points[i + 1]->getBar();
 				}
-				if (new_bar >= new_min and new_bar <= new_max) {
-					cout << "new_bar: " << new_bar << endl;
+				cout << "new_bar: " << new_bar << endl;
+				if ( new_bar < new_min ) {
+					points[i]->setBar(new_min);
+				} else if ( new_bar > new_max ) {
+					points[i]->setBar(new_max);
+				} else {
 					points[i]->setBar(new_bar);
 				}
 			}
