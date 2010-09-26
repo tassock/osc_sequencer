@@ -31,6 +31,7 @@ public:
 	void setVal(float _val);
 	bool getDragging();
 	void setSelected(bool _selected);
+	void save();
 	
 	int id;
 	int live_auto_lane_id;

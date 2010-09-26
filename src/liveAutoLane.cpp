@@ -180,4 +180,11 @@ int liveAutoLane::barFromY(int _y) {
 	int y_dist = _y - y; 
 	return y_dist / BEAT_HEIGHT;
 }
+
+
+void liveAutoLane::save() {
+	for(int i = 0; i < points.size(); i++) {
+		points[i]->save();
+	}
+}
 	

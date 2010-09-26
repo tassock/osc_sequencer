@@ -30,6 +30,7 @@ public:
 	void mouseReleased();
 	float valFromX(int _x);
 	int barFromY(int _y);
+	void save();
 	
 	int id;
 	

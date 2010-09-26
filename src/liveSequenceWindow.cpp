@@ -262,6 +262,7 @@ void liveSequenceWindow::sequenceKeyPressed(int key) {
 		case 's':
 			cout << "SAVE" << endl;
 			sequence->save();
+			lane->save();
 			break;
 		case 127: // Delete
 			cout << "DELETE " << selected_clip->getName() << endl;

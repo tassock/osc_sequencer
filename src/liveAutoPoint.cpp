@@ -91,3 +91,26 @@ bool liveAutoPoint::getDragging() {
 void liveAutoPoint::setSelected(bool _selected) {
 	selected = _selected;
 }
+
+
+void liveAutoPoint::save() {
+	cout << "SAVING POINT" << endl;
+	
+	if (id == NULL) {
+		// Save self
+		sqlite->insert("live_auto_points")
+		.use("live_auto_lane_id", live_auto_lane_id)
+		.use("bar", bar)
+		.use("val", val)
+		.execute();
+		// Set id
+		id = sqlite->lastInsertID();
+	} else {
+		// Update self
+		sqlite->update("live_auto_points")
+		.use("bar", bar)
+		.use("val", val)
+		.where("id", id)
+		.execute();
+	}
+}
