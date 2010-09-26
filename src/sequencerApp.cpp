@@ -590,7 +590,8 @@ void sequencerApp::initDatabase() {
 						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
 						" live_auto_lane_id INTEGER," \
 						" bar INTEGER," \
-						" val REAL" \
+						" val REAL," \
+						" point_order INTEGER" \
 						");"
 						);
 	

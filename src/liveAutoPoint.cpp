@@ -9,13 +9,14 @@
 
 #include "liveAutoPoint.h"
 
-liveAutoPoint::liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval, bool _selected) {
+liveAutoPoint::liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval, int _point_order, bool _selected) {
 	sequencer = _sequencer;
 	sqlite = sequencer->getSQLite();
 	id = _id;
 	live_auto_lane_id = _live_auto_lane_id;
 	bar = _bar;
 	val = _fval;
+	point_order = _point_order;
 	
 	w = 8;
 	h = 8;
@@ -91,6 +92,11 @@ void liveAutoPoint::setVal(float _val) {
 }
 
 
+void liveAutoPoint::setOrder(int _point_order) {
+	point_order = _point_order;
+}
+
+
 bool liveAutoPoint::getDragging() {
 	return dragging;
 }
@@ -110,6 +116,7 @@ void liveAutoPoint::save() {
 		.use("live_auto_lane_id", live_auto_lane_id)
 		.use("bar", bar)
 		.use("val", val)
+		.use("point_order", point_order)
 		.execute();
 		// Set id
 		id = sqlite->lastInsertID();
@@ -118,6 +125,7 @@ void liveAutoPoint::save() {
 		sqlite->update("live_auto_points")
 		.use("bar", bar)
 		.use("val", val)
+		.use("point_order", point_order)
 		.where("id", id)
 		.execute();
 	}

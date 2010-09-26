@@ -31,9 +31,10 @@ liveAutoLane::liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y) {
 
 void liveAutoLane::loadPoints() {
 	// select all that match sequence id
-	ofxSQLiteSelect sel = sqlite->select("id, bar, val")
+	ofxSQLiteSelect sel = sqlite->select("id, bar, val, point_order")
 	.from("live_auto_points")
 	.where("live_auto_lane_id", id)
+	.order("point_order", " ASC ")
 	.execute().begin();
 	
 	// set results as instance variables
@@ -41,9 +42,10 @@ void liveAutoLane::loadPoints() {
 		int point_id = sel.getInt();
 		int bar = sel.getInt();
 		float val = ofToFloat( sel.getString() );
+		int point_order = sel.getInt();
 		
 		// store sequence clip in buffer
-		points.insert ( points.end(), new liveAutoPoint(sequencer, point_id, id, bar, val, false) );
+		points.insert ( points.end(), new liveAutoPoint(sequencer, point_id, id, bar, val, point_order, false) );
 		
 		// next record
 		sel.next();
@@ -102,7 +104,7 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 			for(int i = 0; i < points.size(); i++) {
 				if ( points[i]->mouseInside(_x, _y) ) {
 					outside_points = false;
-					deleted_points.insert ( deleted_points.end(), new liveAutoPoint(sequencer, points[i]->getId(), id, points[i]->getBar(), points[i]->getVal(), false) );
+					deleted_points.insert ( deleted_points.end(), new liveAutoPoint(sequencer, points[i]->getId(), id, points[i]->getBar(), points[i]->getVal(), NULL, false) );
 					points.erase ( points.begin() + i );
 				}
 			}
@@ -118,7 +120,7 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 						insert_point = i + 1;
 					}
 				}
-				points.insert ( points.begin() + insert_point, new liveAutoPoint(sequencer, NULL, id, new_bar, new_val, true) );
+				points.insert ( points.begin() + insert_point, new liveAutoPoint(sequencer, NULL, id, new_bar, new_val, NULL, true) );
 			}
 		}
 	}
@@ -135,7 +137,7 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 				// Set Val
 				float x_dist = _x - x; 
 				float new_val = valFromX(_x);
-				if (x_dist <= (float)w) {
+				if (new_val >= 0 and new_val <= 1) {
 					points[i]->setVal(new_val);
 				}
 				// Set Bar if it's within range of relative points
@@ -182,11 +184,18 @@ int liveAutoLane::barFromY(int _y) {
 
 
 void liveAutoLane::save() {
+	// Update point order
+	for(int i = 0; i < points.size(); i++) {
+		points[i]->setOrder(i);
+	}
+	// Save points in points buffer
 	for(int i = 0; i < points.size(); i++) {
 		points[i]->save();
 	}
+	// Delete points in deleted_points buffer
 	for(int i = 0; i < deleted_points.size(); i++) {
 		deleted_points[i]->destroy();
 	}
+	// Clear deleted_points buffer
+	deleted_points.clear();
 }
-	
