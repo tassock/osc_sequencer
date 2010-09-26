@@ -43,7 +43,7 @@ void liveAutoLane::loadPoints() {
 		float val = ofToFloat( sel.getString() );
 		
 		// store sequence clip in buffer
-		points.insert ( points.end(), new liveAutoPoint(sequencer, point_id, id, bar, val) );
+		points.insert ( points.end(), new liveAutoPoint(sequencer, point_id, id, bar, val, false) );
 		
 		// next record
 		sel.next();
@@ -102,6 +102,7 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 			for(int i = 0; i < points.size(); i++) {
 				if ( points[i]->mouseInside(_x, _y) ) {
 					outside_points = false;
+					deleted_points.insert ( deleted_points.end(), new liveAutoPoint(sequencer, points[i]->getId(), id, points[i]->getBar(), points[i]->getVal(), false) );
 					points.erase ( points.begin() + i );
 				}
 			}
@@ -117,7 +118,7 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 						insert_point = i + 1;
 					}
 				}
-				points.insert ( points.begin() + insert_point, new liveAutoPoint(sequencer, NULL, id, new_bar, new_val) );
+				points.insert ( points.begin() + insert_point, new liveAutoPoint(sequencer, NULL, id, new_bar, new_val, true) );
 			}
 		}
 	}
@@ -135,7 +136,6 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 				float x_dist = _x - x; 
 				float new_val = valFromX(_x);
 				if (x_dist <= (float)w) {
-					cout << "new_val: " << new_val << endl;
 					points[i]->setVal(new_val);
 				}
 				// Set Bar if it's within range of relative points
@@ -148,7 +148,6 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 				if ( i < points.size() - 1 ) {
 					new_max = points[i + 1]->getBar();
 				}
-				cout << "new_bar: " << new_bar << endl;
 				if ( new_bar < new_min ) {
 					points[i]->setBar(new_min);
 				} else if ( new_bar > new_max ) {
@@ -171,7 +170,7 @@ void liveAutoLane::mouseReleased() {
 
 float liveAutoLane::valFromX(int _x) {
 	float x_dist = _x - x; 
-	float x_range = (float)w;
+	float x_range = (float)range;
 	return x_dist / x_range;
 }
 
@@ -185,6 +184,9 @@ int liveAutoLane::barFromY(int _y) {
 void liveAutoLane::save() {
 	for(int i = 0; i < points.size(); i++) {
 		points[i]->save();
+	}
+	for(int i = 0; i < deleted_points.size(); i++) {
+		deleted_points[i]->destroy();
 	}
 }
 	

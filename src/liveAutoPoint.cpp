@@ -9,7 +9,7 @@
 
 #include "liveAutoPoint.h"
 
-liveAutoPoint::liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval) {
+liveAutoPoint::liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval, bool _selected) {
 	sequencer = _sequencer;
 	sqlite = sequencer->getSQLite();
 	id = _id;
@@ -20,8 +20,13 @@ liveAutoPoint::liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_l
 	w = 8;
 	h = 8;
 	
-	selected = false;
-	dragging = false;
+	if (_selected) {
+		selected = true;
+		dragging = true;
+	} else {
+		selected = false;
+		dragging = false;
+	}
 }
 
 
@@ -43,7 +48,6 @@ void liveAutoPoint::mousePressed(int _x, int _y, int button) {
 	if ( mouseInside(_x, _y) ) {
 		selected = true;
 		dragging = true;
-		cout << "liveAutoPoint!!!" << endl;
 	}
 }
 
@@ -58,8 +62,12 @@ void liveAutoPoint::mouseDragged(int _x, int _y, int button) {
 
 
 void liveAutoPoint::mouseReleased() {
-	cout << "RELEASE!!!" << endl;
 	dragging = false;
+}
+
+
+int liveAutoPoint::getId() {
+	return id;
 }
 
 
@@ -113,4 +121,10 @@ void liveAutoPoint::save() {
 		.where("id", id)
 		.execute();
 	}
+}
+
+void liveAutoPoint::destroy() {
+	sqlite->remove("live_auto_points")
+	.where("id", id )
+	.execute();
 }

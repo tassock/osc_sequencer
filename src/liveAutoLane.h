@@ -40,6 +40,7 @@ public:
 	int range;
 	
 	vector<liveAutoPoint*> points;
+	vector<liveAutoPoint*> deleted_points;
 	
 	sequencerApp* sequencer;
 	ofxSQLite* sqlite;

@@ -20,11 +20,12 @@
 class liveAutoPoint: public liveUi {
 
 public:
-	liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval);
+	liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval, bool _selected);
 	void draw(int x, int y);
 	void mousePressed(int _x, int _y, int button);
 	void mouseDragged(int _x, int _y, int button);
 	void mouseReleased();
+	int getId();
 	int getBar();
 	void setBar(int _bar);
 	float getVal();
@@ -32,6 +33,7 @@ public:
 	bool getDragging();
 	void setSelected(bool _selected);
 	void save();
+	void destroy();
 	
 	int id;
 	int live_auto_lane_id;
