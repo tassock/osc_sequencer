@@ -62,9 +62,9 @@ void liveAutoLane::draw() {
 		for(int i = 0; i < points.size() - 1; i++) {
 			liveAutoPoint* point_a = points[i];
 			liveAutoPoint* point_b = points[i + 1];
-			int x1 = x + (w * point_a->getVal() ) + 4;
+			int x1 = x + (range * point_a->getVal() ) + 4;
 			int y1 = y + (BEAT_HEIGHT * point_a->getBar() ) + 4;
-			int x2 = x + (w * point_b->getVal() ) + 4;
+			int x2 = x + (range * point_b->getVal() ) + 4;
 			int y2 = y + (BEAT_HEIGHT * point_b->getBar() ) + 4;
 			
 			ofEnableSmoothing();
@@ -77,7 +77,7 @@ void liveAutoLane::draw() {
 	// Draw points
 	for(int i = 0; i < points.size(); i++) {
 		liveAutoPoint* s_point = points[i];
-		int pointX = x + (w * s_point->getVal() );
+		int pointX = x + (range * s_point->getVal() );
 		int pointY = y + (BEAT_HEIGHT * s_point->getBar() );
 		s_point->draw(pointX, pointY);
 	}
@@ -134,7 +134,7 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 				// Set Val
 				float x_dist = _x - x; 
 				float new_val = valFromX(_x);
-				if (x_dist <= (float)range) {
+				if (x_dist <= (float)w) {
 					cout << "new_val: " << new_val << endl;
 					points[i]->setVal(new_val);
 				}
