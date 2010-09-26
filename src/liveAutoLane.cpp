@@ -86,6 +86,7 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 			}
 		}
 	}
+	// Set last clicks
 	last_click_x = _x;
 	last_click_y = _y;
 }
@@ -102,10 +103,20 @@ void liveAutoLane::mouseDragged(int _x, int _y, int button) {
 					cout << "new_val: " << new_val << endl;
 					points[i]->setVal(new_val);
 				}
-				// Set Bar
+				// Set Bar if it's within range of relative points
 				int new_bar = barFromY(_y);
-				cout << "new_bar: " << new_bar << endl;
-				points[i]->setBar(new_bar);
+				int new_min = 0;
+				if ( i > 0 ) {
+					new_min = points[i - 1]->getBar();
+				}
+				int new_max = 99999999;
+				if ( i < points.size() - 1 ) {
+					new_max = points[i + 1]->getBar();
+				}
+				if (new_bar >= new_min and new_bar <= new_max) {
+					cout << "new_bar: " << new_bar << endl;
+					points[i]->setBar(new_bar);
+				}
 			}
 		}
 	}
