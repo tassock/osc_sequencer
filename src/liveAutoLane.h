@@ -13,12 +13,17 @@
 #include "ofMain.h"
 #include "liveUi.h"
 #include "liveSequence.h"
+#include "sequencerApp.h"
 #include "liveAutoPoint.h"
+
+class liveAutoPoint;
+class sequencerApp;
 
 class liveAutoLane: public liveUi {
 
 public: 
-	liveAutoLane(int _id, int _x, int _y);
+	liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y);
+	void loadPoints();
 	void draw();
 	void mousePressed(int _x, int _y, int button);
 	void mouseDragged(int _x, int _y, int button);
@@ -34,6 +39,9 @@ public:
 	int range;
 	
 	vector<liveAutoPoint*> points;
+	
+	sequencerApp* sequencer;
+	ofxSQLite* sqlite;
 
 };
 

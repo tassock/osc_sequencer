@@ -30,7 +30,7 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	
 	int laneX = (CLIP_WIDTH * 2) + 80;
 	int laneY = y;
-	lane = new liveAutoLane(1, laneX, laneY);
+	lane = new liveAutoLane(sequencer, 1, laneX, laneY);
 }
 
 

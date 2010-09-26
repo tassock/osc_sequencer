@@ -585,6 +585,14 @@ void sequencerApp::initDatabase() {
 						" length INTEGER" \
 						");"
 						);
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS live_auto_points (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" live_auto_lane_id INTEGER," \
+						" bar INTEGER," \
+						" val REAL" \
+						");"
+						);
 	
 }
 

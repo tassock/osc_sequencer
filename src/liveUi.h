@@ -12,8 +12,6 @@
 
 #include "ofMain.h"
 
-class sequencerApp;
-
 class liveUi {
 
 public: 

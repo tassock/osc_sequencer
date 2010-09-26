@@ -9,21 +9,47 @@
 
 #include "liveAutoLane.h"
 
-liveAutoLane::liveAutoLane(int _id, int _x, int _y) {
+liveAutoLane::liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y) {
+	sequencer = _sequencer;
+	sqlite = sequencer->getSQLite();
 	id = _id;
 	x = _x;
 	y = _y;
-	w = 100;
+	w = 140;
 	h = 1000;
 	
 	last_click_x = 0;
 	last_click_y = 0;
 	
-	range = 92;
+	range = 132;
 	
-	points.insert ( points.end(), new liveAutoPoint(0, 0.5) );
-	points.insert ( points.end(), new liveAutoPoint(16, 0.5) );
+//	points.insert ( points.end(), new liveAutoPoint(0, 0.5) );
+//	points.insert ( points.end(), new liveAutoPoint(16, 0.5) );
+	loadPoints();
 }
+
+
+void liveAutoLane::loadPoints() {
+	// select all that match sequence id
+	ofxSQLiteSelect sel = sqlite->select("id, bar, val")
+	.from("live_auto_points")
+	.where("live_auto_lane_id", id)
+	.execute().begin();
+	
+	// set results as instance variables
+	while(sel.hasNext()) {
+		int point_id = sel.getInt();
+		int bar = sel.getInt();
+		float val = ofToFloat( sel.getString() );
+		
+		// store sequence clip in buffer
+		points.insert ( points.end(), new liveAutoPoint(sequencer, point_id, id, bar, val) );
+		
+		// next record
+		sel.next();
+	}
+}
+
 
 void liveAutoLane::draw() {
 	
@@ -32,18 +58,20 @@ void liveAutoLane::draw() {
 	ofRect(x, y, w, h);
 	
 	// Draw lines
-	for(int i = 0; i < points.size() - 1; i++) {
-		liveAutoPoint* point_a = points[i];
-		liveAutoPoint* point_b = points[i + 1];
-		int x1 = x + (w * point_a->getVal() ) + 4;
-		int y1 = y + (BEAT_HEIGHT * point_a->getBar() ) + 4;
-		int x2 = x + (w * point_b->getVal() ) + 4;
-		int y2 = y + (BEAT_HEIGHT * point_b->getBar() ) + 4;
-		
-		ofEnableSmoothing();
-		ofSetColor(128, 128, 128);
-		ofLine(x1, y1, x2, y2);
-		ofDisableSmoothing();
+	if ( points.size() > 0 ) {
+		for(int i = 0; i < points.size() - 1; i++) {
+			liveAutoPoint* point_a = points[i];
+			liveAutoPoint* point_b = points[i + 1];
+			int x1 = x + (w * point_a->getVal() ) + 4;
+			int y1 = y + (BEAT_HEIGHT * point_a->getBar() ) + 4;
+			int x2 = x + (w * point_b->getVal() ) + 4;
+			int y2 = y + (BEAT_HEIGHT * point_b->getBar() ) + 4;
+			
+			ofEnableSmoothing();
+			ofSetColor(128, 128, 128);
+			ofLine(x1, y1, x2, y2);
+			ofDisableSmoothing();
+		}
 	}
 	
 	// Draw points
@@ -80,8 +108,8 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 			// create new point if it's outside
 			if (outside_points) {
 				cout << "CREATE NEW POINT" << endl;
-				int new_bar = barFromY(_y);
-				float new_val = valFromX(_x);
+				int new_bar = barFromY(_y - 4);
+				float new_val = valFromX(_x - 4);
 				// iterate through existing points to find valid spot
 				int insert_point = 0;
 				for(int i = 0; i < points.size(); i++) {
@@ -89,7 +117,7 @@ void liveAutoLane::mousePressed(int _x, int _y, int button) {
 						insert_point = i + 1;
 					}
 				}
-				points.insert ( points.begin() + insert_point, new liveAutoPoint(new_bar, new_val) );
+				points.insert ( points.begin() + insert_point, new liveAutoPoint(sequencer, NULL, id, new_bar, new_val) );
 			}
 		}
 	}

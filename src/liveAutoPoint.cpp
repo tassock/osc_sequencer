@@ -9,7 +9,11 @@
 
 #include "liveAutoPoint.h"
 
-liveAutoPoint::liveAutoPoint(int _bar, float _fval) {
+liveAutoPoint::liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval) {
+	sequencer = _sequencer;
+	sqlite = sequencer->getSQLite();
+	id = _id;
+	live_auto_lane_id = _live_auto_lane_id;
 	bar = _bar;
 	val = _fval;
 	
