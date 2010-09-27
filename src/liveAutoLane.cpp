@@ -88,8 +88,11 @@ void liveAutoLane::draw(int beat, int step) {
 
 void liveAutoLane::update(int beat, int step) {
 	// Output current value to param
+	float current_val = getCurrentValue(beat, step);
 	cout << "Beat: " << beat << ", Step: " << step << endl;
-	cout << "getCurrentValue: " << getCurrentValue(beat, step) << endl;
+	cout << "getCurrentValue: " << current_val << endl;
+	
+	sequencer->current_set->setCrossfader(current_val);
 }
 			
 			
