@@ -70,7 +70,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 	}
 	
 	// Draw Automation lane
-	lane->draw();
+	lane->draw(beat, step);
 	
 	drawBrowser();
 }

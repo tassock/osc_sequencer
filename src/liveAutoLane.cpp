@@ -23,8 +23,6 @@ liveAutoLane::liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y) {
 	
 	range = 132;
 	
-//	points.insert ( points.end(), new liveAutoPoint(0, 0.5) );
-//	points.insert ( points.end(), new liveAutoPoint(16, 0.5) );
 	loadPoints();
 }
 
@@ -53,7 +51,9 @@ void liveAutoLane::loadPoints() {
 }
 
 
-void liveAutoLane::draw() {
+void liveAutoLane::draw(int beat, int step) {
+	
+	int s = y - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32);
 	
 	// Draw background
 	ofSetColor(30, 30, 30);
@@ -65,9 +65,9 @@ void liveAutoLane::draw() {
 			liveAutoPoint* point_a = points[i];
 			liveAutoPoint* point_b = points[i + 1];
 			int x1 = x + (range * point_a->getVal() ) + 4;
-			int y1 = y + (BEAT_HEIGHT * point_a->getBar() ) + 4;
+			int y1 = s + (BEAT_HEIGHT * point_a->getBar() ) + 4;
 			int x2 = x + (range * point_b->getVal() ) + 4;
-			int y2 = y + (BEAT_HEIGHT * point_b->getBar() ) + 4;
+			int y2 = s + (BEAT_HEIGHT * point_b->getBar() ) + 4;
 			
 			ofEnableSmoothing();
 			ofSetColor(128, 128, 128);
@@ -80,7 +80,7 @@ void liveAutoLane::draw() {
 	for(int i = 0; i < points.size(); i++) {
 		liveAutoPoint* s_point = points[i];
 		int pointX = x + (range * s_point->getVal() );
-		int pointY = y + (BEAT_HEIGHT * s_point->getBar() );
+		int pointY = s + (BEAT_HEIGHT * s_point->getBar() );
 		s_point->draw(pointX, pointY);
 	}
 }
