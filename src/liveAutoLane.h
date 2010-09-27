@@ -25,6 +25,8 @@ public:
 	liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y);
 	void loadPoints();
 	void draw(int beat, int step);
+	void update(int beat, int step);
+	float getCurrentValue(int beat, int step);
 	void mousePressed(int _x, int _y, int button);
 	void mouseDragged(int _x, int _y, int button);
 	void mouseReleased();

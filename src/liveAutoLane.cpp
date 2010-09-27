@@ -86,6 +86,51 @@ void liveAutoLane::draw(int beat, int step) {
 }
 
 
+void liveAutoLane::update(int beat, int step) {
+	// Output current value to param
+	cout << "Beat: " << beat << ", Step: " << step << endl;
+	cout << "getCurrentValue: " << getCurrentValue(beat, step) << endl;
+}
+			
+			
+float liveAutoLane::getCurrentValue(int beat, int step) {
+	// Find prev point
+	liveAutoPoint* prev_point = NULL;
+	for(int i = 0; i < points.size(); i++) {
+		if (points[i]->getBar() <= beat) {
+			prev_point = points[i];
+		}
+	}
+	// Find next point
+	liveAutoPoint* next_point = NULL;
+	for(int i = 0; i < points.size(); i++) {
+		if (points[i]->getBar() >= beat) {
+			next_point = points[i];
+			break;
+		}
+	}
+	cout << "prev_point: " << prev_point << ", next_point: " << next_point << endl;
+	if (prev_point == NULL and next_point == NULL) {
+		return 0.0;
+	} else if (prev_point == NULL) {
+		return next_point->getVal();
+	} else if (next_point == NULL) {
+		return prev_point->getVal();
+	} else if ( next_point->getBar() == prev_point->getBar() ) {
+		return next_point->getVal();
+	} else {
+		float val_dif = next_point->getVal() - prev_point->getVal();
+		float bar_dif = next_point->getBar() - prev_point->getBar();
+		float bar_prog = beat + (step / 32.0) - prev_point->getBar();
+		float bar_ratio = bar_prog / bar_dif;
+		float _current_val = prev_point->getVal() + (val_dif * bar_ratio);
+		cout << "val_dif: " << val_dif << ", bar_dif: " << bar_dif << ", bar_prog: " << bar_prog << ", bar_ratio: " << bar_ratio << ", _current_val: " << _current_val << endl;
+		return _current_val;
+	}
+
+}
+
+
 void liveAutoLane::mousePressed(int _x, int _y, int button) {
 	if ( mouseInside(_x, _y) ) {
 		cout << "liveAutoLane!!!" << endl;

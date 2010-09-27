@@ -36,6 +36,7 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 
 void liveSequenceWindow::update(int beat, int step) {
 	fireClips(beat, step);
+	lane->update(beat, step);
 }
 
 
