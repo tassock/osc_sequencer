@@ -31,6 +31,7 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	int laneX = (CLIP_WIDTH * 2) + 80;
 	int laneY = y;
 	lane = new liveAutoLane(sequencer, 1, laneX, laneY);
+	scale = new liveSequenceScale(laneX + 150, laneY);
 }
 
 
@@ -72,6 +73,9 @@ void liveSequenceWindow::draw(int beat, int step) {
 	
 	// Draw Automation lane
 	lane->draw(beat, step);
+	
+	// Draw scale
+	scale->draw(beat, step);
 	
 	drawBrowser();
 }

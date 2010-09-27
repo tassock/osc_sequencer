@@ -56,10 +56,33 @@ void liveAutoLane::draw(int beat, int step) {
 	int s = y - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32);
 	
 	// Draw background
-	ofSetColor(30, 30, 30);
-	ofRect(x, y, w, h);
+//	ofSetColor(30, 30, 30);
+//	ofRect(x, y, w, h);
 	
-	// Draw lines
+	// Draw measuring lines
+	int draw_y = s;
+	int _beat = 0;
+	int _sub_beat = 4;
+	ofSetLineWidth(1);
+	while (draw_y < y + h) {
+		
+		// Draw stitches
+		if (_sub_beat == 4) {
+			ofSetColor(70, 70, 70);
+			_sub_beat = 0;
+		} else {
+			ofSetColor(40, 40, 40);
+		}
+		ofLine(x + 4, draw_y, x + w - 4, draw_y);
+		
+		// Increment iterators
+		draw_y = draw_y + BEAT_HEIGHT;
+		_beat ++;
+		_sub_beat ++;
+	}
+	
+	// Draw connecting lines
+	ofSetLineWidth(3);
 	if ( points.size() > 0 ) {
 		for(int i = 0; i < points.size() - 1; i++) {
 			liveAutoPoint* point_a = points[i];

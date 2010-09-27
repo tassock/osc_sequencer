@@ -26,6 +26,8 @@ public:
 	int y;
 	int w;
 	int h;
+	
+	ofTrueTypeFont  franklinBook;
 
 };
 

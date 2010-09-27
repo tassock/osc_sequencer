@@ -10,6 +10,7 @@
 #include "librarySong.h"
 #include "librarySongBrowser.h"
 #include "liveAutoLane.h"
+#include "liveSequenceScale.h"
 #include "liveUi.h"
 
 #define NUM_S_TRACKS 2
@@ -21,6 +22,7 @@ class sequencerApp;
 class librarySong;
 class librarySongBrowser;
 class liveAutoLane;
+class liveSequenceScale;
 
 class liveSequenceWindow: public liveUi {
 	
@@ -58,6 +60,7 @@ public:
 	ofTrueTypeFont  franklinBook;
 	
 	liveAutoLane* lane;
+	liveSequenceScale* scale;
 	
 };
 
