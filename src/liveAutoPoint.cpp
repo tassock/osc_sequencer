@@ -9,11 +9,11 @@
 
 #include "liveAutoPoint.h"
 
-liveAutoPoint::liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval, int _point_order, bool _selected) {
+liveAutoPoint::liveAutoPoint(sequencerApp* _sequencer, int _id, int _auto_lane_id, int _bar, float _fval, int _point_order, bool _selected) {
 	sequencer = _sequencer;
 	sqlite = sequencer->getSQLite();
 	id = _id;
-	live_auto_lane_id = _live_auto_lane_id;
+	auto_lane_id = _auto_lane_id;
 	bar = _bar;
 	val = _fval;
 	point_order = _point_order;
@@ -112,8 +112,8 @@ void liveAutoPoint::save() {
 	
 	if (id == NULL) {
 		// Save self
-		sqlite->insert("live_auto_points")
-		.use("live_auto_lane_id", live_auto_lane_id)
+		sqlite->insert("auto_points")
+		.use("auto_lane_id", auto_lane_id)
 		.use("bar", bar)
 		.use("val", val)
 		.use("point_order", point_order)
@@ -122,7 +122,7 @@ void liveAutoPoint::save() {
 		id = sqlite->lastInsertID();
 	} else {
 		// Update self
-		sqlite->update("live_auto_points")
+		sqlite->update("auto_points")
 		.use("bar", bar)
 		.use("val", val)
 		.use("point_order", point_order)
@@ -132,7 +132,7 @@ void liveAutoPoint::save() {
 }
 
 void liveAutoPoint::destroy() {
-	sqlite->remove("live_auto_points")
+	sqlite->remove("auto_points")
 	.where("id", id )
 	.execute();
 }

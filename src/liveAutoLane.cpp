@@ -23,6 +23,16 @@ liveAutoLane::liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y) {
 	
 	range = 132;
 	
+	// Get name
+	ofxSQLiteSelect sel = sequencer->getSQLite()->select("name")
+	.from("auto_lanes")
+	.where("id", id)
+	.execute().begin();
+	while(sel.hasNext()) {
+		name = sel.getString();
+		sel.next();
+	}
+	
 	loadPoints();
 }
 
@@ -30,8 +40,8 @@ liveAutoLane::liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y) {
 void liveAutoLane::loadPoints() {
 	// select all that match sequence id
 	ofxSQLiteSelect sel = sqlite->select("id, bar, val, point_order")
-	.from("live_auto_points")
-	.where("live_auto_lane_id", id)
+	.from("auto_points")
+	.where("auto_lane_id", id)
 	.order("point_order", " ASC ")
 	.execute().begin();
 	
@@ -71,7 +81,7 @@ void liveAutoLane::draw(int beat, int step) {
 			ofSetColor(70, 70, 70);
 			_sub_beat = 0;
 		} else {
-			ofSetColor(40, 40, 40);
+			ofSetColor(35, 35, 35);
 		}
 		ofLine(x + 4, draw_y, x + w - 4, draw_y);
 		
@@ -112,10 +122,16 @@ void liveAutoLane::draw(int beat, int step) {
 void liveAutoLane::update(int beat, int step) {
 	// Output current value to param
 	float current_val = getCurrentValue(beat, step);
-	cout << "Beat: " << beat << ", Step: " << step << endl;
-	cout << "getCurrentValue: " << current_val << endl;
+//	cout << "Beat: " << beat << ", Step: " << step << endl;
+//	cout << "getCurrentValue: " << current_val << endl;
 	
-	sequencer->current_set->setCrossfader(current_val);
+	if (name == "crossfader") {
+		sequencer->current_set->setCrossfader(current_val);
+	} else if (name == "0_gain_low") {
+		sequencer->current_set->getParamByName("GainLo", 0)->setVal(current_val);
+	} else if (name == "1_gain_low") {
+		sequencer->current_set->getParamByName("GainLo", 1)->setVal(current_val);
+	}
 }
 			
 			
@@ -135,7 +151,7 @@ float liveAutoLane::getCurrentValue(int beat, int step) {
 			break;
 		}
 	}
-	cout << "prev_point: " << prev_point << ", next_point: " << next_point << endl;
+	//cout << "prev_point: " << prev_point << ", next_point: " << next_point << endl;
 	if (prev_point == NULL and next_point == NULL) {
 		return 0.0;
 	} else if (prev_point == NULL) {
@@ -150,7 +166,7 @@ float liveAutoLane::getCurrentValue(int beat, int step) {
 		float bar_prog = beat + (step / 32.0) - prev_point->getBar();
 		float bar_ratio = bar_prog / bar_dif;
 		float _current_val = prev_point->getVal() + (val_dif * bar_ratio);
-		cout << "val_dif: " << val_dif << ", bar_dif: " << bar_dif << ", bar_prog: " << bar_prog << ", bar_ratio: " << bar_ratio << ", _current_val: " << _current_val << endl;
+		//cout << "val_dif: " << val_dif << ", bar_dif: " << bar_dif << ", bar_prog: " << bar_prog << ", bar_ratio: " << bar_ratio << ", _current_val: " << _current_val << endl;
 		return _current_val;
 	}
 

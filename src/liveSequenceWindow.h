@@ -59,7 +59,9 @@ public:
 	
 	ofTrueTypeFont  franklinBook;
 	
-	liveAutoLane* lane;
+	liveAutoLane* crossfader;
+	liveAutoLane* track_0;
+	liveAutoLane* track_1;
 	liveSequenceScale* scale;
 	
 };

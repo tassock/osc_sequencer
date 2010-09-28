@@ -69,7 +69,7 @@ void sequencerApp::setup(){
 //	sWindowH = 820;
 	sWindowX = 0;
 	sWindowY = 20;
-	sWindowW = 580;
+	sWindowW = 800;
 	sWindowH = 1000;
 
 	// load liveSet
@@ -586,12 +586,19 @@ void sequencerApp::initDatabase() {
 						");"
 						);
 	sqlite->simpleQuery("" \
-						"CREATE TABLE IF NOT EXISTS live_auto_points (" \
+						"CREATE TABLE IF NOT EXISTS auto_points (" \
 						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
-						" live_auto_lane_id INTEGER," \
+						" auto_lane_id INTEGER," \
 						" bar INTEGER," \
 						" val REAL," \
 						" point_order INTEGER" \
+						");"
+						);
+	sqlite->simpleQuery("" \
+						"CREATE TABLE IF NOT EXISTS auto_lanes (" \
+						" id INTEGER PRIMARY KEY AUTOINCREMENT," \
+						" sequence_id INTEGER," \
+						" name TEXT" \
 						");"
 						);
 	

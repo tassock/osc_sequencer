@@ -41,6 +41,8 @@ public:
 	
 	int range;
 	
+	string name;
+	
 	vector<liveAutoPoint*> points;
 	vector<liveAutoPoint*> deleted_points;
 	

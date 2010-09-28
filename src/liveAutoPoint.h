@@ -20,7 +20,7 @@
 class liveAutoPoint: public liveUi {
 
 public:
-	liveAutoPoint(sequencerApp* _sequencer, int _id, int _live_auto_lane_id, int _bar, float _fval, int _point_order, bool _selected);
+	liveAutoPoint(sequencerApp* _sequencer, int _id, int _auto_lane_id, int _bar, float _fval, int _point_order, bool _selected);
 	void draw(int x, int y);
 	void mousePressed(int _x, int _y, int button);
 	void mouseDragged(int _x, int _y, int button);
@@ -37,7 +37,7 @@ public:
 	void destroy();
 	
 	int id;
-	int live_auto_lane_id;
+	int auto_lane_id;
 	int bar;
 	float val;
 	int point_order;

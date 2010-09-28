@@ -34,7 +34,7 @@ void liveSequenceScale::draw(int beat, int step) {
 	while (draw_y < y + h) {
 		
 		// Draw stitch
-		ofSetColor(40, 40, 40);
+		ofSetColor(35, 35, 35);
 		ofLine(x, draw_y, x + 10, draw_y);
 		
 		// Draw label

@@ -28,16 +28,24 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	
 	franklinBook.loadFont("frabk.ttf", 12);
 	
-	int laneX = (CLIP_WIDTH * 2) + 80;
-	int laneY = y;
-	lane = new liveAutoLane(sequencer, 1, laneX, laneY);
-	scale = new liveSequenceScale(laneX + 150, laneY);
+	int crossX = CLIP_WIDTH + LANE_WIDTH + 30;
+	crossfader = new liveAutoLane(sequencer, 1, crossX, y);
+	
+	int track_0_X = x;
+	track_0 = new liveAutoLane(sequencer, 2, track_0_X, y);
+	
+	int track_1_X = x + (CLIP_WIDTH * 2) + (LANE_WIDTH * 2) + 60;
+	track_1 = new liveAutoLane(sequencer, 3, track_1_X, y);
+	
+	scale = new liveSequenceScale(track_1_X + LANE_WIDTH, y);
 }
 
 
 void liveSequenceWindow::update(int beat, int step) {
 	fireClips(beat, step);
-	lane->update(beat, step);
+	crossfader->update(beat, step);
+	track_0->update(beat, step);
+	track_1->update(beat, step);
 }
 
 
@@ -59,7 +67,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 	// Draw tracks
 	for(int t = 0; t < NUM_S_TRACKS; t++){
 		ofSetColor(30, 30, 30);
-		trackX = x + padding + (t * (trackW + padding));
+		trackX = LANE_WIDTH + padding + (t * (trackW + padding)) + (t * (LANE_WIDTH + padding));
 		ofRect(trackX, trackY, trackW, trackH);
 		// DrawSongs()
 		vector<liveSequenceSong*> song_buffer = sequence->getTrackSongs(t);
@@ -71,8 +79,10 @@ void liveSequenceWindow::draw(int beat, int step) {
 		}
 	}
 	
-	// Draw Automation lane
-	lane->draw(beat, step);
+	// Draw Automation lanes
+	crossfader->draw(beat, step);
+	track_0->draw(beat, step);
+	track_1->draw(beat, step);
 	
 	// Draw scale
 	scale->draw(beat, step);
@@ -267,7 +277,9 @@ void liveSequenceWindow::sequenceKeyPressed(int key) {
 		case 's':
 			cout << "SAVE" << endl;
 			sequence->save();
-			lane->save();
+			crossfader->save();
+			track_0->save();
+			track_1->save();
 			break;
 		case 127: // Delete
 			cout << "DELETE " << selected_clip->getName() << endl;
@@ -334,18 +346,24 @@ void liveSequenceWindow::mousePressed(int _x, int _y, int button) {
 	cout << "liveSequenceWindow mouseX: " << _x << " (" << x << "), mouseY: " << _y << " (" << y << ")" << endl;
 	if ( mouseInside(_x, _y) ) {
 		cout << "INSIDE liveSequenceWindow mouseX: " << _x << ", mouseY: " << _y << endl;
-		lane->mousePressed(_x, _y, button);
+		crossfader->mousePressed(_x, _y, button);
+		track_0->mousePressed(_x, _y, button);
+		track_1->mousePressed(_x, _y, button);
 	}
 }
 
 
 void liveSequenceWindow::mouseDragged(int _x, int _y, int button) {
 	if ( mouseInside(_x, _y) ) {
-		lane->mouseDragged(_x, _y, button);
+		crossfader->mouseDragged(_x, _y, button);
+		track_0->mouseDragged(_x, _y, button);
+		track_1->mouseDragged(_x, _y, button);
 	}
 }
 
 
 void liveSequenceWindow::mouseReleased() {
-	lane->mouseReleased();
+	crossfader->mouseReleased();
+	track_0->mouseReleased();
+	track_1->mouseReleased();
 }

@@ -23,6 +23,7 @@
 #define BACKGROUND_COLOR 0x000000
 
 #define CLIP_WIDTH 130
+#define LANE_WIDTH 140
 #define CLIP_PADDING 2
 #define BEAT_HEIGHT 5
 #define NUM_BEATS 4
