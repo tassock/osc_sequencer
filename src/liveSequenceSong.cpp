@@ -71,10 +71,16 @@ void liveSequenceSong::save() {
 		.execute();
 	}
 	
+	// Update clip order
+	for(int i = 0; i < clips.size(); i++) {
+		clips[i]->setOrder(i);
+	}
 	// Update clips
 	for(int i = 0; i < clips.size(); i++) {
 		clips[i]->save();
 	}
+	// Delete clips in deleted_clips buffer
+	// Clear deleted_clips buffer
 }
 
 

@@ -121,10 +121,14 @@ void liveSequenceWindow::drawClipBrowser() {
 	ofSetColor(255, 255, 255);
 	franklinBook.drawString( selected_song->getName(), browserX + padding, browserY + padding);
 	
+	int bars = 0;
 	for(int i = 0; i < clip_buffer.size(); i++) {
-		clip* s_clip = selected_song->getLibrarySong()->getClip(i);
+		clip* s_clip = clip_buffer[i];
 		bool selected = (clip_select_index == i);
-		s_clip->draw(browserX + padding, browserY + (2 * padding) + (i * s_clip->getLength() * BEAT_HEIGHT ), selected, true );
+		// The Y value here should't include length.
+		s_clip->draw(browserX + padding, browserY + (2 * padding) + (bars * BEAT_HEIGHT ), selected, true );
+		// increment bars for draw height
+		bars = bars + s_clip->getLength();
 	}
 }
 
@@ -160,6 +164,7 @@ void liveSequenceWindow::keyPressed(int key) {
 	// listen for browser entry
 	if (key == 'i' and focus == "sequence") {
 		focus = "browser";
+		clip_buffer = selected_song->getLibrarySong()->getClips();
 	}
 	
 }

@@ -136,6 +136,14 @@ void liveAutoLane::update(int beat, int step) {
 			
 			
 float liveAutoLane::getCurrentValue(int beat, int step) {
+	
+	// Hack to trigger automation on beat ahead of time
+	if (step >= 14) {
+		beat = beat + 1;
+	}
+	
+	//cout << "beat: " << beat << ", step: " << step << endl;
+	
 	// Find prev point
 	liveAutoPoint* prev_point = NULL;
 	for(int i = 0; i < points.size(); i++) {
