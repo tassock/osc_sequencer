@@ -13,7 +13,7 @@ liveSequenceScale::liveSequenceScale(int _x, int _y) {
 	x = _x;
 	y = _y;
 	w = 40;
-	h = 1000;
+	h = TRACK_HEIGHT;
 	
 	franklinBook.loadFont("frabk.ttf", 10);
 }

@@ -16,7 +16,7 @@ liveAutoLane::liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y) {
 	x = _x;
 	y = _y;
 	w = 140;
-	h = 1000;
+	h = TRACK_HEIGHT;
 	
 	last_click_x = 0;
 	last_click_y = 0;

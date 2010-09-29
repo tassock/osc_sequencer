@@ -29,7 +29,7 @@ int main( ){
 	
     ofAppGlutWindow window;
 	//ofSetupOpenGL(&window, 1440,820, OF_WINDOW);			// <-------- setup the GL context
-	ofSetupOpenGL(&window, 800,1020, OF_WINDOW);			// <-------- setup the GL context
+	ofSetupOpenGL(&window, 800,1520, OF_WINDOW);			// <-------- setup the GL context
 	//ofSetVerticalSync(true);
 	// ofSetFrameRate(64);
 	ofEnableAlphaBlending();

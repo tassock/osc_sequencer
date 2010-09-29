@@ -70,7 +70,7 @@ void sequencerApp::setup(){
 	sWindowX = 0;
 	sWindowY = 20;
 	sWindowW = 800;
-	sWindowH = 1000;
+	sWindowH = TRACK_HEIGHT;
 
 	// load liveSet
 	if (clipMode == "live") {
@@ -177,7 +177,7 @@ void sequencerApp::draw(){
 void sequencerApp::drawStats() {
 	// background
 	ofSetColor(0, 0, 0 );
-	ofRect( 0, 0, 515, 20);
+	ofRect( 0, 0, sWindowW, 20);
 	// Display stats
 	string buf;
 	buf = "Beat: " + ofToString( beat ) + ", Step: " + ofToString( step ) + ", Rate: " + ofToString( ofGetFrameRate() );

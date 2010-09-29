@@ -24,6 +24,7 @@
 
 #define CLIP_WIDTH 130
 #define LANE_WIDTH 140
+#define TRACK_HEIGHT 1500
 #define CLIP_PADDING 2
 #define BEAT_HEIGHT 5
 #define NUM_BEATS 4

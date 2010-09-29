@@ -62,7 +62,7 @@ void liveSequenceWindow::draw(int beat, int step) {
 	int trackX = 0;
 	int trackY = y;
 	int trackW = CLIP_WIDTH + 20;
-	int trackH = 1000;
+	int trackH = TRACK_HEIGHT;
 	
 	// Draw tracks
 	for(int t = 0; t < NUM_S_TRACKS; t++){
