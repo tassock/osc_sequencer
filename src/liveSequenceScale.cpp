@@ -16,7 +16,8 @@ liveSequenceScale::liveSequenceScale(sequencerApp* _sequencer, int _x, int _y) {
 	w = 70;
 	h = TRACK_HEIGHT;
 	
-	drag_beat = NULL;
+	drag_beat = 0;
+	drag_point = 0;
 	
 	franklinBook.loadFont("frabk.ttf", 10);
 }
@@ -66,17 +67,20 @@ void liveSequenceScale::mousePressed(int _x, int _y, int button) {
 
 
 void liveSequenceScale::mouseDragged(int _x, int _y, int button) {
-	if ( mouseInside(_x, _y) ) {
+	if (drag_beat == 0 and drag_point == 0) {
+	} else {
+	
 		int beats_dragged = (drag_point - _y) / BEAT_HEIGHT;
 		int new_beat = drag_beat + beats_dragged;
 		if (new_beat >= 0) {
 			sequencer->setStartBeat(new_beat);
 		}
+	
 	}
 }
 
 
 void liveSequenceScale::mouseReleased() {
-	drag_beat = NULL;
-	drag_point = NULL;
+	drag_beat = 0;
+	drag_point = 0;
 }
