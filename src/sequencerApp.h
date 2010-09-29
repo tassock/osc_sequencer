@@ -84,6 +84,9 @@ class sequencerApp : public ofBaseApp {//, public ofxFensterListener{
 		int getStep();
 		int getMouseX();
 		int getMouseY();
+		
+		int getStartBeat();
+		void setStartBeat(int _start_beat);
 
   
 		ofxSQLite* sqlite;
@@ -104,6 +107,9 @@ class sequencerApp : public ofBaseApp {//, public ofxFensterListener{
 	
 		int beat;
 		int step;
+		int start_beat;
+	
+	
 		int selectedClip;
 		int selectedPattern;
 		int selectedParam;

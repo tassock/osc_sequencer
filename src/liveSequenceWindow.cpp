@@ -37,7 +37,7 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	int track_1_X = x + (CLIP_WIDTH * 2) + (LANE_WIDTH * 2) + 60;
 	track_1 = new liveAutoLane(sequencer, 3, track_1_X, y);
 	
-	scale = new liveSequenceScale(track_1_X + LANE_WIDTH, y);
+	scale = new liveSequenceScale(sequencer, track_1_X + LANE_WIDTH, y);
 }
 
 
@@ -320,28 +320,31 @@ void liveSequenceWindow::toggleSelectMode() {
 
 // Fire clip if ready:
 void liveSequenceWindow::fireClips(int beat, int step) {
-	vector<liveSequenceSong*> song_buffer = sequence->getSongs();
-	for(int c = 0; c < song_buffer.size(); c++) { // find number of songs in track
-		liveSequenceSong* s_song = song_buffer[c];
-		vector<liveSequenceClip*> s_clip_buffer = s_song->getClips();
-		int bar_count = 0;
-		for(int c = 0; c < s_clip_buffer.size(); c++) { // find number of clips in track
-			
-			liveSequenceClip* s_clip = s_clip_buffer[c];
-			int bar_start = bar_count + s_song->getStart();
-			
-			// Fire clip if ready:
-			if (step == 0 and bar_start == beat + 1) {
-				//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
-				if (sequencer->getClipMode() == "live") {
-					s_clip->fetchLiveClip();
-					cout << "FIRE!! " << s_clip->getName() << ", BEAT: " << beat << ", START: " << bar_start << endl;
-					//cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
-					s_clip->getLiveClip()->fire();
+	if (sequencer->getCurrentSet()->getPlaying()) {
+	
+		vector<liveSequenceSong*> song_buffer = sequence->getSongs();
+		for(int c = 0; c < song_buffer.size(); c++) { // find number of songs in track
+			liveSequenceSong* s_song = song_buffer[c];
+			vector<liveSequenceClip*> s_clip_buffer = s_song->getClips();
+			int bar_count = 0;
+			for(int c = 0; c < s_clip_buffer.size(); c++) { // find number of clips in track
+				
+				liveSequenceClip* s_clip = s_clip_buffer[c];
+				int bar_start = bar_count + s_song->getStart();
+				
+				// Fire clip if ready:
+				if (step == 0 and bar_start == beat + 1) {
+					//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
+					if (sequencer->getClipMode() == "live") {
+						s_clip->fetchLiveClip();
+						cout << "FIRE!! " << s_clip->getName() << ", BEAT: " << beat << ", START: " << bar_start << endl;
+						//cout << "NAME!! " << s_clip->getLiveClip()->getName() << endl;
+						s_clip->getLiveClip()->fire();
+					}
 				}
+				
+				bar_count = bar_count + s_clip->getLength();
 			}
-			
-			bar_count = bar_count + s_clip->getLength();
 		}
 	}
 }
@@ -354,6 +357,7 @@ void liveSequenceWindow::mousePressed(int _x, int _y, int button) {
 		crossfader->mousePressed(_x, _y, button);
 		track_0->mousePressed(_x, _y, button);
 		track_1->mousePressed(_x, _y, button);
+		scale->mousePressed(_x, _y, button);
 	}
 }
 
@@ -363,6 +367,7 @@ void liveSequenceWindow::mouseDragged(int _x, int _y, int button) {
 		crossfader->mouseDragged(_x, _y, button);
 		track_0->mouseDragged(_x, _y, button);
 		track_1->mouseDragged(_x, _y, button);
+		scale->mouseDragged(_x, _y, button);
 	}
 }
 
@@ -371,4 +376,5 @@ void liveSequenceWindow::mouseReleased() {
 	crossfader->mouseReleased();
 	track_0->mouseReleased();
 	track_1->mouseReleased();
+	scale->mouseReleased();
 }

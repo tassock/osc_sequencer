@@ -18,7 +18,8 @@ void sequencerApp::setup(){
 	clipMode = "live"; // "test", "live"
 	
 	// Set Defaults
-	beat = 0; // might need to adjust this with real data
+	start_beat = 0;
+	beat = start_beat; 
 	step = 0;
 	gainSliderValue = 0.0;
 	scaleSliderValue = 0.0;
@@ -137,7 +138,7 @@ void sequencerApp::update() {
 	if (clipMode == "live") {
 		// Update set
 		current_set->update();
-		beat = current_set->getBeat();
+		beat = current_set->getBeat() + start_beat;
 		step = current_set->getStep();
 	} else {
 		// Update dummy beat / step
@@ -317,6 +318,7 @@ void sequencerApp::keyPressed  (int key) {
 			current_set->play();
 		} else if (key == 96) { // ~
 			current_set->stop();
+			beat = start_beat;
 		}
 	}
 }
@@ -513,6 +515,18 @@ int sequencerApp::getMouseX() {
 //--------------------------------------------------------------
 int sequencerApp::getMouseY() {
 	return mouseY;
+}
+
+
+//--------------------------------------------------------------
+int sequencerApp::getStartBeat() {
+	return start_beat;
+}
+
+
+//--------------------------------------------------------------
+void sequencerApp::setStartBeat(int _start_beat) {
+	start_beat = _start_beat;
 }
 
 
