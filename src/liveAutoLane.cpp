@@ -17,6 +17,7 @@ liveAutoLane::liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y) {
 	y = _y;
 	w = 140;
 	h = TRACK_HEIGHT;
+	s = y;
 	
 	last_click_x = 0;
 	last_click_y = 0;
@@ -32,6 +33,9 @@ liveAutoLane::liveAutoLane(sequencerApp* _sequencer, int _id, int _x, int _y) {
 		name = sel.getString();
 		sel.next();
 	}
+	
+	// Set val
+	val = 0.0;
 	
 	loadPoints();
 }
@@ -63,7 +67,7 @@ void liveAutoLane::loadPoints() {
 
 void liveAutoLane::draw(int beat, int step) {
 	
-	int s = y - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32);
+	s = y - (beat * BEAT_HEIGHT) - (step * BEAT_HEIGHT / 32);
 	
 	// Draw background
 //	ofSetColor(30, 30, 30);
@@ -123,14 +127,21 @@ void liveAutoLane::update(int beat, int step) {
 	// Output current value to param
 	float current_val = getCurrentValue(beat, step);
 //	cout << "Beat: " << beat << ", Step: " << step << endl;
-//	cout << "getCurrentValue: " << current_val << endl;
-	
-	if (name == "crossfader") {
-		sequencer->current_set->setCrossfader(current_val);
-	} else if (name == "0_gain_low") {
-		sequencer->current_set->getParamByName("GainLo", 0)->setVal(current_val);
-	} else if (name == "1_gain_low") {
-		sequencer->current_set->getParamByName("GainLo", 1)->setVal(current_val);
+	int current_val_percent = current_val * 100;
+	int new_val_percent = val * 100;
+	if (new_val_percent != current_val_percent) {
+		
+		val = current_val;
+		
+		cout << "getCurrentValue: " << current_val_percent << endl;
+		
+		if (name == "crossfader") {
+			sequencer->current_set->setCrossfader(current_val);
+		} else if (name == "0_gain_low") {
+			sequencer->current_set->getParamByName("GainLo", 0)->setVal(current_val);
+		} else if (name == "1_gain_low") {
+			sequencer->current_set->getParamByName("GainLo", 1)->setVal(current_val);
+		}
 	}
 }
 			
@@ -273,7 +284,7 @@ float liveAutoLane::valFromX(int _x) {
 
 
 int liveAutoLane::barFromY(int _y) {
-	int y_dist = _y - y; 
+	int y_dist = _y - s; 
 	return y_dist / BEAT_HEIGHT;
 }
 

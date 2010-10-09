@@ -41,7 +41,10 @@ public:
 	
 	int range;
 	
+	int s; // pixel height of bar 0
+	
 	string name;
+	float val;
 	
 	vector<liveAutoPoint*> points;
 	vector<liveAutoPoint*> deleted_points;
