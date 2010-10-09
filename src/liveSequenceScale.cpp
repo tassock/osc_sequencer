@@ -45,7 +45,7 @@ void liveSequenceScale::draw(int beat, int step) {
 		if (_sub_beat == 4) {
 			ofSetColor(70, 70, 70);
 			ofLine(x, draw_y, x + 10, draw_y);
-			franklinBook.drawString( ofToString(_beat), x + 10, draw_y + 2);
+			franklinBook.drawString( ofToString(_beat / 4), x + 10, draw_y + 2);
 			_sub_beat = 0;
 		}
 		

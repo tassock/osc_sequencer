@@ -12,7 +12,7 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 	browserX = 45;
 	browserY = 300;
 	browserH = 520;
-	browserW = 420;
+	browserW = 620;
 	
 	song_browser = new librarySongBrowser(sequencer);
 	
@@ -177,8 +177,10 @@ void liveSequenceWindow::clipBrowserKeyPressed(int key) {
 			break;
 		case 13: // Enter
 			cout << "ENTER" << endl;
+			cout << "selected_song: " << selected_song->getName() << endl;
+			cout << "selected_clip: " << selected_clip->getName() << ", order: " << endl;
 			cout << "INSERT CLIP " << clip_buffer[clip_select_index]->getName() << endl;
-			selected_song->insertClip( clip_buffer[clip_select_index], sequence->getClipOrder(selected_clip) );
+			selected_song->insertClip( clip_buffer[clip_select_index], selected_song->getClipOrder(selected_clip) );
 			focus = "sequence";
 			break;
 		case 'j': // UP
@@ -208,6 +210,7 @@ void liveSequenceWindow::sequenceKeyPressed(int key) {
 				int clips_in_selected_track = sequence->getTrackClips(selected_track).size();
 				if ( (selected_order + 1) < clips_in_selected_track ) {
 					selected_clip = sequence->getTrackClips(selected_track)[selected_order + 1];
+					selected_song = selected_clip->getSong();
 				}
 			} else {
 				// check if there's room
@@ -223,6 +226,7 @@ void liveSequenceWindow::sequenceKeyPressed(int key) {
 				int selected_order = sequence->getClipOrder(selected_clip);
 				if ( (selected_order - 1) >= 0 ) {
 					selected_clip = sequence->getTrackClips(selected_track)[selected_order - 1];
+					selected_song = selected_clip->getSong();
 				}
 			} else {
 				// check if there's room

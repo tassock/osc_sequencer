@@ -21,6 +21,7 @@ public:
 	void loadClips();
 	vector<liveSequenceClip*> getClips();
 	liveSequenceClip* getClip(int index);
+	int getClipOrder(liveSequenceClip* l_clip);
 	int getNumClips();
 	liveSequenceClip* removeClip(liveSequenceClip* delete_clip);
 	liveSequenceClip* duplicateClip(liveSequenceClip* duplicate_clip);

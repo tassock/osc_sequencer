@@ -18,7 +18,7 @@ librarySongBrowser::librarySongBrowser(sequencerApp* _sequencer) {
 	browserX = 45;
 	browserY = 300;
 	browserH = 520;
-	browserW = 420;
+	browserW = 620;
 	
 	franklinBook.loadFont("frabk.ttf", 12);
 	

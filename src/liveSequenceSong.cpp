@@ -126,6 +126,7 @@ vector<liveSequenceClip*> liveSequenceSong::getClips() {
 
 // Remove given clip from buffer. Return next clip in buffer. 
 liveSequenceClip* liveSequenceSong::removeClip(liveSequenceClip* delete_clip) {
+	cout << "liveSequenceSong " << name << " removeClip" << endl;
 	if (clips.size() == 1) {
 		return delete_clip;
 	} else {
@@ -135,10 +136,6 @@ liveSequenceClip* liveSequenceSong::removeClip(liveSequenceClip* delete_clip) {
 		int clip_count = clips.size();
 		for(int c = 0; c < clips.size(); c++) {
 			if (clips[c] == delete_clip) {
-				// Delete from db
-//				sqlite->remove("sequence_clips")
-//				.where("id", clips[c]->getId() )
-//				.execute();
 				// Delete from buffer
 				deleted_clips.insert ( deleted_clips.end(), new liveSequenceClip(sequencer, clips[c], clips[c]->getId()) );
 				clips.erase( clips.begin() + c );
@@ -172,15 +169,16 @@ void liveSequenceSong::insertClip(clip* _insert_clip, int _order) {
 	bool duplicated = false;
 	for(int c = 0; c < clips.size(); c++) {
 		if (c == _order) {
+			cout << "INSERTING" << endl;
 			clips.insert( clips.begin() + _order + 1, new liveSequenceClip(sequencer, this, _id, _clip_id, _track_id, _bar_start, _length) );
-			duplicated = true;
+//			duplicated = true;
 			c++;
 		}  
-		if (duplicated) {
-			int new_order = clips[c]->getOrder() + 1;
-			// Shift clip down
-			clips[c]->setOrder( new_order );
-		}
+//		if (duplicated) {
+//			int new_order = clips[c]->getOrder() + 1;
+//			// Shift clip down
+//			clips[c]->setOrder( new_order );
+//		}
 	}
 }
 
@@ -204,6 +202,15 @@ liveSequenceClip* liveSequenceSong::duplicateClip(liveSequenceClip* duplicate_cl
 	}
 	// Return new clip
 	return clips[new_clip_index];
+}
+
+
+int liveSequenceSong::getClipOrder(liveSequenceClip* l_clip) {
+	for(int i = 0; i < clips.size(); i++) {
+		if (clips[i] == l_clip) {
+			return i;
+		}
+	}
 }
 
 
