@@ -80,7 +80,11 @@ void liveSequenceSong::save() {
 		clips[i]->save();
 	}
 	// Delete clips in deleted_clips buffer
+	for(int i = 0; i < deleted_clips.size(); i++) {
+		deleted_clips[i]->destroy();
+	}
 	// Clear deleted_clips buffer
+	deleted_clips.clear();
 }
 
 
@@ -132,10 +136,11 @@ liveSequenceClip* liveSequenceSong::removeClip(liveSequenceClip* delete_clip) {
 		for(int c = 0; c < clips.size(); c++) {
 			if (clips[c] == delete_clip) {
 				// Delete from db
-				sqlite->remove("sequence_clips")
-				.where("id", clips[c]->getId() )
-				.execute();
+//				sqlite->remove("sequence_clips")
+//				.where("id", clips[c]->getId() )
+//				.execute();
 				// Delete from buffer
+				deleted_clips.insert ( deleted_clips.end(), new liveSequenceClip(sequencer, clips[c], clips[c]->getId()) );
 				clips.erase( clips.begin() + c );
 				// Set skip info
 				next_clip_index = c;
@@ -186,7 +191,7 @@ liveSequenceClip* liveSequenceSong::duplicateClip(liveSequenceClip* duplicate_cl
 	bool duplicated = false;
 	for(int c = 0; c < clips.size(); c++) {
 		if (clips[c] == duplicate_clip) {
-			clips.insert( clips.begin() + c, new liveSequenceClip(sequencer, duplicate_clip) );
+			clips.insert( clips.begin() + c, new liveSequenceClip(sequencer, duplicate_clip, NULL) );
 			new_clip_index = c;
 			duplicated = true;
 			c++;

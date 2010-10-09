@@ -23,12 +23,12 @@ liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceSong* _
 
 
 // Constructor for duplicate liveSequenceClip
-liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip* duplicate_clip) {
+liveSequenceClip::liveSequenceClip(sequencerApp* _sequencer, liveSequenceClip* duplicate_clip, int _id) {
 	sequencer = _sequencer;
 	song = duplicate_clip->getSong();
 	sqlite = sequencer->getSQLite();
-	
-	id = NULL;
+
+	id = _id;
 	clip_id   = duplicate_clip->getClipId();
 	track_id  = duplicate_clip->getTrackId();
 	sequence_song_order = duplicate_clip->getOrder();
@@ -82,6 +82,13 @@ void liveSequenceClip::save() {
 		.where("id", id)
 		.execute();
 	}
+}
+
+
+void liveSequenceClip::destroy() {
+	sqlite->remove("sequence_clips")
+	.where("id", id )
+	.execute();
 }
 
 

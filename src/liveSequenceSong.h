@@ -50,6 +50,7 @@ public:
 	
 	int num_clips;
 	vector<liveSequenceClip*> clips;
+	vector<liveSequenceClip*> deleted_clips;
 	
 	ofTrueTypeFont  franklinBook;
 };

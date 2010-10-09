@@ -289,6 +289,7 @@ void liveSequenceWindow::sequenceKeyPressed(int key) {
 		case 127: // Delete
 			cout << "DELETE " << selected_clip->getName() << endl;
 			if (select_mode == "clip") {
+				cout << "DELETing " << endl; 
 				selected_clip = selected_song->removeClip(selected_clip);
 			}
 			break;
