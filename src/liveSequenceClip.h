@@ -31,6 +31,8 @@ public:
 	int getOrder();
 	void setOrder(int _order);
 	int getLength();
+	void setBarStart(int _bar_start);
+	int getBarStart();
 	
 	sequencerApp* sequencer;
 	liveSequenceSong* song;
@@ -42,6 +44,7 @@ public:
 	int track_id;
 	int sequence_song_order;
 	int length;
+	int bar_start; // not saved in db, set dynamically. 
 	string name;
 	
 };

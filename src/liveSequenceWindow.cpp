@@ -241,8 +241,11 @@ void liveSequenceWindow::sequenceKeyPressed(int key) {
 			if (select_mode == "clip") {
 				// change selected_clip
 				if (selected_track == 1) {
-					selected_clip = sequence->getTrackClips(selected_track - 1)[0];
-					selected_song = selected_clip->getSong();
+					liveSequenceClip* nearest_clip = sequence->getNearestClip(selected_track - 1, selected_clip->getBarStart() );
+					if (nearest_clip != NULL) {
+						selected_clip = nearest_clip;
+						selected_song = selected_clip->getSong();
+					}
 				}
 			} else {
 				// move selected song left
@@ -262,8 +265,11 @@ void liveSequenceWindow::sequenceKeyPressed(int key) {
 			if (select_mode == "clip") {
 				// change selected_clip
 				if (selected_track == 0) {
-					selected_clip = sequence->getTrackClips(selected_track + 1)[0];
-					selected_song = selected_clip->getSong();
+					liveSequenceClip* nearest_clip = sequence->getNearestClip(selected_track + 1, selected_clip->getBarStart() );
+					if (nearest_clip != NULL) {
+						selected_clip = nearest_clip;
+						selected_song = selected_clip->getSong();
+					}
 				}
 			} else {
 				// move selected song left
@@ -323,20 +329,20 @@ void liveSequenceWindow::toggleSelectMode() {
 	}
 }
 
-// Fire clip if ready:
+// Update bar_start of clips, fire clip if ready:
 void liveSequenceWindow::fireClips(int beat, int step) {
-	if (sequencer->getCurrentSet()->getPlaying()) {
-	
-		vector<liveSequenceSong*> song_buffer = sequence->getSongs();
-		for(int c = 0; c < song_buffer.size(); c++) { // find number of songs in track
-			liveSequenceSong* s_song = song_buffer[c];
-			vector<liveSequenceClip*> s_clip_buffer = s_song->getClips();
-			int bar_count = 0;
-			for(int c = 0; c < s_clip_buffer.size(); c++) { // find number of clips in track
-				
-				liveSequenceClip* s_clip = s_clip_buffer[c];
-				int bar_start = bar_count + s_song->getStart();
-				
+	vector<liveSequenceSong*> song_buffer = sequence->getSongs();
+	for(int c = 0; c < song_buffer.size(); c++) { // find number of songs in track
+		liveSequenceSong* s_song = song_buffer[c];
+		vector<liveSequenceClip*> s_clip_buffer = s_song->getClips();
+		int bar_count = 0;
+		for(int c = 0; c < s_clip_buffer.size(); c++) { // find number of clips in track
+			
+			int bar_start = bar_count + s_song->getStart();
+			liveSequenceClip* s_clip = s_clip_buffer[c];
+			s_clip->setBarStart(bar_start);
+			
+			if (sequencer->getCurrentSet()->getPlaying()) {
 				// Fire clip if ready:
 				if (step == 0 and bar_start == beat + 1) {
 					//cout << "beat: " << beat << ", start: " << s_clip->getRealStart() << endl;
@@ -347,9 +353,9 @@ void liveSequenceWindow::fireClips(int beat, int step) {
 						s_clip->getLiveClip()->fire();
 					}
 				}
-				
-				bar_count = bar_count + s_clip->getLength();
 			}
+			
+			bar_count = bar_count + s_clip->getLength();
 		}
 	}
 }

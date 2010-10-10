@@ -25,6 +25,7 @@ public:
 	vector<liveSequenceSong*> getSongs();
 	vector<liveSequenceSong*> getTrackSongs(int track_id);
 	vector<liveSequenceClip*> getTrackClips(int track_id);
+	liveSequenceClip* getNearestClip(int track_id, int bar);
 	int getClipOrder(liveSequenceClip* l_clip);
 	int nextSongStart(int track_id, int bar);
 	int prevSongEnd(int track_id, int bar);

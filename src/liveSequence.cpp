@@ -67,12 +67,6 @@ vector<liveSequenceSong*> liveSequence::getTrackSongs(int track_id) {
 			song_buffer.insert(song_buffer.end(), s_song);
 		}
 	}
-	
-	// log contents
-//	for(int i = 0; i < song_buffer.size(); i++) {
-//		cout << "TRACK#" << track_id << " getTrackSongs: #" << i << ", " << song_buffer[i]->getName() << endl;
-//	}
-	
 	return song_buffer;
 }	
 
@@ -89,13 +83,26 @@ vector<liveSequenceClip*> liveSequence::getTrackClips(int track_id) {
 			clip_buffer.insert( clip_buffer.end(), clip_insert );
 		}
 	}
-	
-//	// log contents
-//	for(int i = 0; i < clip_buffer.size(); i++) {
-//		cout << "getTrackClips: #" << i << ", " << clip_buffer[i]->getName() << endl;
-//	}
-	
 	return clip_buffer;
+}
+
+
+liveSequenceClip* liveSequence::getNearestClip(int track_id, int bar) {
+	liveSequenceClip* nearest_clip = NULL;
+	vector<liveSequenceSong*> song_buffer = getTrackSongs(track_id);
+	for(int s = 0; s < song_buffer.size(); s++) {
+		vector<liveSequenceClip*> clip_buffer = song_buffer[s]->getClips();
+		for(int c = 0; c < clip_buffer.size(); c++) {
+			//cout << "CLIP name: " << clip_buffer[c]->getName() << ", start: " << clip_buffer[c]->getBarStart() << endl;
+			if ( clip_buffer[c]->getBarStart() == bar) {
+				nearest_clip = clip_buffer[c];
+			}
+		}
+	}
+//	if (nearest_clip != NULL) {
+//		cout << "NEAREST CLIP name: " << nearest_clip->getName() << ", start: " << nearest_clip->getBarStart() << endl;
+//	}
+	return nearest_clip;
 }
 
 
