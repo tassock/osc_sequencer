@@ -22,6 +22,9 @@ public:
 	int getW();
 	int getH();
 	
+	int beat;
+	int step;
+	
 	int x;
 	int y;
 	int w;

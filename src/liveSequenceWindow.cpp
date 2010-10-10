@@ -5,6 +5,8 @@
 liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y, int _w, int _h) {
 	sequencer = _sequencer;
 	sqlite = sequencer->getSQLite();
+	beat = 0;
+	step = 0;
 	x = _x;
 	y = _y;
 	w = _w;
@@ -41,7 +43,9 @@ liveSequenceWindow::liveSequenceWindow(sequencerApp* _sequencer, int _x, int _y,
 }
 
 
-void liveSequenceWindow::update(int beat, int step) {
+void liveSequenceWindow::update(int _beat, int _step) {
+	beat = _beat;
+	step = _step;
 	fireClips(beat, step);
 	crossfader->update(beat, step);
 	track_0->update(beat, step);
@@ -284,6 +288,16 @@ void liveSequenceWindow::sequenceKeyPressed(int key) {
 			}
 			
 			
+			break;
+		case 'm':
+			cout << "PAGE UP" << endl;
+			if (beat > 0) {
+				sequencer->setStartBeat(beat - 128);
+			}
+			break;
+		case ',':
+			cout << "PAGE DOWN" << endl;
+			sequencer->setStartBeat(beat + 128);
 			break;
 		case 'f':
 			cout << "TOGGLE" << endl;
