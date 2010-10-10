@@ -32,27 +32,36 @@ void liveSequenceScale::draw(int beat, int step) {
 //	ofRect(x, y, w, h);
 	
 	int draw_y = s;
-	int _beat = 0;
+	int _beat = -4;
 	int _sub_beat = 4;
+	int _bar = 12;
 	ofSetLineWidth(1);
 	while (draw_y < y + h) {
 		
+//		// Draw stitch
+//		ofSetColor(35, 35, 35);
+//		ofLine(x, draw_y, x + 10, draw_y);
+		
 		// Draw stitch
-		ofSetColor(35, 35, 35);
-		ofLine(x, draw_y, x + 10, draw_y);
+		if (_sub_beat == 4) {
+			ofSetColor(35, 35, 35);
+			ofLine(x, draw_y, x + 10, draw_y);
+			_sub_beat = 0;
+		}
 		
 		// Draw label
-		if (_sub_beat == 4) {
+		if (_bar == 16) {
 			ofSetColor(70, 70, 70);
 			ofLine(x, draw_y, x + 10, draw_y);
 			franklinBook.drawString( ofToString(_beat / 4), x + 10, draw_y + 2);
-			_sub_beat = 0;
+			_bar = 0;
 		}
 		
 		// Increment iterators
 		draw_y = draw_y + BEAT_HEIGHT;
 		_beat ++;
 		_sub_beat ++;
+		_bar ++;
 	}
 }
 

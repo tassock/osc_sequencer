@@ -75,23 +75,28 @@ void liveAutoLane::draw(int beat, int step) {
 	
 	// Draw measuring lines
 	int draw_y = s;
-	int _beat = 0;
+	int _beat = -4;
 	int _sub_beat = 4;
+	int _bar = 12;
 	ofSetLineWidth(1);
 	while (draw_y < y + h) {
 		
 		// Draw stitches
-		if (_sub_beat == 4) {
+		if (_bar == 16) {
 			ofSetColor(70, 70, 70);
+			_bar = 0;
 			_sub_beat = 0;
-		} else {
+			ofLine(x + 4, draw_y, x + w - 4, draw_y);
+		} else if (_sub_beat == 4)  {
 			ofSetColor(35, 35, 35);
+			_sub_beat = 0;
+			ofLine(x + 4, draw_y, x + w - 4, draw_y);
 		}
-		ofLine(x + 4, draw_y, x + w - 4, draw_y);
 		
 		// Increment iterators
 		draw_y = draw_y + BEAT_HEIGHT;
 		_beat ++;
+		_bar ++;
 		_sub_beat ++;
 	}
 	
